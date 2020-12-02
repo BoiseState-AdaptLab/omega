@@ -1,0 +1,163 @@
+>>> # compare new SimpleHull with legacy hull methods
+>>> 
+>>> symbolic m,n;
+>>> 
+>>> r1 := {[i,j]: i>=0 && j>=0 && i+j<=1};
+>>> r2 := {[i,j]: j>=0 && i<=1 && j<=i};
+>>> 
+>>> ConvexHull (r1 union r2);
+{[i,j]: 0 <= i <= 1 && 0 <= j <= 1}
+>>> DecoupledConvexHull (r1 union r2);
+{[i,j]: 0 <= i <= 1 && 0 <= j <= 1}
+>>> RectHull (r1 union r2);
+{[i,j]: 0 <= i <= 1 && 0 <= j <= 1}
+>>> SimpleHull (r1 union r2);
+{[i,j]: 0 <= i <= 1 && 0 <= j <= 1}
+>>> QuickHull (r1 union r2);
+{[i,j]: 0 <= j}
+>>> Hull (r1 union r2);
+{[i,j]: 0 <= i <= 1 && 0 <= j <= 1}
+>>> 
+>>> r1 := {[i]:i<=n && n>=7};
+>>> r2 := {[i]:i<=n-2 && n>=6};
+>>> 
+>>> ConvexHull (r1 union r2);
+{[i]: i <= 3n-14, n && 6 <= n}
+>>> DecoupledConvexHull (r1 union r2);
+{[i]: i <= 3n-14, n && 6 <= n}
+>>> RectHull (r1 union r2);
+{[i]: i <= n && 6 <= n}
+>>> SimpleHull (r1 union r2);
+{[i]: i <= n && 6 <= n}
+>>> QuickHull (r1 union r2);
+{[i]: i <= n && 6 <= n}
+>>> Hull (r1 union r2);
+{[i]: i <= n, 3n-14 && 6 <= n}
+>>> 
+>>> r1 := {[i,j]:0<=i,j<=2};
+>>> r2 := {[i,j]:0<=i && 1<=j && i+j<=4};
+>>> 
+>>> ConvexHull (r1 union r2);
+{[i,j]: 0 <= i <= -j+4, j+2 && 0 <= j}
+>>> DecoupledConvexHull (r1 union r2);
+{[i,j]: 0 <= i <= -j+4, j+2 && 0 <= j}
+>>> RectHull (r1 union r2);
+{[i,j]: 0 <= i <= -j+4, 3 && 0 <= j}
+>>> SimpleHull (r1 union r2);
+{[i,j]: 0 <= i <= 3, -j+4 && 0 <= j}
+>>> QuickHull (r1 union r2);
+{[i,j]: 0 <= j && 0 <= i}
+>>> Hull (r1 union r2);
+{[i,j]: 0 <= i <= -j+4, j+2 && 0 <= j}
+>>> 
+>>> r1 := {[i,j]: 1<=i<=n && j=0};
+>>> r2 := {[i,j]: 2<=i<=n+1 && j=1};
+>>> 
+>>> ConvexHull (r1 union r2);
+{[i,j]: 0 <= j <= i-1, 1 && i <= n+j}
+>>> DecoupledConvexHull (r1 union r2);
+{[i,j]: 1 <= i <= n+1 && 0 <= j <= 1 && 1 <= n}
+>>> RectHull (r1 union r2);
+{[i,j]: 0 <= j <= 1 && 1 <= i}
+>>> SimpleHull (r1 union r2);
+{[i,j]: 1 <= i <= n+1 && 0 <= j <= 1 && 1 <= n}
+>>> QuickHull (r1 union r2);
+{[i,j]: 1 <= i <= n+1 && 0 <= j <= 1}
+>>> Hull (r1 union r2);
+{[i,j]: 0 <= j <= i-1, 1 && i <= n+j}
+>>> 
+>>> r1 := {[i,j,k]: 1<=i<=n && j=0 && k=17i};
+>>> r2 := {[i,j,k]: 2<=i<=n+5 && j=1 && k=17i+10};
+>>> 
+>>> ConvexHull (r1 union r2);
+{[i,j,17i+10j]: 0 <= j <= i-1, 1 && i <= n+5j}
+>>> DecoupledConvexHull (r1 union r2);
+{[i,j,k]: 17i <= k <= 27i-10, 17i+10 && 0 <= j <= 1 && 19i <= 2n+k}
+>>> RectHull (r1 union r2);
+{[i,j,k]: 0 <= j <= 1 && 1 <= i && 17 <= k}
+>>> SimpleHull (r1 union r2);
+{[i,j,k]: 1 <= i <= n+5 && 0 <= j <= 1 && 17i <= k <= 17i+10 && 0 <= 3+n}
+>>> QuickHull (r1 union r2);
+{[i,j,k]: 1 <= i <= n+5 && 0 <= j <= 1 && 17i <= k <= 17i+10}
+>>> Hull (r1 union r2);
+{[i,j,17i+10j]: 0 <= j <= i-1, 1 && i <= n+5j}
+>>> 
+>>> r1:={[x,y]:y<=x && y>=0 && y<=2-x};
+>>> r2:={[x,y]:y>=0 && x<=2 && 2y<=x};
+>>> 
+>>> ConvexHull (r1 union r2);
+{[x,y]: 0 <= y <= x <= 2 && y <= 1}
+>>> DecoupledConvexHull (r1 union r2);
+{[x,y]: 0 <= y <= x <= 2 && y <= 1}
+>>> RectHull (r1 union r2);
+{[x,y]: 0 <= x <= 2 && 0 <= y <= 1}
+>>> SimpleHull (r1 union r2);
+{[x,y]: 0 <= y <= x <= 2 && y <= 1}
+>>> QuickHull (r1 union r2);
+{[x,y]: 0 <= y}
+>>> Hull (r1 union r2);
+{[x,y]: 0 <= y <= x <= 2 && y <= 1}
+>>> 
+>>> r1 := {[i,j]: 0<=i<=1000 && 500<=j<=600};
+>>> r2 := {[i,j]: 500<=i<=600 && 0<=j<=1000};
+>>> 
+>>> ConvexHull (r1 union r2);
+{[i,j]: -j+500, 0 <= i <= 1000, -j+1600 && 0 <= j <= 1000 && 5i <= 3000+4j && 5j <= 3000+4i}
+>>> DecoupledConvexHull (r1 union r2);
+{[i,j]: 0 <= i <= 1000 && 0 <= j <= 1000}
+>>> RectHull (r1 union r2);
+{[i,j]: 0 <= i <= 1000 && 0 <= j <= 1000}
+>>> SimpleHull (r1 union r2);
+{[i,j]: 0 <= i <= 1000 && 0 <= j <= 1000}
+>>> QuickHull (r1 union r2);
+{[i,j]: 0 <= i <= 1000 && 0 <= j <= 1000}
+>>> Hull (r1 union r2);
+{[i,j]: 0 <= i <= 1000 && 0 <= j <= 1000}
+>>> 
+>>> r1:= {[t1,t2,t3,t4,t5] : 1+t4 = t3 && 32t1+1 <= t3 <= 499, 32t1+32 && 16t2+1 <= t5 <= 499, 16t2+16 && 0 <= t1 && 0 <= t2};
+>>> r2:= {[t1,t2,t3,t4,t5] : t4 = t3 && 16t2 <= t5 <= 498, 16t2+15 && 32t1+1 <= t3 <= 499, 32t1+32 && 0 <= t1 && 0 <= t2 };
+>>> 
+>>> ConvexHull (r1 union r2);
+{[t1,t2,t3,t4,t5]: t4 <= t3}
+>>> DecoupledConvexHull (r1 union r2);
+{[t1,t2,t3,t4,t5]: 32t1+1, t4 <= t3 <= 32t1+32, 496, t4+1 && 16t2 <= t5 <= 498, 16t2+16 && 0 <= t2 && 0 <= t1}
+>>> RectHull (r1 union r2);
+{[t1,t2,t3,t4,t5]: 0 <= t1 <= 15 && 0 <= t2 <= 31 && 1 <= t3 <= 499 && 0 <= t4 <= 499 && 0 <= t5 <= 499}
+>>> SimpleHull (r1 union r2);
+{[t1,t2,t3,t4,t5]: 32t1+1, t4 <= t3 <= 32t1+32, 499, t4+1 && 16t2 <= t5 <= 16t2+16, 499 && 0 <= t1 && 0 <= t2}
+>>> QuickHull (r1 union r2);
+{[t1,t2,t3,t4,t5]: 16t2 <= t5 <= 499, 16t2+16 && 0 <= t1 && 0 <= t2}
+>>> Hull (r1 union r2);
+{[t1,t2,t3,t4,t5]: 32t1+1, t4 <= t3 <= 5t1+424, 32t1+32 && 16t2 <= t5 <= 499, 16t2+16 && 0 <= t1 && 0 <= t2}
+>>> 
+>>> r1:={[i]:i<=n && n<=100 && i>=m-10};
+>>> r2:={[i]:i<=2n && n<=200 && i>=m};
+>>> 
+>>> ConvexHull (r1 union r2);
+{[i]: i-200 <= n <= 200 && m <= i+10 && 20m <= 200+n+19i && 10m+n <= 200+10i}
+>>> DecoupledConvexHull (r1 union r2);
+{[i]: i-200 <= n <= 200 && m <= i+10 && 20m <= 200+n+19i && 10m+n <= 200+10i}
+>>> RectHull (r1 union r2);
+{[i]: m-10 <= i <= 400 && n <= 200}
+>>> SimpleHull (r1 union r2);
+{[i]: m <= 400, i+10 && n <= 200 && i <= 400}
+>>> QuickHull (r1 union r2);
+{[i]: n <= 200 && m <= i+10}
+>>> Hull (r1 union r2);
+{[i]: n <= 200 && m <= i+10}
+>>> 
+>>> r:= {[1,1]} union {[2,2]} union {[3,3]} union {[4,4]};
+>>> 
+>>> ConvexHull r;
+{[In_1,In_1]: 1 <= In_1 <= 4}
+>>> DecoupledConvexHull r;
+{[In_1,In_2]: 1 <= In_1 <= 4 && 1 <= In_2 <= 4}
+>>> RectHull r;
+{[In_1,In_2]: 1 <= In_1 <= 4 && 1 <= In_2 <= 4}
+>>> SimpleHull r;
+{[In_1,In_2]: 1 <= In_1 <= 4 && 1 <= In_2 <= 4}
+>>> QuickHull r;
+{[In_1,In_2]: 1 <= In_1 <= 4 && 1 <= In_2 <= 4}
+>>> Hull r;
+{[In_1,In_1]: 1 <= In_1 <= 4}
+>>> 
