@@ -1,5 +1,5 @@
-# Omega Rose Free
-Rose-free Omega Library/ Calculator
+# Omega 
+
 
 # Author
 This project is originally authored by Chun Chen. This repository is a combination of the following repositories with the aim to create a Rose Free Omega Lib/Calc
