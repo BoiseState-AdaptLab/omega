@@ -14,11 +14,11 @@ namespace omega {
 // About variables in Conjunct:
 // All varaibles appear in exactly one declaration.
 // All variables used in Conjunct are referenced in mappedVars.
-// Wildcard variables are referenced both in mappedVars and in myLocals, 
+// Wildcard variables are referenced both in mappedVars and in myLocals,
 //   since they are declared in the conjunct.
 // All other variables are declared at the levels above.
-// Column number is: 
-//   in forwardingAddress in Problem if variablesInitialized is set, 
+// Column number is:
+//   in forwardingAddress in Problem if variablesInitialized is set,
 //   equal to position of Variable_ID in mappedVars list otherwise.
 //
 
@@ -35,7 +35,7 @@ public:
 
   inline Node_Type node_type() {return Op_Conjunct;}
 
-  inline int is_true() {return problem->nEQs==0 && problem->nGEQs==0 
+  inline int is_true() {return problem->nEQs==0 && problem->nGEQs==0
       && exact;}
 
   void query_difference(Variable_ID v1, Variable_ID v2,
@@ -83,7 +83,7 @@ public:
   inline bool is_exact() const { return exact;}
   inline bool is_inexact() const { return !exact;}
   inline void make_inexact()   { exact=false;}
-   
+
 
 #if ! defined NDEBUG
   void     assert_leading_info();
@@ -98,14 +98,14 @@ public:
   std::string print_to_string(int true_printed);
   std::string print_EQ_to_string(eqn *e) { return problem->print_EQ_to_string(e); }
   std::string print_GEQ_to_string(eqn *e) { return problem->print_GEQ_to_string(e); }
-  std::string print_EQ_to_string(int e) 
+  std::string print_EQ_to_string(int e)
   { return problem->print_EQ_to_string(&(problem->EQs[e])); }
-  std::string print_GEQ_to_string(int e) 
+  std::string print_GEQ_to_string(int e)
   { return problem->print_GEQ_to_string(&(problem->GEQs[e])); }
   std::string print_term_to_string(eqn *e) { return problem->print_term_to_string(e,1); }
-  std::string print_EQ_term_to_string(int e) 
+  std::string print_EQ_term_to_string(int e)
   { return problem->print_term_to_string(&(problem->EQs[e]),1); }
-  std::string print_GEQ_term_to_string(int e) 
+  std::string print_GEQ_term_to_string(int e)
   { return problem->print_term_to_string(&(problem->GEQs[e]),1); }
   std::string print_sub_to_string(int col) { return problem->print_sub_to_string(col); }
 
@@ -137,7 +137,7 @@ private:
   friend class Constr_Vars_Iter;
 
 
-  // FUNCTIONS HAVING TO DO WITH BUILDING FORMULAS/DNFs 
+  // FUNCTIONS HAVING TO DO WITH BUILDING FORMULAS/DNFs
   bool     can_add_child();
   void remap();
   void beautify();
@@ -159,13 +159,13 @@ private:
   friend class F_Not;
   friend class F_Or;
   //   class F_And; is a friend below
-  
+
 
   // VARIOUS FUNCTIONS TO CREATE / WORK WITH VARIABLES
   Variable_ID declare(Const_String s);
   Variable_ID declare();
-  Variable_ID declare(Variable_ID v);  
-  
+  Variable_ID declare(Variable_ID v);
+
   friend const char *get_var_name(unsigned int, void *);
   void push_exists(Variable_ID_Tuple &S);
   int  get_column(Variable_ID);
@@ -197,7 +197,7 @@ private:
 
   void reverse_leading_dir_info();
 
- 
+
 
   // CONJUNCT SPECIFIC STUFF
 
@@ -209,7 +209,7 @@ private:
   void convertEQstoGEQs(bool excludeStrides);
 
   int cost();
-  
+
   inline Formula*  copy(Formula *parent, Rel_Body *reln)
   { return copy_conj_diff_relation(parent,reln); }
   Conjunct* copy_conj_diff_relation(Formula *parent, Rel_Body *reln);
@@ -242,7 +242,7 @@ private:
   // Substitutions are a wrapper around a low-level Problem operation
   friend class Substitutions;
 
-  // private functions to call problem functions 
+  // private functions to call problem functions
   int simplifyProblem();
   int simplifyProblem(int verify, int subs, int redundantElimination);
   int redSimplifyProblem(int effort, int computeGist);
@@ -250,7 +250,7 @@ private:
   friend int       simplify_conj(Conjunct* conj, int ver_sim, int elim_red, int color);
   friend DNF*      negate_conj(Conjunct* conj);
   friend Conjunct* merge_conjs(Conjunct* conj1, Conjunct* conj2,
-                               Merge_Action action, Rel_Body *body = 0);
+                               Merge_Action action, Rel_Body *body);
   friend void      copy_conj_header(Conjunct* to, Conjunct* fr);
 
 
