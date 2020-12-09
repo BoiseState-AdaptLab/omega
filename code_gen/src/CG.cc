@@ -230,7 +230,19 @@ CG_result *CG_loop::recompute(const BoolSet<> &parent_active, const Relation &kn
     return NULL;
   }
 
-  Relation hull = SimpleHull(Rs, true, true);
+  //Relation hull = SimpleHull(Rs, true, true);
+  Relation truehull = SimpleHull(Rs, true, true);
+
+  Relation hull = copy(truehull);
+  for (Variable_ID_Iterator v(*hull.global_decls()); v; v++) {
+    Global_Var_ID var = (*v)->get_global_var();
+    if (var->arity() >= level_)
+      hull = Project(hull, var);
+  }
+    //hull.simplify(2,4);
+    //    //Anand:Variables for inspector constraint check
+  bool has_insp = false;
+  bool found_insp = false;
   
   // check if actual loop is needed
   std::pair<EQ_Handle, int> result = find_simplest_assignment(hull, hull.set_var(level_));
@@ -336,6 +348,7 @@ CG_result *CG_loop::recompute(const BoolSet<> &parent_active, const Relation &kn
           f_root->add_GEQ(*e);
     }
     bounds_.simplify();
+    hull.simplify(2,4);
 
     // Since current SimpleHull does not support max() upper bound or min() lower bound,
     // we have to forcefully split the loop when hull approximation does not return any bound.
