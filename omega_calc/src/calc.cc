@@ -1,14 +1,13 @@
 #include <basic/Dynamic_Array.h>
 #include <basic/Iterator.h>
-#include <omega_calc/AST.h>
+#include <parser/AST.h>
 #include <omega/hull.h>
 #include <omega/closure.h>
 #include <omega/reach.h>
 #include <string>
 #include <iostream>
 #include <fstream>
-#include "parser.tab.hh"
-#include <omega_calc/myflex.h>
+#include <parser/myflex.h>
 
 #if defined __USE_POSIX
 #include <unistd.h>
@@ -29,9 +28,9 @@ extern bool is_interactive;
 extern const char *PROMPT_STRING;
   
 using namespace omega;
-
+extern std::map<std::string, Relation *> relationMap;  
 extern std::string err_msg;
-bool need_coef;
+extern bool need_coef;
 int main(int argc, char **argv) {
   if (argc > 2){
     fprintf(stderr, "Usage: %s [script_file]\n", argv[0]);

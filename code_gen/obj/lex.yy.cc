@@ -8,7 +8,7 @@
 #define FLEX_SCANNER
 #define YY_FLEX_MAJOR_VERSION 2
 #define YY_FLEX_MINOR_VERSION 5
-#define YY_FLEX_SUBMINOR_VERSION 35
+#define YY_FLEX_SUBMINOR_VERSION 37
 #if YY_FLEX_SUBMINOR_VERSION > 0
 #define FLEX_BETA
 #endif
@@ -153,15 +153,7 @@ typedef unsigned int flex_uint32_t;
 
 /* Size of default input buffer. */
 #ifndef YY_BUF_SIZE
-#ifdef __ia64__
-/* On IA-64, the buffer size is 16k, not 8k.
- * Moreover, YY_BUF_SIZE is 2*YY_READ_BUF_SIZE in the general case.
- * Ditto for the __ia64__ case accordingly.
- */
-#define YY_BUF_SIZE 32768
-#else
 #define YY_BUF_SIZE 16384
-#endif /* __ia64__ */
 #endif
 
 /* The state buf must be large enough to hold one state per character in the main buffer.
@@ -173,7 +165,12 @@ typedef unsigned int flex_uint32_t;
 typedef struct yy_buffer_state *YY_BUFFER_STATE;
 #endif
 
-extern int yyleng;
+#ifndef YY_TYPEDEF_YY_SIZE_T
+#define YY_TYPEDEF_YY_SIZE_T
+typedef size_t yy_size_t;
+#endif
+
+extern yy_size_t yyleng;
 
 #define EOB_ACT_CONTINUE_SCAN 0
 #define EOB_ACT_END_OF_FILE 1
@@ -210,11 +207,6 @@ extern int yyleng;
 
 #define unput(c) yyunput( c, (yytext_ptr)  )
 
-#ifndef YY_TYPEDEF_YY_SIZE_T
-#define YY_TYPEDEF_YY_SIZE_T
-typedef size_t yy_size_t;
-#endif
-
 #ifndef YY_STRUCT_YY_BUFFER_STATE
 #define YY_STRUCT_YY_BUFFER_STATE
 struct yy_buffer_state
@@ -233,7 +225,7 @@ struct yy_buffer_state
 	/* Number of characters read into yy_ch_buf, not including EOB
 	 * characters.
 	 */
-	int yy_n_chars;
+	yy_size_t yy_n_chars;
 
 	/* Whether we "own" the buffer - i.e., we know we created it,
 	 * and can realloc() it to grow it, and should free() it to
@@ -1883,7 +1875,7 @@ static yyconst flex_int32_t yy_rule_can_match_eol[142] =
 #define yymore() yymore_used_but_not_detected
 #define YY_MORE_ADJ 0
 #define YY_RESTORE_YY_MORE_OFFSET
-#line 1 "../src/parser.ll"
+#line 1 "../src/parser/parser.ll"
 /*****************************************************************************
  Copyright (C) 1994-2000 the Omega Project Team
  Copyright (C) 2005-2011 Chun Chen
@@ -1897,17 +1889,17 @@ static yyconst flex_int32_t yy_rule_can_match_eol[142] =
  History:
    02/04/11 migrate to flex c++ mode, Chun Chen
 *****************************************************************************/
-#line 16 "../src/parser.ll"
+#line 16 "../src/parser/parser.ll"
 #include <stdio.h>
 #include <string.h>
 #include <string>
 #include <sstream>
 #include <iostream>
 #include <fstream>
-#include <omega_calc/AST.h>
+#include <parser/AST.h>
 #include <basic/Dynamic_Array.h>
 #include "parser.tab.hh"
-#include <omega_calc/myflex.h>
+#include <parser/myflex.h>
 
 myFlexLexer mylexer;
 bool is_interactive;
@@ -1923,7 +1915,7 @@ void yyerror(const std::string &s);
 void flushScanBuffer();
 
 
-#line 1927 "lex.yy.cc"
+#line 1919 "lex.yy.cc"
 
 #define INITIAL 0
 #define LATEX 1
@@ -1956,12 +1948,7 @@ static int yy_flex_strlen (yyconst char * );
 
 /* Amount of stuff to slurp up with each read. */
 #ifndef YY_READ_BUF_SIZE
-#ifdef __ia64__
-/* On IA-64, the buffer size is 16k, not 8k */
-#define YY_READ_BUF_SIZE 16384
-#else
 #define YY_READ_BUF_SIZE 8192
-#endif /* __ia64__ */
 #endif
 
 /* Copy whatever the last rule matched to the standard output. */
@@ -2031,10 +2018,10 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
     
-#line 46 "../src/parser.ll"
+#line 46 "../src/parser/parser.ll"
 
 
-#line 2038 "lex.yy.cc"
+#line 2025 "lex.yy.cc"
 
 	if ( !(yy_init) )
 		{
@@ -2108,7 +2095,7 @@ yy_find_action:
 
 		if ( yy_act != YY_END_OF_BUFFER && yy_rule_can_match_eol[yy_act] )
 			{
-			int yyl;
+			yy_size_t yyl;
 			for ( yyl = 0; yyl < yyleng; ++yyl )
 				if ( yytext[yyl] == '\n' )
 					   
@@ -2129,12 +2116,12 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 48 "../src/parser.ll"
+#line 48 "../src/parser/parser.ll"
 { BUFFER; BEGIN(INCLUDE); }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 49 "../src/parser.ll"
+#line 49 "../src/parser/parser.ll"
 {
   BUFFER;
   scanBuf += "\n";
@@ -2162,7 +2149,7 @@ YY_RULE_SETUP
 case 3:
 /* rule 3 can match eol */
 YY_RULE_SETUP
-#line 72 "../src/parser.ll"
+#line 72 "../src/parser/parser.ll"
 {
   std::cout << "Error in include syntax\n";
   std::cout << "Use <<fname>> to include the file named fname\n";
@@ -2176,7 +2163,7 @@ YY_RULE_SETUP
 case 4:
 /* rule 4 can match eol */
 YY_RULE_SETUP
-#line 82 "../src/parser.ll"
+#line 82 "../src/parser/parser.ll"
 {
   BUFFER;
   BEGIN(INITIAL);
@@ -2188,632 +2175,632 @@ YY_RULE_SETUP
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 91 "../src/parser.ll"
+#line 91 "../src/parser/parser.ll"
 { BUFFER; }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 92 "../src/parser.ll"
+#line 92 "../src/parser/parser.ll"
 { BUFFER; }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 93 "../src/parser.ll"
+#line 93 "../src/parser/parser.ll"
 { BUFFER; BEGIN(COMMENT); }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 94 "../src/parser.ll"
+#line 94 "../src/parser/parser.ll"
 { BUFFER; }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 95 "../src/parser.ll"
+#line 95 "../src/parser/parser.ll"
 { BUFFER; BEGIN(INITIAL); }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 96 "../src/parser.ll"
+#line 96 "../src/parser/parser.ll"
 { BUFFER; BEGIN(LATEX); }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 97 "../src/parser.ll"
+#line 97 "../src/parser/parser.ll"
 { BUFFER; }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 98 "../src/parser.ll"
+#line 98 "../src/parser/parser.ll"
 { BUFFER; }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 99 "../src/parser.ll"
+#line 99 "../src/parser/parser.ll"
 { BUFFER; }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 101 "../src/parser.ll"
+#line 101 "../src/parser/parser.ll"
 { BUFFER;  return OPEN_BRACE; }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 102 "../src/parser.ll"
+#line 102 "../src/parser/parser.ll"
 { BUFFER;  return OPEN_BRACE; }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 103 "../src/parser.ll"
+#line 103 "../src/parser/parser.ll"
 { BUFFER;  return CLOSE_BRACE; }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 104 "../src/parser.ll"
+#line 104 "../src/parser/parser.ll"
 { BUFFER;  return CLOSE_BRACE; }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 105 "../src/parser.ll"
+#line 105 "../src/parser/parser.ll"
 { BUFFER;  return APPROX; }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 106 "../src/parser.ll"
+#line 106 "../src/parser/parser.ll"
 { BUFFER;  return UNION; }
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 107 "../src/parser.ll"
+#line 107 "../src/parser/parser.ll"
 { BUFFER;  return UNION; }
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 108 "../src/parser.ll"
+#line 108 "../src/parser/parser.ll"
 { BUFFER;  return INTERSECTION; }
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 109 "../src/parser.ll"
+#line 109 "../src/parser/parser.ll"
 { BUFFER;  return INTERSECTION; }
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 110 "../src/parser.ll"
+#line 110 "../src/parser/parser.ll"
 { BUFFER;  return SYMBOLIC; }
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 111 "../src/parser.ll"
+#line 111 "../src/parser/parser.ll"
 { BUFFER;  return SYMBOLIC; }
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 112 "../src/parser.ll"
+#line 112 "../src/parser/parser.ll"
 { BUFFER;  return VERTICAL_BAR; }
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 113 "../src/parser.ll"
+#line 113 "../src/parser/parser.ll"
 { BUFFER;  return VERTICAL_BAR; }
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 114 "../src/parser.ll"
+#line 114 "../src/parser/parser.ll"
 { BUFFER;  return SUCH_THAT; }
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 115 "../src/parser.ll"
+#line 115 "../src/parser/parser.ll"
 { BUFFER;  return SUCH_THAT; }
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 116 "../src/parser.ll"
+#line 116 "../src/parser/parser.ll"
 { BUFFER;  return INVERSE; }
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 117 "../src/parser.ll"
+#line 117 "../src/parser/parser.ll"
 { BUFFER;  return COMPLEMENT; }
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 118 "../src/parser.ll"
+#line 118 "../src/parser/parser.ll"
 { BUFFER;  return COMPOSE; }
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 119 "../src/parser.ll"
+#line 119 "../src/parser/parser.ll"
 { BUFFER;  return COMPOSE; }
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 120 "../src/parser.ll"
+#line 120 "../src/parser/parser.ll"
 { BUFFER;  return DIFFERENCE; }
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 121 "../src/parser.ll"
+#line 121 "../src/parser/parser.ll"
 { BUFFER;  return DIFFERENCE_TO_RELATION; }
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 122 "../src/parser.ll"
+#line 122 "../src/parser/parser.ll"
 { BUFFER;  return PROJECT_AWAY_SYMBOLS; }
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 123 "../src/parser.ll"
+#line 123 "../src/parser/parser.ll"
 { BUFFER;  return PROJECT_AWAY_SYMBOLS; }
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 124 "../src/parser.ll"
+#line 124 "../src/parser/parser.ll"
 { BUFFER;  return PROJECT_AWAY_SYMBOLS; }
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 125 "../src/parser.ll"
+#line 125 "../src/parser/parser.ll"
 { BUFFER;  return PROJECT_ON_SYMBOLS; }
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 126 "../src/parser.ll"
+#line 126 "../src/parser/parser.ll"
 { BUFFER;  return PROJECT_ON_SYMBOLS; }
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 127 "../src/parser.ll"
+#line 127 "../src/parser/parser.ll"
 { BUFFER;  return PROJECT_ON_SYMBOLS; }
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 128 "../src/parser.ll"
+#line 128 "../src/parser/parser.ll"
 { BUFFER;  return JOIN; }
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 129 "../src/parser.ll"
+#line 129 "../src/parser/parser.ll"
 { BUFFER;  return JOIN; }
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 130 "../src/parser.ll"
+#line 130 "../src/parser/parser.ll"
 { BUFFER;  return JOIN; }
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 131 "../src/parser.ll"
+#line 131 "../src/parser/parser.ll"
 { BUFFER;  return DOMAIN; }
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 132 "../src/parser.ll"
+#line 132 "../src/parser/parser.ll"
 { BUFFER;  return RANGE; }
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 133 "../src/parser.ll"
+#line 133 "../src/parser/parser.ll"
 { BUFFER;  return FORALL; }
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 134 "../src/parser.ll"
+#line 134 "../src/parser/parser.ll"
 { BUFFER;  return FORALL; }
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 135 "../src/parser.ll"
+#line 135 "../src/parser/parser.ll"
 { BUFFER;  return EXISTS; }
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
-#line 136 "../src/parser.ll"
+#line 136 "../src/parser/parser.ll"
 { BUFFER;  return EXISTS; }
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
-#line 138 "../src/parser.ll"
+#line 138 "../src/parser/parser.ll"
 { BUFFER; return VENN; }
 	YY_BREAK
 case 51:
 YY_RULE_SETUP
-#line 139 "../src/parser.ll"
+#line 139 "../src/parser/parser.ll"
 { BUFFER; return CONVEX_REPRESENTATION; }
 	YY_BREAK
 case 52:
 YY_RULE_SETUP
-#line 140 "../src/parser.ll"
+#line 140 "../src/parser/parser.ll"
 { BUFFER; return CONVEX_COMBINATION; }
 	YY_BREAK
 case 53:
 YY_RULE_SETUP
-#line 141 "../src/parser.ll"
+#line 141 "../src/parser/parser.ll"
 { BUFFER; return POSITIVE_COMBINATION; }
 	YY_BREAK
 case 54:
 YY_RULE_SETUP
-#line 142 "../src/parser.ll"
+#line 142 "../src/parser/parser.ll"
 { BUFFER; return LINEAR_COMBINATION; }
 	YY_BREAK
 case 55:
 YY_RULE_SETUP
-#line 143 "../src/parser.ll"
+#line 143 "../src/parser/parser.ll"
 { BUFFER; return AFFINE_COMBINATION; }
 	YY_BREAK
 case 56:
 YY_RULE_SETUP
-#line 144 "../src/parser.ll"
+#line 144 "../src/parser/parser.ll"
 { /*deprecated*/ BUFFER; return RECT_HULL; }
 	YY_BREAK
 case 57:
 YY_RULE_SETUP
-#line 145 "../src/parser.ll"
+#line 145 "../src/parser/parser.ll"
 { BUFFER; return SIMPLE_HULL; }
 	YY_BREAK
 case 58:
 YY_RULE_SETUP
-#line 146 "../src/parser.ll"
+#line 146 "../src/parser/parser.ll"
 { BUFFER; return CONVEX_HULL; }
 	YY_BREAK
 case 59:
 YY_RULE_SETUP
-#line 147 "../src/parser.ll"
+#line 147 "../src/parser/parser.ll"
 { BUFFER; return DECOUPLED_CONVEX_HULL; }
 	YY_BREAK
 case 60:
 YY_RULE_SETUP
-#line 148 "../src/parser.ll"
+#line 148 "../src/parser/parser.ll"
 { BUFFER; return AFFINE_HULL; }
 	YY_BREAK
 case 61:
 YY_RULE_SETUP
-#line 149 "../src/parser.ll"
+#line 149 "../src/parser/parser.ll"
 { BUFFER; return CONIC_HULL; }
 	YY_BREAK
 case 62:
 YY_RULE_SETUP
-#line 150 "../src/parser.ll"
+#line 150 "../src/parser/parser.ll"
 { BUFFER; return LINEAR_HULL; }
 	YY_BREAK
 case 63:
 YY_RULE_SETUP
-#line 151 "../src/parser.ll"
+#line 151 "../src/parser/parser.ll"
 { /*deprecated*/ BUFFER; return PAIRWISE_CHECK; }
 	YY_BREAK
 case 64:
 YY_RULE_SETUP
-#line 152 "../src/parser.ll"
+#line 152 "../src/parser/parser.ll"
 { /*deprecated*/ BUFFER; return CONVEX_CHECK; }
 	YY_BREAK
 case 65:
 YY_RULE_SETUP
-#line 153 "../src/parser.ll"
+#line 153 "../src/parser/parser.ll"
 { /*deprecated*/ BUFFER; return QUICK_HULL; }
 	YY_BREAK
 case 66:
 YY_RULE_SETUP
-#line 154 "../src/parser.ll"
+#line 154 "../src/parser/parser.ll"
 { BUFFER; return HULL; }
 	YY_BREAK
 case 67:
 YY_RULE_SETUP
-#line 155 "../src/parser.ll"
+#line 155 "../src/parser/parser.ll"
 { BUFFER;  return FARKAS; }
 	YY_BREAK
 case 68:
 YY_RULE_SETUP
-#line 156 "../src/parser.ll"
+#line 156 "../src/parser/parser.ll"
 { BUFFER;  return DECOUPLED_FARKAS; }
 	YY_BREAK
 case 69:
 YY_RULE_SETUP
-#line 157 "../src/parser.ll"
+#line 157 "../src/parser/parser.ll"
 { BUFFER;  return DECOUPLED_FARKAS; }
 	YY_BREAK
 case 70:
 YY_RULE_SETUP
-#line 158 "../src/parser.ll"
+#line 158 "../src/parser/parser.ll"
 { BUFFER;  return DECOUPLED_FARKAS; }
 	YY_BREAK
 case 71:
 YY_RULE_SETUP
-#line 160 "../src/parser.ll"
+#line 160 "../src/parser/parser.ll"
 { BUFFER;  return MINIMIZE; }
 	YY_BREAK
 case 72:
 YY_RULE_SETUP
-#line 161 "../src/parser.ll"
+#line 161 "../src/parser/parser.ll"
 { BUFFER;  return MAXIMIZE; }
 	YY_BREAK
 case 73:
 YY_RULE_SETUP
-#line 162 "../src/parser.ll"
+#line 162 "../src/parser/parser.ll"
 { BUFFER;  return MINIMIZE_RANGE; }
 	YY_BREAK
 case 74:
 YY_RULE_SETUP
-#line 163 "../src/parser.ll"
+#line 163 "../src/parser/parser.ll"
 { BUFFER;  return MAXIMIZE_RANGE; }
 	YY_BREAK
 case 75:
 YY_RULE_SETUP
-#line 164 "../src/parser.ll"
+#line 164 "../src/parser/parser.ll"
 { BUFFER;  return MINIMIZE_RANGE; }
 	YY_BREAK
 case 76:
 YY_RULE_SETUP
-#line 165 "../src/parser.ll"
+#line 165 "../src/parser/parser.ll"
 { BUFFER;  return MAXIMIZE_RANGE; }
 	YY_BREAK
 case 77:
 YY_RULE_SETUP
-#line 166 "../src/parser.ll"
+#line 166 "../src/parser/parser.ll"
 { BUFFER;  return MINIMIZE_DOMAIN; }
 	YY_BREAK
 case 78:
 YY_RULE_SETUP
-#line 167 "../src/parser.ll"
+#line 167 "../src/parser/parser.ll"
 { BUFFER;  return MAXIMIZE_DOMAIN; }
 	YY_BREAK
 case 79:
 YY_RULE_SETUP
-#line 168 "../src/parser.ll"
+#line 168 "../src/parser/parser.ll"
 { BUFFER;  return MINIMIZE_DOMAIN; }
 	YY_BREAK
 case 80:
 YY_RULE_SETUP
-#line 169 "../src/parser.ll"
+#line 169 "../src/parser/parser.ll"
 { BUFFER;  return MAXIMIZE_DOMAIN; }
 	YY_BREAK
 case 81:
 YY_RULE_SETUP
-#line 170 "../src/parser.ll"
+#line 170 "../src/parser/parser.ll"
 { BUFFER;  return GIST; }
 	YY_BREAK
 case 82:
 YY_RULE_SETUP
-#line 171 "../src/parser.ll"
+#line 171 "../src/parser/parser.ll"
 { BUFFER;  return GIVEN; }
 	YY_BREAK
 case 83:
 YY_RULE_SETUP
-#line 172 "../src/parser.ll"
+#line 172 "../src/parser/parser.ll"
 { BUFFER;  return WITHIN; }
 	YY_BREAK
 case 84:
 YY_RULE_SETUP
-#line 173 "../src/parser.ll"
+#line 173 "../src/parser/parser.ll"
 { BUFFER;  return SUBSET; }
 	YY_BREAK
 case 85:
 YY_RULE_SETUP
-#line 174 "../src/parser.ll"
+#line 174 "../src/parser/parser.ll"
 { BUFFER;  return CODEGEN; }
 	YY_BREAK
 case 86:
 YY_RULE_SETUP
-#line 175 "../src/parser.ll"
+#line 175 "../src/parser/parser.ll"
 { BUFFER;  return MAKE_UPPER_BOUND; }
 	YY_BREAK
 case 87:
 YY_RULE_SETUP
-#line 176 "../src/parser.ll"
+#line 176 "../src/parser/parser.ll"
 { BUFFER;  return MAKE_LOWER_BOUND; }
 	YY_BREAK
 case 88:
 YY_RULE_SETUP
-#line 177 "../src/parser.ll"
+#line 177 "../src/parser/parser.ll"
 { BUFFER;  return SUPERSETOF;}
 	YY_BREAK
 case 89:
 YY_RULE_SETUP
-#line 178 "../src/parser.ll"
+#line 178 "../src/parser/parser.ll"
 { BUFFER;  return SUBSETOF;}
 	YY_BREAK
 case 90:
 YY_RULE_SETUP
-#line 179 "../src/parser.ll"
+#line 179 "../src/parser/parser.ll"
 { BUFFER;  return SYM_SAMPLE;}
 	YY_BREAK
 case 91:
 YY_RULE_SETUP
-#line 180 "../src/parser.ll"
+#line 180 "../src/parser/parser.ll"
 { BUFFER;  return SAMPLE;}
 	YY_BREAK
 case 92:
 YY_RULE_SETUP
-#line 181 "../src/parser.ll"
+#line 181 "../src/parser/parser.ll"
 { BUFFER;  return CARRIED_BY;}
 	YY_BREAK
 case 93:
 YY_RULE_SETUP
-#line 182 "../src/parser.ll"
+#line 182 "../src/parser/parser.ll"
 { BUFFER;  return REACHABLE_FROM; }
 	YY_BREAK
 case 94:
 YY_RULE_SETUP
-#line 183 "../src/parser.ll"
+#line 183 "../src/parser/parser.ll"
 { BUFFER;  return REACHABLE_OF; }
 	YY_BREAK
 case 95:
 YY_RULE_SETUP
-#line 184 "../src/parser.ll"
+#line 184 "../src/parser/parser.ll"
 { BUFFER;  return RESTRICT_DOMAIN; }
 	YY_BREAK
 case 96:
 YY_RULE_SETUP
-#line 185 "../src/parser.ll"
+#line 185 "../src/parser/parser.ll"
 { BUFFER;  return RESTRICT_DOMAIN; }
 	YY_BREAK
 case 97:
 YY_RULE_SETUP
-#line 186 "../src/parser.ll"
+#line 186 "../src/parser/parser.ll"
 { BUFFER;  return RESTRICT_DOMAIN; }
 	YY_BREAK
 case 98:
 YY_RULE_SETUP
-#line 187 "../src/parser.ll"
+#line 187 "../src/parser/parser.ll"
 { BUFFER;  return RESTRICT_RANGE; }
 	YY_BREAK
 case 99:
 YY_RULE_SETUP
-#line 188 "../src/parser.ll"
+#line 188 "../src/parser/parser.ll"
 { BUFFER;  return RESTRICT_RANGE; }
 	YY_BREAK
 case 100:
 YY_RULE_SETUP
-#line 189 "../src/parser.ll"
+#line 189 "../src/parser/parser.ll"
 { BUFFER;  return ASSERT_UNSAT; }
 	YY_BREAK
 case 101:
 YY_RULE_SETUP
-#line 190 "../src/parser.ll"
+#line 190 "../src/parser/parser.ll"
 { BUFFER;  return ASSERT_UNSAT; }
 	YY_BREAK
 case 102:
 YY_RULE_SETUP
-#line 192 "../src/parser.ll"
+#line 192 "../src/parser/parser.ll"
 { BUFFER; return RESTRICT_RANGE; }
 	YY_BREAK
 case 103:
 YY_RULE_SETUP
-#line 193 "../src/parser.ll"
+#line 193 "../src/parser/parser.ll"
 { BUFFER; return AND; }
 	YY_BREAK
 case 104:
 YY_RULE_SETUP
-#line 194 "../src/parser.ll"
+#line 194 "../src/parser/parser.ll"
 { BUFFER; return OR; }
 	YY_BREAK
 case 105:
 YY_RULE_SETUP
-#line 195 "../src/parser.ll"
+#line 195 "../src/parser/parser.ll"
 { BUFFER; return AND; }
 	YY_BREAK
 case 106:
 YY_RULE_SETUP
-#line 196 "../src/parser.ll"
+#line 196 "../src/parser/parser.ll"
 { BUFFER; return OR; }
 	YY_BREAK
 case 107:
 YY_RULE_SETUP
-#line 197 "../src/parser.ll"
+#line 197 "../src/parser/parser.ll"
 { BUFFER; return AND; }
 	YY_BREAK
 case 108:
 YY_RULE_SETUP
-#line 198 "../src/parser.ll"
+#line 198 "../src/parser/parser.ll"
 { BUFFER; return OR; }
 	YY_BREAK
 case 109:
 YY_RULE_SETUP
-#line 199 "../src/parser.ll"
+#line 199 "../src/parser/parser.ll"
 { BUFFER; return AND; }
 	YY_BREAK
 case 110:
 YY_RULE_SETUP
-#line 200 "../src/parser.ll"
+#line 200 "../src/parser/parser.ll"
 { BUFFER; return OR; }
 	YY_BREAK
 case 111:
 YY_RULE_SETUP
-#line 201 "../src/parser.ll"
+#line 201 "../src/parser/parser.ll"
 { BUFFER; return NOT; }
 	YY_BREAK
 case 112:
 YY_RULE_SETUP
-#line 202 "../src/parser.ll"
+#line 202 "../src/parser/parser.ll"
 { BUFFER; return NOT; }
 	YY_BREAK
 case 113:
 YY_RULE_SETUP
-#line 203 "../src/parser.ll"
+#line 203 "../src/parser/parser.ll"
 { BUFFER; return NOT; }
 	YY_BREAK
 case 114:
 YY_RULE_SETUP
-#line 204 "../src/parser.ll"
+#line 204 "../src/parser/parser.ll"
 { BUFFER; return IS_ASSIGNED; }
 	YY_BREAK
 case 115:
 YY_RULE_SETUP
-#line 205 "../src/parser.ll"
+#line 205 "../src/parser/parser.ll"
 { BUFFER; return GOES_TO; }
 	YY_BREAK
 case 116:
 YY_RULE_SETUP
-#line 206 "../src/parser.ll"
+#line 206 "../src/parser/parser.ll"
 { BUFFER; return IN; }
 	YY_BREAK
 case 117:
 YY_RULE_SETUP
-#line 207 "../src/parser.ll"
+#line 207 "../src/parser/parser.ll"
 { BUFFER; return GOES_TO; }
 	YY_BREAK
 case 118:
 YY_RULE_SETUP
-#line 208 "../src/parser.ll"
+#line 208 "../src/parser/parser.ll"
 { BUFFER; yylval.REL_OPERATOR = leq; return REL_OP; }
 	YY_BREAK
 case 119:
 YY_RULE_SETUP
-#line 209 "../src/parser.ll"
+#line 209 "../src/parser/parser.ll"
 { BUFFER; yylval.REL_OPERATOR = leq; return REL_OP; }
 	YY_BREAK
 case 120:
 YY_RULE_SETUP
-#line 210 "../src/parser.ll"
+#line 210 "../src/parser/parser.ll"
 { BUFFER; yylval.REL_OPERATOR = leq; return REL_OP; }
 	YY_BREAK
 case 121:
 YY_RULE_SETUP
-#line 211 "../src/parser.ll"
+#line 211 "../src/parser/parser.ll"
 { BUFFER; yylval.REL_OPERATOR = geq; return REL_OP; }
 	YY_BREAK
 case 122:
 YY_RULE_SETUP
-#line 212 "../src/parser.ll"
+#line 212 "../src/parser/parser.ll"
 { BUFFER; yylval.REL_OPERATOR = geq; return REL_OP; }
 	YY_BREAK
 case 123:
 YY_RULE_SETUP
-#line 213 "../src/parser.ll"
+#line 213 "../src/parser/parser.ll"
 { BUFFER; yylval.REL_OPERATOR = geq; return REL_OP; }
 	YY_BREAK
 case 124:
 YY_RULE_SETUP
-#line 214 "../src/parser.ll"
+#line 214 "../src/parser/parser.ll"
 { BUFFER; yylval.REL_OPERATOR = neq; return REL_OP; }
 	YY_BREAK
 case 125:
 YY_RULE_SETUP
-#line 215 "../src/parser.ll"
+#line 215 "../src/parser/parser.ll"
 { BUFFER; yylval.REL_OPERATOR = neq; return REL_OP; }
 	YY_BREAK
 case 126:
 YY_RULE_SETUP
-#line 216 "../src/parser.ll"
+#line 216 "../src/parser/parser.ll"
 { BUFFER; yylval.REL_OPERATOR = lt; return REL_OP; }
 	YY_BREAK
 case 127:
 YY_RULE_SETUP
-#line 217 "../src/parser.ll"
+#line 217 "../src/parser/parser.ll"
 { BUFFER; yylval.REL_OPERATOR = gt; return REL_OP; }
 	YY_BREAK
 case 128:
 YY_RULE_SETUP
-#line 218 "../src/parser.ll"
+#line 218 "../src/parser/parser.ll"
 { BUFFER; yylval.REL_OPERATOR = eq; return REL_OP; }
 	YY_BREAK
 case 129:
 YY_RULE_SETUP
-#line 219 "../src/parser.ll"
+#line 219 "../src/parser/parser.ll"
 { BUFFER; yylval.REL_OPERATOR = eq; return REL_OP; }
 	YY_BREAK
 case 130:
 YY_RULE_SETUP
-#line 221 "../src/parser.ll"
+#line 221 "../src/parser/parser.ll"
 {
   BUFFER;
   yylval.VAR_NAME = new char[yyleng+1];
@@ -2823,7 +2810,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 131:
 YY_RULE_SETUP
-#line 227 "../src/parser.ll"
+#line 227 "../src/parser/parser.ll"
 {
   BUFFER;
   yylval.VAR_NAME = new char[yyleng+1];
@@ -2835,7 +2822,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 132:
 YY_RULE_SETUP
-#line 235 "../src/parser.ll"
+#line 235 "../src/parser/parser.ll"
 {
   BUFFER;
   yylval.VAR_NAME = new char[yyleng+1];
@@ -2849,7 +2836,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 133:
 YY_RULE_SETUP
-#line 245 "../src/parser.ll"
+#line 245 "../src/parser/parser.ll"
 {
   BUFFER;
   yylval.VAR_NAME = new char[yyleng+1];
@@ -2862,7 +2849,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 134:
 YY_RULE_SETUP
-#line 254 "../src/parser.ll"
+#line 254 "../src/parser/parser.ll"
 {
   BUFFER;  
   yylval.VAR_NAME = new char[yyleng+1];
@@ -2872,7 +2859,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 135:
 YY_RULE_SETUP
-#line 260 "../src/parser.ll"
+#line 260 "../src/parser/parser.ll"
 {
   BUFFER;
   yylval.VAR_NAME = new char[yyleng+1];
@@ -2884,7 +2871,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 136:
 YY_RULE_SETUP
-#line 268 "../src/parser.ll"
+#line 268 "../src/parser/parser.ll"
 {
   BUFFER;
   yylval.VAR_NAME = new char[yyleng+1];
@@ -2898,7 +2885,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 137:
 YY_RULE_SETUP
-#line 278 "../src/parser.ll"
+#line 278 "../src/parser/parser.ll"
 {
   BUFFER;
   yylval.VAR_NAME = new char[yyleng+1];
@@ -2911,7 +2898,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 138:
 YY_RULE_SETUP
-#line 288 "../src/parser.ll"
+#line 288 "../src/parser/parser.ll"
 { BUFFER;
   if (need_coef) {
     sscanf(yytext, coef_fmt, &yylval.COEF_VALUE);
@@ -2926,7 +2913,7 @@ YY_RULE_SETUP
 case 139:
 /* rule 139 can match eol */
 YY_RULE_SETUP
-#line 299 "../src/parser.ll"
+#line 299 "../src/parser/parser.ll"
 { BUFFER;
   yytext[yyleng-1]='\0';
   yylval.STRING_VALUE = new std::string(yytext+1);
@@ -2937,7 +2924,7 @@ case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(LATEX):
 case YY_STATE_EOF(INCLUDE):
 case YY_STATE_EOF(COMMENT):
-#line 306 "../src/parser.ll"
+#line 306 "../src/parser/parser.ll"
 {
   mylexer.yypop_buffer_state();
   if (!YY_CURRENT_BUFFER) {
@@ -2948,15 +2935,15 @@ case YY_STATE_EOF(COMMENT):
 	YY_BREAK
 case 140:
 YY_RULE_SETUP
-#line 314 "../src/parser.ll"
+#line 314 "../src/parser/parser.ll"
 { BUFFER; return yytext[0]; }
 	YY_BREAK
 case 141:
 YY_RULE_SETUP
-#line 317 "../src/parser.ll"
+#line 317 "../src/parser/parser.ll"
 ECHO;
 	YY_BREAK
-#line 2960 "lex.yy.cc"
+#line 2947 "lex.yy.cc"
 
 	case YY_END_OF_BUFFER:
 		{
@@ -3229,21 +3216,21 @@ int yyFlexLexer::yy_get_next_buffer()
 
 	else
 		{
-			int num_to_read =
+			yy_size_t num_to_read =
 			YY_CURRENT_BUFFER_LVALUE->yy_buf_size - number_to_move - 1;
 
 		while ( num_to_read <= 0 )
 			{ /* Not enough room in the buffer - grow it. */
 
 			/* just a shorter name for the current buffer */
-			YY_BUFFER_STATE b = YY_CURRENT_BUFFER;
+			YY_BUFFER_STATE b = YY_CURRENT_BUFFER_LVALUE;
 
 			int yy_c_buf_p_offset =
 				(int) ((yy_c_buf_p) - b->yy_ch_buf);
 
 			if ( b->yy_is_our_buffer )
 				{
-				int new_size = b->yy_buf_size * 2;
+				yy_size_t new_size = b->yy_buf_size * 2;
 
 				if ( new_size <= 0 )
 					b->yy_buf_size += b->yy_buf_size / 8;
@@ -3274,7 +3261,7 @@ int yyFlexLexer::yy_get_next_buffer()
 
 		/* Read in more data. */
 		YY_INPUT( (&YY_CURRENT_BUFFER_LVALUE->yy_ch_buf[number_to_move]),
-			(yy_n_chars), (size_t) num_to_read );
+			(yy_n_chars), num_to_read );
 
 		YY_CURRENT_BUFFER_LVALUE->yy_n_chars = (yy_n_chars);
 		}
@@ -3369,7 +3356,7 @@ int yyFlexLexer::yy_get_next_buffer()
 	yy_current_state = yy_nxt[yy_base[yy_current_state] + (unsigned int) yy_c];
 	yy_is_jam = (yy_current_state == 1995);
 
-	return yy_is_jam ? 0 : yy_current_state;
+		return yy_is_jam ? 0 : yy_current_state;
 }
 
     void yyFlexLexer::yyunput( int c, register char* yy_bp)
@@ -3384,7 +3371,7 @@ int yyFlexLexer::yy_get_next_buffer()
 	if ( yy_cp < YY_CURRENT_BUFFER_LVALUE->yy_ch_buf + 2 )
 		{ /* need to shift things up to make room */
 		/* +2 for EOB chars. */
-		register int number_to_move = (yy_n_chars) + 2;
+		register yy_size_t number_to_move = (yy_n_chars) + 2;
 		register char *dest = &YY_CURRENT_BUFFER_LVALUE->yy_ch_buf[
 					YY_CURRENT_BUFFER_LVALUE->yy_buf_size + 2];
 		register char *source =
@@ -3431,7 +3418,7 @@ int yyFlexLexer::yy_get_next_buffer()
 
 		else
 			{ /* need more input */
-			int offset = (yy_c_buf_p) - (yytext_ptr);
+			yy_size_t offset = (yy_c_buf_p) - (yytext_ptr);
 			++(yy_c_buf_p);
 
 			switch ( yy_get_next_buffer(  ) )
@@ -3595,8 +3582,6 @@ int yyFlexLexer::yy_get_next_buffer()
 	yyfree((void *) b  );
 }
 
-extern "C" int isatty (int );
-
 /* Initializes or reinitializes a buffer.
  * This function is sometimes called more than once on the same buffer,
  * such as during a yyrestart() or at EOF.
@@ -3708,7 +3693,7 @@ void yyFlexLexer::yypop_buffer_state (void)
  */
 void yyFlexLexer::yyensure_buffer_stack(void)
 {
-	int num_to_alloc;
+	yy_size_t num_to_alloc;
     
 	if (!(yy_buffer_stack)) {
 
@@ -3863,7 +3848,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 317 "../src/parser.ll"
+#line 317 "../src/parser/parser.ll"
 
 
 

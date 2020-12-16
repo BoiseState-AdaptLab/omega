@@ -6,16 +6,20 @@ all: $(EXEC_TARGET)
 clean: clean_self
 veryclean: veryclean_self
 
-SRCS := ../src/AST.cc ../src/myflex.cc
+SRCS := ../src/calc.cc
 OBJS := $(SRCS:../src/%.cc=%.o)
 
-YACC_SRCS := lex.yy.cc parser.tab.cc
-YACC_OBJS := $(YACC_SRCS:.cc=.o)
 
-depend: $(YACC_SRCS) depend_self
 
-SRCS := $(SRCS) $(YACC_SRCS)
-OBJS := $(OBJS) $(YACC_OBJS)
+#YACC_SRCS := lex.yy.cc parser.tab.cc
+#YACC_OBJS := $(YACC_SRCS:.cc=.o)
+
+#depend: $(YACC_SRCS) depend_self
+
+depend: depend_self
+
+SRCS := $(SRCS) 
+OBJS := $(OBJS)
 
 BASEDIR=../..
 include $(BASEDIR)/Makefile.config
@@ -34,17 +38,11 @@ INCL_PATH := -I. $(INCL_PATH) -I../../omega_lib/include -I../../code_gen/include
 
 include $(BASEDIR)/Makefile.rules
 
-# lex/yacc related
-.PHONY: parser.tab.o
-
-lex.yy.cc: ../src/parser.ll
-	flex++ $<
-
-parser.tab.hh parser.tab.cc: ../src/parser.yy
-	bison -t -d $<
-
-parser.tab.o: parser.tab.cc
+calc.o: ../src/calc.cc
 	$(CC) $(CFLAGS) -DOMEGA_BUILD_DATE="\"$(OMEGA_BUILD_DATE)\"" $(INCL_PATH) -c $<
+
+$(EXEC_TARGET):calc.o
+	$(CC) $(LIB_PATH) $< -Wl,--start-group $(LIBS) -Wl,--end-group -o $@
 
 ifeq ($(shell test -f Makefile.deps && echo "true"), true)
 include Makefile.deps

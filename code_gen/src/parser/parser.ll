@@ -19,10 +19,10 @@
 #include <sstream>
 #include <iostream>
 #include <fstream>
-#include <omega_calc/AST.h>
+#include <parser/AST.h>
 #include <basic/Dynamic_Array.h>
 #include "parser.tab.hh"
-#include <omega_calc/myflex.h>
+#include <parser/myflex.h>
 
 myFlexLexer mylexer;
 bool is_interactive;

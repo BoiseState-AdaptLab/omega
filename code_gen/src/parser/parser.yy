@@ -16,7 +16,7 @@
 
 #include <basic/Dynamic_Array.h>
 #include <basic/Iterator.h>
-#include <omega_calc/AST.h>
+#include <parser/AST.h>
 #include <omega/hull.h>
 #include <omega/closure.h>
 #include <omega/reach.h>
@@ -25,7 +25,7 @@
 #include <fstream>
 #include <sstream>
 #include "parser.tab.hh"
-#include <omega_calc/myflex.h>
+#include <parser/myflex.h>
 
 #if defined __USE_POSIX
 #include <unistd.h>
@@ -54,7 +54,7 @@ namespace {
 namespace omega{
   Relation * relation_result = NULL; 
 }
-
+Relation * ParseRelation(std::string relationString);
 std::map<std::string, Relation *> relationMap;
 int argCount = 0;
 int tuplePos = 0;
@@ -1631,13 +1631,14 @@ void yyerror(const std::string &s) {
  
 Relation * ParseRelation(std::string relationString){
   std::istringstream iss(relationString);
-  yy_buffer_state *bs = mylexer.yy_create_buffer(iss, 8092);
+  yy_buffer_state *bs = 
+	mylexer.yy_create_buffer(&iss, 8092);
   mylexer.yypush_buffer_state(bs);
-  relation_result = NULL;
+  omega::relation_result = NULL;
   yyparse();
   if(relation_result==NULL)
     return NULL;
-  return relation_result;
+  return omega::relation_result;
        
  
 }
