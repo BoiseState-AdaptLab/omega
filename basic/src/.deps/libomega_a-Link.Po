@@ -1,0 +1,15 @@
+../../basic/src/libomega_a-Link.o: ../../basic/src/Link.cc \
+ /usr/include/stdc-predef.h ../../basic/include/basic/Link.h \
+ ../../basic/include/basic/Iterator.h \
+ ../../basic/include/basic/Collection.h \
+ /cm/local/apps/gcc/7.2.0/lib/gcc/x86_64-pc-linux-gnu/7.2.0/include/stddef.h
+
+/usr/include/stdc-predef.h:
+
+../../basic/include/basic/Link.h:
+
+../../basic/include/basic/Iterator.h:
+
+../../basic/include/basic/Collection.h:
+
+/cm/local/apps/gcc/7.2.0/lib/gcc/x86_64-pc-linux-gnu/7.2.0/include/stddef.h:

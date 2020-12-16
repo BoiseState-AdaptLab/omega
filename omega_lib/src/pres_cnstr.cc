@@ -20,6 +20,14 @@ bool Constraint_Handle::is_const(Variable_ID v) {
   return is_const;
 }
 
+bool Constraint_Handle::is_const_except_for_global(Variable_ID v){
+  bool is_const=true;
+  for(Constr_Vars_Iter cvi(*this, false); cvi && is_const; cvi++)
+	if((*cvi).var->kind() != Global_Var)
+      is_const = ((*cvi).coef == 0 || ((*cvi).var == v && (*cvi).coef !=0));
+  return is_const;
+}
+
 bool EQ_Handle::operator==(const Constraint_Handle &that) {
   Constraint_Handle &e1=*this;
   const Constraint_Handle &e2=that;

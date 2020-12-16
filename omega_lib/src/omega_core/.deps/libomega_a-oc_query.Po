@@ -1,0 +1,436 @@
+../src/omega_core/libomega_a-oc_query.o: ../src/omega_core/oc_query.cc \
+ /usr/include/stdc-predef.h ../include/omega/omega_core/oc_i.h \
+ ../../basic/include/basic/util.h /usr/include/stdio.h \
+ /usr/include/features.h /usr/include/sys/cdefs.h \
+ /usr/include/bits/wordsize.h /usr/include/gnu/stubs.h \
+ /usr/include/gnu/stubs-64.h \
+ /cm/local/apps/gcc/7.2.0/lib/gcc/x86_64-pc-linux-gnu/7.2.0/include/stddef.h \
+ /usr/include/bits/types.h /usr/include/bits/typesizes.h \
+ /usr/include/libio.h /usr/include/_G_config.h /usr/include/wchar.h \
+ /cm/local/apps/gcc/7.2.0/lib/gcc/x86_64-pc-linux-gnu/7.2.0/include/stdarg.h \
+ /usr/include/bits/stdio_lim.h /usr/include/bits/sys_errlist.h \
+ /usr/include/bits/stdio.h \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/stdlib.h \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/cstdlib \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/x86_64-pc-linux-gnu/bits/c++config.h \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/x86_64-pc-linux-gnu/bits/os_defines.h \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/x86_64-pc-linux-gnu/bits/cpu_defines.h \
+ /usr/include/stdlib.h /usr/include/bits/waitflags.h \
+ /usr/include/bits/waitstatus.h /usr/include/endian.h \
+ /usr/include/bits/endian.h /usr/include/bits/byteswap.h \
+ /usr/include/bits/byteswap-16.h /usr/include/xlocale.h \
+ /usr/include/sys/types.h /usr/include/time.h /usr/include/sys/select.h \
+ /usr/include/bits/select.h /usr/include/bits/sigset.h \
+ /usr/include/bits/time.h /usr/include/sys/sysmacros.h \
+ /usr/include/bits/pthreadtypes.h /usr/include/alloca.h \
+ /usr/include/bits/stdlib-float.h \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/std_abs.h \
+ /usr/include/assert.h /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/string \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/stringfwd.h \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/memoryfwd.h \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/char_traits.h \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/stl_algobase.h \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/functexcept.h \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/exception_defines.h \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/cpp_type_traits.h \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/ext/type_traits.h \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/ext/numeric_traits.h \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/stl_pair.h \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/move.h \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/concept_check.h \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/type_traits \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/stl_iterator_base_types.h \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/stl_iterator_base_funcs.h \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/debug/assertions.h \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/stl_iterator.h \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/ptr_traits.h \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/debug/debug.h \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/predefined_ops.h \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/postypes.h \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/cwchar \
+ /usr/include/bits/wchar.h \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/cstdint \
+ /cm/local/apps/gcc/7.2.0/lib/gcc/x86_64-pc-linux-gnu/7.2.0/include/stdint.h \
+ /usr/include/stdint.h \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/allocator.h \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/x86_64-pc-linux-gnu/bits/c++allocator.h \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/ext/new_allocator.h \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/new \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/exception \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/exception.h \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/exception_ptr.h \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/cxxabi_init_exception.h \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/typeinfo \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/hash_bytes.h \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/nested_exception.h \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/localefwd.h \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/x86_64-pc-linux-gnu/bits/c++locale.h \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/clocale /usr/include/locale.h \
+ /usr/include/bits/locale.h \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/iosfwd \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/cctype /usr/include/ctype.h \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/ostream_insert.h \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/cxxabi_forced.h \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/stl_function.h \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/backward/binders.h \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/range_access.h \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/initializer_list \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/basic_string.h \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/ext/atomicity.h \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/x86_64-pc-linux-gnu/bits/gthr.h \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/x86_64-pc-linux-gnu/bits/gthr-default.h \
+ /usr/include/pthread.h /usr/include/sched.h /usr/include/bits/sched.h \
+ /usr/include/bits/timex.h /usr/include/bits/setjmp.h \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/x86_64-pc-linux-gnu/bits/atomic_word.h \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/ext/alloc_traits.h \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/alloc_traits.h \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/ext/string_conversions.h \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/cstdio \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/cerrno /usr/include/errno.h \
+ /usr/include/bits/errno.h /usr/include/linux/errno.h \
+ /usr/include/asm/errno.h /usr/include/asm-generic/errno.h \
+ /usr/include/asm-generic/errno-base.h \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/functional_hash.h \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/basic_string.tcc \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/sstream \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/istream \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/ios \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/ios_base.h \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/locale_classes.h \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/locale_classes.tcc \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/system_error \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/x86_64-pc-linux-gnu/bits/error_constants.h \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/stdexcept \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/streambuf \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/streambuf.tcc \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/basic_ios.h \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/locale_facets.h \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/cwctype /usr/include/wctype.h \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/x86_64-pc-linux-gnu/bits/ctype_base.h \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/streambuf_iterator.h \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/x86_64-pc-linux-gnu/bits/ctype_inline.h \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/locale_facets.tcc \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/basic_ios.tcc \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/ostream \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/ostream.tcc \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/istream.tcc \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/sstream.tcc \
+ ../include/omega/omega_core/oc.h ../include/omega/omega_core/debugging.h \
+ ../../basic/include/basic/Tuple.h ../../basic/include/basic/Collection.h \
+ ../../basic/include/basic/Iterator.h ../../basic/include/basic/Tuple.c \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/vector \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/stl_construct.h \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/stl_uninitialized.h \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/stl_vector.h \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/stl_bvector.h \
+ /cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/vector.tcc
+
+/usr/include/stdc-predef.h:
+
+../include/omega/omega_core/oc_i.h:
+
+../../basic/include/basic/util.h:
+
+/usr/include/stdio.h:
+
+/usr/include/features.h:
+
+/usr/include/sys/cdefs.h:
+
+/usr/include/bits/wordsize.h:
+
+/usr/include/gnu/stubs.h:
+
+/usr/include/gnu/stubs-64.h:
+
+/cm/local/apps/gcc/7.2.0/lib/gcc/x86_64-pc-linux-gnu/7.2.0/include/stddef.h:
+
+/usr/include/bits/types.h:
+
+/usr/include/bits/typesizes.h:
+
+/usr/include/libio.h:
+
+/usr/include/_G_config.h:
+
+/usr/include/wchar.h:
+
+/cm/local/apps/gcc/7.2.0/lib/gcc/x86_64-pc-linux-gnu/7.2.0/include/stdarg.h:
+
+/usr/include/bits/stdio_lim.h:
+
+/usr/include/bits/sys_errlist.h:
+
+/usr/include/bits/stdio.h:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/stdlib.h:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/cstdlib:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/x86_64-pc-linux-gnu/bits/c++config.h:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/x86_64-pc-linux-gnu/bits/os_defines.h:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/x86_64-pc-linux-gnu/bits/cpu_defines.h:
+
+/usr/include/stdlib.h:
+
+/usr/include/bits/waitflags.h:
+
+/usr/include/bits/waitstatus.h:
+
+/usr/include/endian.h:
+
+/usr/include/bits/endian.h:
+
+/usr/include/bits/byteswap.h:
+
+/usr/include/bits/byteswap-16.h:
+
+/usr/include/xlocale.h:
+
+/usr/include/sys/types.h:
+
+/usr/include/time.h:
+
+/usr/include/sys/select.h:
+
+/usr/include/bits/select.h:
+
+/usr/include/bits/sigset.h:
+
+/usr/include/bits/time.h:
+
+/usr/include/sys/sysmacros.h:
+
+/usr/include/bits/pthreadtypes.h:
+
+/usr/include/alloca.h:
+
+/usr/include/bits/stdlib-float.h:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/std_abs.h:
+
+/usr/include/assert.h:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/string:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/stringfwd.h:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/memoryfwd.h:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/char_traits.h:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/stl_algobase.h:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/functexcept.h:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/exception_defines.h:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/cpp_type_traits.h:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/ext/type_traits.h:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/ext/numeric_traits.h:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/stl_pair.h:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/move.h:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/concept_check.h:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/type_traits:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/stl_iterator_base_types.h:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/stl_iterator_base_funcs.h:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/debug/assertions.h:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/stl_iterator.h:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/ptr_traits.h:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/debug/debug.h:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/predefined_ops.h:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/postypes.h:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/cwchar:
+
+/usr/include/bits/wchar.h:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/cstdint:
+
+/cm/local/apps/gcc/7.2.0/lib/gcc/x86_64-pc-linux-gnu/7.2.0/include/stdint.h:
+
+/usr/include/stdint.h:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/allocator.h:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/x86_64-pc-linux-gnu/bits/c++allocator.h:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/ext/new_allocator.h:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/new:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/exception:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/exception.h:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/exception_ptr.h:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/cxxabi_init_exception.h:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/typeinfo:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/hash_bytes.h:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/nested_exception.h:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/localefwd.h:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/x86_64-pc-linux-gnu/bits/c++locale.h:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/clocale:
+
+/usr/include/locale.h:
+
+/usr/include/bits/locale.h:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/iosfwd:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/cctype:
+
+/usr/include/ctype.h:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/ostream_insert.h:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/cxxabi_forced.h:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/stl_function.h:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/backward/binders.h:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/range_access.h:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/initializer_list:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/basic_string.h:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/ext/atomicity.h:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/x86_64-pc-linux-gnu/bits/gthr.h:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/x86_64-pc-linux-gnu/bits/gthr-default.h:
+
+/usr/include/pthread.h:
+
+/usr/include/sched.h:
+
+/usr/include/bits/sched.h:
+
+/usr/include/bits/timex.h:
+
+/usr/include/bits/setjmp.h:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/x86_64-pc-linux-gnu/bits/atomic_word.h:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/ext/alloc_traits.h:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/alloc_traits.h:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/ext/string_conversions.h:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/cstdio:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/cerrno:
+
+/usr/include/errno.h:
+
+/usr/include/bits/errno.h:
+
+/usr/include/linux/errno.h:
+
+/usr/include/asm/errno.h:
+
+/usr/include/asm-generic/errno.h:
+
+/usr/include/asm-generic/errno-base.h:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/functional_hash.h:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/basic_string.tcc:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/sstream:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/istream:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/ios:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/ios_base.h:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/locale_classes.h:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/locale_classes.tcc:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/system_error:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/x86_64-pc-linux-gnu/bits/error_constants.h:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/stdexcept:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/streambuf:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/streambuf.tcc:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/basic_ios.h:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/locale_facets.h:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/cwctype:
+
+/usr/include/wctype.h:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/x86_64-pc-linux-gnu/bits/ctype_base.h:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/streambuf_iterator.h:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/x86_64-pc-linux-gnu/bits/ctype_inline.h:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/locale_facets.tcc:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/basic_ios.tcc:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/ostream:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/ostream.tcc:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/istream.tcc:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/sstream.tcc:
+
+../include/omega/omega_core/oc.h:
+
+../include/omega/omega_core/debugging.h:
+
+../../basic/include/basic/Tuple.h:
+
+../../basic/include/basic/Collection.h:
+
+../../basic/include/basic/Iterator.h:
+
+../../basic/include/basic/Tuple.c:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/vector:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/stl_construct.h:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/stl_uninitialized.h:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/stl_vector.h:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/stl_bvector.h:
+
+/cm/local/apps/gcc/7.2.0/include/c++/7.2.0/bits/vector.tcc:

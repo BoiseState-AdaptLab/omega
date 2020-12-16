@@ -1,3 +1,5 @@
+   without_simplify;
+   
    R3 := {[x] -> [y] : (y = x) | (y = 3x)};
 
    Rf := {[x] -> [y] : x <= y <= 3x};

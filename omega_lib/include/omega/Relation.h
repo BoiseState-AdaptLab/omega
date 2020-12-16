@@ -8,16 +8,32 @@
 
 namespace omega {
 
-//
-// Relation representative.
-// Body and representative are separated to do reference counting.
-//
+/**
+ * @brief Relation representative.
+ *
+ * Body and representative are separated to do reference counting to optimize copy of formulas. This owns a Rel_Body
+ * that contains the actual formula. Contains a lot of pipe that calls the corresponding functions in Rel_Body.
+ *
+ * Could be a "set" or "relation",
+ */
 class Relation {
 public:
+  //! create a null relation
   Relation();
 
+  /**
+   * @brief create a new relation with n_input variables and n_output variables
+   *
+   * Doesn't contain any Presburger formula can't be used just yet.
+   * A set is a relation without output variables.
+   */
   Relation(int n_input, int n_output = 0);
   Relation(const Relation &r);
+  /**
+   * @brief Create a relation by copying a conjunction of constraints c from some other relation r.
+   *
+   * Conjuncts are created when a relation is simplified into disjunctive normal form.
+   */
   Relation(const Relation &r, Conjunct *c);
   Relation &operator=(const Relation &r);
   Relation(Rel_Body &r, int foo);
@@ -68,19 +84,34 @@ public:
   { return rel_body->global_decls(); }
   inline int max_ufs_arity() const
   { return rel_body->max_ufs_arity(); }
+  /**
+   * @brief Maximum arity of uninterpreted function over input tuple
+   */
   inline int max_ufs_arity_of_in() const
   { return rel_body->max_ufs_arity_of_in(); }
+  /**
+   * @brief Maximum arity of uninterpreted function over set tuple
+   */
   inline int max_ufs_arity_of_set() const
   { return rel_body->max_ufs_arity_of_set(); }
+  /**
+   * @brief Maximum arity of uninterpreted function over output tuple
+   */
   inline int max_ufs_arity_of_out() const
   { return rel_body->max_ufs_arity_of_out(); }
+  /**
+   * @brief Maximum arity of uninterpreted function over input&output tuple
+   */
   inline int max_shared_ufs_arity() const
   { return rel_body->max_shared_ufs_arity(); }
 
+  //! Return the n-th input variable, illegal for set
   inline Variable_ID input_var(int nth)
   { return rel_body->input_var(nth); }
+  //! Return the n-th output variable, illegal for set
   inline Variable_ID output_var(int nth)
   { return rel_body->output_var(nth); }
+  //! Return the n-th set variable, illegal for relation
   inline Variable_ID set_var(int nth)
   { return rel_body->set_var(nth); }
   inline bool has_local(const Global_Var_ID G)
@@ -89,8 +120,19 @@ public:
   { return  rel_body->has_local(G, of); } 
   inline Variable_ID get_local(const Variable_ID v)
   { return split()->get_local(v); }
+  /**
+   * @brief Find or declare global variable.
+   *
+   * If the VarID does not exist, it is created. Otherwise it's returned.
+   * Note that this version now works only for 0-ary functions.
+   */
   inline Variable_ID get_local(const Global_Var_ID G)
   { return split()->get_local(G); }
+  /**
+   * @brief Find or declare global variable.
+   *
+   * If the VarID does not exist, it is created. Otherwise it's returned.
+   */
   inline Variable_ID get_local(const Global_Var_ID G, Argument_Tuple of)
   { return split()->get_local(G, of); }
 
@@ -104,12 +146,26 @@ public:
 
   inline F_And      *and_with_and()
   { return split()->and_with_and(); }
+  /**
+   * Create a top-level EQ constraint that is and-ed with the formula in this relation.
+   */
   inline EQ_Handle   and_with_EQ()
   { return split()->and_with_EQ(); }
+  /**
+   * Set the new EQ constaint's coefficient to be the same as c.
+   *
+   * Can be used to convert GEQ to EQ.
+   */
   inline EQ_Handle   and_with_EQ(const Constraint_Handle &c)
   { return split()->and_with_EQ(c); }
+  /**
+   * Create a top-level GEQ constraint that is and-ed with the formula in this relation.
+   */
   inline GEQ_Handle  and_with_GEQ()
   { return split()->and_with_GEQ(); }
+  /**
+   * Set the new GEQ constaint's coefficient to be the same as c.
+   */
   inline GEQ_Handle  and_with_GEQ(const Constraint_Handle &c)
   { return split()->and_with_GEQ(c); }
 
@@ -119,7 +175,15 @@ public:
   { rel_body->print(output_file); }
   inline void print_with_subs()
   { rel_body->print_with_subs(); }
-  inline void print_with_subs(FILE *output_file, bool printSym=false, 
+  /**
+   * @brief Print the relation in an easy-to-understand format
+   *
+   * At each input variable and output variable, it will try to print the variable as an affine function of the
+   * variables to the left.
+   *
+   * @param printSym Whether the set of symbolic variables used in the relation are printed.
+   */
+  inline void print_with_subs(FILE *output_file, bool printSym=false,
                               bool newline=true)
   { rel_body->print_with_subs(output_file, printSym, newline); }
   inline std::string print_with_subs_to_string(bool printSym=false, 
@@ -131,51 +195,106 @@ public:
   { return rel_body->print_outputs_with_subs_to_string(i); }
   inline void prefix_print()
   { rel_body->prefix_print(); }
+  /**
+   * @brief Debug print the structure in prefix format
+   *
+   * Used primarily to debug programs use this library. Designed to make clear the structure of the formula tree and
+   * show the details of the variables used.
+   */
   inline void prefix_print(FILE *output_file, int debug = 1)
   { rel_body->prefix_print(output_file, debug); }
+  /**
+   * @brief Print the formula
+   *
+   * This allows a printed representation of the relation's formula, without the input and output variables.
+   */
   inline std::string print_formula_to_string() {
     return rel_body->print_formula_to_string();
   }
   void dimensions(int & ndim_all, int &ndim_domain);
 
+  /**
+   * Return True if the relation's lower-bound is satisfiable. Treating UNKNOWN constraints as False.
+   */
   inline bool is_lower_bound_satisfiable()
   { return rel_body->is_lower_bound_satisfiable(); }
+  /**
+   * Return True if the relation's upper-bound is satisfiable. Treating UNKNOWN constraints as True.
+   */
   inline bool is_upper_bound_satisfiable()
   { return rel_body->is_upper_bound_satisfiable(); }
+  /**
+   * @brief If both bounds are satisfiable or not. ABORT if only one is.
+   *
+   * Included for compatibility with older releases.
+   */
   inline bool is_satisfiable()
   { return rel_body->is_satisfiable(); }
 
   inline bool is_tautology()
   { return rel_body->is_obvious_tautology(); }  // for compatibility
+  /**
+   * @brief if formula evaluates to a single conjunction with no constraints
+   */
   inline bool is_obvious_tautology()
   { return rel_body->is_obvious_tautology(); }
+  /**
+   * @brief if the relation's formula is a tautology
+   */
   inline bool is_definite_tautology()
   { return rel_body->is_definite_tautology(); }
 
-  // return x s.t. forall conjuncts c, c has >= x leading 0s
-  // for set, return -1 (pass this in, in case there are no conjuncts
+  /**
+   * @return the number of conjuncts
+   */
   inline int    number_of_conjuncts()
   { return rel_body->query_DNF()->length(); }
 
-  // return x s.t. forall conjuncts c, c has >= x leading 0s
-  // for set, return -1 (pass this in, in case there are no conjuncts
+  /**
+   * @return x s.t. forall conjuncts c, c has >= x leading 0s(in=out)
+   * for set or there are no conjuncts return -1
+   */
   inline int    query_guaranteed_leading_0s()
   { return rel_body->query_DNF()->query_guaranteed_leading_0s(this->is_set() ? -1 : 0); }
 
-  // return x s.t. forall conjuncts c, c has <= x leading 0s
-  // if no conjuncts return min of input and output tuple sizes, or -1 if relation is a set
+  /**
+   * @return x s.t. forall conjuncts c, c has <= x leading 0s(in=out)
+   * if no conjuncts return min of input and output tuple sizes, or -1 if relation is a set
+   */
   inline int    query_possible_leading_0s()
   { return rel_body->query_DNF()->query_possible_leading_0s(
       this->is_set()? -1 : min(n_inp(),n_out())); }
 
-  // return +-1 according to sign of leading dir, or 0 if we don't know
+  /**
+   * @return +-1 according to sign of leading dir, or 0 if we don't know
+   */
   inline int    query_leading_dir()
   { return rel_body->query_DNF()->query_leading_dir(); }
 
+  //! Request this to be simplified to DNF
   inline DNF*    query_DNF()
   { return rel_body->query_DNF(); }
+  /**
+   * @brief Request this to be simplified to DNF
+   *
+   * rdt_conjs and rdt_constrs specifies the level of effort to eliminate redundant informations
+   *
+   * value | rdt_conjs                                 | rdt_constrs
+   * ----- | ----------------------------------------- | ----------------------------------------------
+   * 0     | Nothing extra                             | Nothing extra
+   * 1     | Simple check                              | Remove redundant ones by any other two
+   * 2     | Exact test(if one is subset of any other) | Exact test
+   * 4     |                                           | Also perform simplification on the constraints
+   */
   inline DNF*    query_DNF(int rdt_conjs, int rdt_constrs)
   { return rel_body->query_DNF(rdt_conjs, rdt_constrs); }
+  /**
+   * @brief Simplify a given relation.
+   *
+   * Store the resulting DNF in the relation, clean out the formula.
+   *
+   * Called by query_DNF.
+   */
   inline void    simplify(int rdt_conjs = 0, int rdt_constrs = 0)
   { rel_body->simplify(rdt_conjs, rdt_constrs); }
   inline bool is_simplified()
@@ -189,7 +308,14 @@ public:
   inline bool has_single_conjunct()
   { return rel_body->has_single_conjunct(); }
 
-
+  /**
+   * @brief Determining the bounds of the difference of two variables
+   *
+   * This is used to calculate leading zeros
+   * @param lowerBound[out] negInfinity if not bounded below
+   * @param upperBound[out] posInfinity if not bounded above
+   * @param guaranteed[out] True if the bounds is guaranteed to be tight
+   */
   void query_difference(Variable_ID v1, Variable_ID v2, coef_t &lowerBound, coef_t &upperBound, bool &guaranteed) {
     rel_body->query_difference(v1, v2, lowerBound, upperBound, guaranteed);
   }
@@ -229,10 +355,13 @@ public:
   void uncompress()
   { rel_body->uncompress(); }
 
+  //! If it doesn't contains UNKNOWN
   inline bool is_exact() const
   { return !(rel_body->unknown_uses() & (and_u | or_u)) ; }
+  //! If it contains UNKNOWN
   inline bool is_inexact() const
   { return !is_exact(); }
+  //! If it is a single UNKNOWN
   inline bool is_unknown() const
   { return rel_body->is_unknown(); }
   inline Rel_Unknown_Uses unknown_uses() const
@@ -249,7 +378,13 @@ private:
   friend class Rel_Body;
   friend_rel_ops;
 
-  
+  /**
+   * @brief Create a separate body for this representation
+   *
+   * One of the representatives using the body wants to be changed.
+   * Return the address of the new body, with the old representative
+   * pointed to the new body.
+   */
   Rel_Body *split();
 
   DNF* simplified_DNF() {

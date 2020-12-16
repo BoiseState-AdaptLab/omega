@@ -28,7 +28,7 @@ void Rel_Body::beautify() {
   if(child->node_type()==Op_And && child->children().empty()) {
     remove_child(child);
     delete child;
-    add_conjunct();
+    add_conjunct();    
   }
   skip_finalization_check--;
 
@@ -93,7 +93,7 @@ void F_Forall::beautify() {
 // things from one list to another, but they do not depend on
 // knowing that a Pix is valid after the list is updated, and
 // they can always be optimized later if necessary.
-//
+// 
 
 void F_Or::beautify() {
   Formula::beautify();
@@ -159,7 +159,7 @@ void F_And::beautify() {
       if(conj==NULL)
         conj = f->really_conjunct();
       else {
-        Conjunct *conj1 = merge_conjs(conj, f->really_conjunct(), MERGE_REGULAR, 0);
+        Conjunct *conj1 = merge_conjs(conj, f->really_conjunct(), MERGE_REGULAR);
         delete f;
         delete conj;
         conj = conj1;

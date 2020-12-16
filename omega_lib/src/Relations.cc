@@ -27,6 +27,8 @@
 #endif
 #include <assert.h>
 
+//#include "../../../chill_io.hh"
+
 namespace omega {
 
 #define CHECK_MAYBE_SUBSET 1
@@ -322,12 +324,10 @@ Relation Domain(NOT_CONST Relation &S) {
     Variable_ID_Tuple remapped;
 
     r.simplify();
-    DNF *d = r.split()->DNFize();
-    d->count_leading_0s();
     // Any conjucts with leading_0s == -1 must have >= "a" leading 0s
     // What a gross way to do this. Ferd
 
-    for (DNF_Iterator conj(d); conj; conj++) {
+    for (DNF_Iterator conj(r.query_DNF()); conj; conj++) {
 #if defined STUDY_EVACUATIONS
       study_evacuation(*conj, out_to_in, a);
 #endif
@@ -338,13 +338,7 @@ Relation Domain(NOT_CONST Relation &S) {
         if ((*func)->kind() == Global_Var) {
           Global_Var_ID f = (*func)->get_global_var();
           if (f->arity() > 0 && (*func)->function_of()==Output_Tuple) {
-            if (cL0 >= f->arity()) {
               (*func)->remap = r.get_local(f, Input_Tuple);
-            }
-            else {
-              (*func)->remap = (*conj)->declare();
-              (*conj)->make_inexact();
-            }
             remapped.append(*func);
           }
         }
@@ -404,13 +398,7 @@ Relation Range(NOT_CONST Relation &S) {
         if ((*func)->kind() == Global_Var) {
           Global_Var_ID f = (*func)->get_global_var();
           if (f->arity() > 0 && (*func)->function_of()==Input_Tuple) {
-            if (cL0 >= f->arity()) {
-              (*func)->remap = r.get_local(f, Output_Tuple);
-            }
-            else {
-              (*func)->remap = (*conj)->declare();
-              (*conj)->make_inexact();
-            }
+            (*func)->remap = r.get_local(f, Output_Tuple);
             remapped.append(*func);
           }
         }
@@ -970,26 +958,7 @@ Relation Composition(NOT_CONST Relation &input_r1, NOT_CONST Relation &input_r2)
             if ((*func)->kind() == Global_Var) {
               Global_Var_ID f = (*func)->get_global_var();
               if (f->arity() > 0 && (*func)->function_of()==Input_Tuple) {
-                if (c1L0 >= f->arity()) {
                   (*func)->remap = r1.get_local(f,Output_Tuple);
-                  remapped.append(*func);
-                }
-                else if (c2L0 >= f->arity()) {
-                  // f->remap = copy2->get_local(f, Input_Tuple);
-                  // this should work with the current impl.
-                  // SHOULD BE A NO-OP?
-                  assert((*func)==r2.get_local(f,Input_Tuple));
-                }
-                else {
-                  Variable_ID f_quantified = lost_functions[f];
-                  if (!f_quantified) {
-                    f_quantified = exists->declare();
-                    lost_functions[f] = f_quantified;
-                  }
-                  inexact = 1;
-                  (*func)->remap = f_quantified;
-                  remapped.append(*func);
-                }
               }
             }      
         }
@@ -1092,10 +1061,6 @@ bool Might_Be_Subset(NOT_CONST Relation &r1, NOT_CONST Relation &r2) {
   Relation s1 = Lower_Bound(consume_and_regurgitate(r1));
   Relation s2 = Upper_Bound(consume_and_regurgitate(r2));
   return do_subset_check(s1,s2);
-}
-
-bool May_Be_Subset(NOT_CONST Relation &r1, NOT_CONST Relation &r2){
-  return Might_Be_Subset(r1,r2);
 }
 
 

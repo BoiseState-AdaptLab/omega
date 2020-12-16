@@ -19,7 +19,9 @@
  Klimek Tomasz, Palkowski Marek and Anna Beletska, COCOA 2010.
 
  History:
+   12/27/09 move ConicClosure here, Chun Chen
    01/19/11 new closure algorithms, Klimek Tomzsz
+   02/02/11 move VennDiagramFrom here, Chun Chen
 *****************************************************************************/
 
 #include <typeinfo>
@@ -29,6 +31,8 @@
 #include <basic/Iterator.h>
 #include <basic/List.h>
 #include <basic/SimpleList.h>
+
+//#include "../../../chill_io.hh"
 
 namespace omega {
 

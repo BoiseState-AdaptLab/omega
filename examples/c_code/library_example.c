@@ -13,7 +13,7 @@
 
 //BEGIN PART 1
 #include <omega.h>
-
+using namespace omega;
 int main() {
   Relation S1(1), S2(1), R(2,2);
   S1.name_set_var(1, "t");

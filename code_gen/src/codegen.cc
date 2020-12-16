@@ -24,17 +24,28 @@
 #include <vector>
 #include <algorithm>
 
+
 #include <code_gen/CG.h>
-#include <code_gen/codegen.h>
+#include <omega/code_gen/include/codegen.h>
 #include <code_gen/CG_outputBuilder.h>
 #include <code_gen/codegen_error.h>
+#include <code_gen/CG_utils.h>
 
 namespace omega {
 
 const std::string CodeGen::loop_var_name_prefix = "t";
 const int CodeGen::var_substitution_threshold = 10;
 
-CodeGen::CodeGen(const std::vector<Relation> &xforms, const std::vector<Relation> &IS, const Relation &known) {
+//Anand--adding stuff to make Chun's code work with Gabe's
+std::vector< std::vector<int> > smtNonSplitLevels;
+std::vector< std::vector<std::string> > loopIdxNames;//per stmt
+std::vector< std::pair<int, std::string> > syncs;
+
+
+
+CodeGen::CodeGen(const std::vector<Relation> &xforms, const std::vector<Relation> &IS, const Relation &known, std::vector< std::vector<int> > smtNonSplitLevels_ , std::vector< std::vector<std::string> > loopIdxNames_,  std::vector< std::pair<int, std::string> > syncs_) {
+
+  fprintf(stderr, "CodeGen::CodeGen() sanity checking\n");
   // check for sanity of parameters
   int num_stmt = IS.size();
   if (xforms.size() != num_stmt)
@@ -47,9 +58,11 @@ CodeGen::CodeGen(const std::vector<Relation> &xforms, const std::vector<Relation
   else
     known_.simplify(2, 4);
   if (!known_.is_upper_bound_satisfiable())
-    return;
+    throw std::invalid_argument("Known condition is not satisfiable");
   if (known_.number_of_conjuncts() > 1)
     throw std::invalid_argument("only one conjunct allowed in known condition");
+
+  fprintf(stderr, "num_stmt %d  %d xforms\n", num_stmt, xforms.size()); 
   xforms_ = xforms;
   for (int i = 0; i < num_stmt; i++) {
     xforms_[i].simplify();
@@ -58,6 +71,25 @@ CodeGen::CodeGen(const std::vector<Relation> &xforms, const std::vector<Relation
     if (xforms_[i].n_inp() != IS[i].n_inp() || IS[i].n_out() != 0)
       throw std::invalid_argument("illegal iteration space or transformation arity");
   }
+
+  //protonu--
+  //easier to handle this as a global
+  smtNonSplitLevels = smtNonSplitLevels_;
+  syncs = syncs_;
+  loopIdxNames = loopIdxNames_;
+
+  //debug_begin
+    //fprintf(stderr, "codegen.cc loopIdxNames.size() %lu\n", loopIdxNames.size());
+    //for (int i=0; i<loopIdxNames.size(); i++) {
+      //fprintf(stderr, "\n");
+      //for (int j=0; j<loopIdxNames[i].size(); j++)
+        //fprintf(stderr, "i %d   j %d %s\n", i, j,loopIdxNames[i][j].c_str() );
+    //}
+  //debug_end
+
+  //end-protonu
+
+
 
   // find the maximum iteration space dimension we are going to operate on
   int num_level = known_.n_inp();
@@ -78,9 +110,11 @@ CodeGen::CodeGen(const std::vector<Relation> &xforms, const std::vector<Relation
       xforms_[i].name_output_var(j, loop_var_name_prefix + to_string(j));
     xforms_[i].setup_names();
 
-    Relation R = Range(Restrict_Domain(copy(xforms_[i]), copy(IS[i])));
+    Relation S = Restrict_Domain(copy(xforms_[i]), copy(IS[i]));
+    Relation R = Range(S);
     R = Intersection(Extend_Set(R, num_level-R.n_inp()), copy(known_));
     R.simplify(2, 4);
+
     if (R.is_inexact())
       throw codegen_error("cannot generate code for inexact iteration spaces");
 
@@ -94,8 +128,7 @@ CodeGen::CodeGen(const std::vector<Relation> &xforms, const std::vector<Relation
       c.next();
       if (!c.live()) 
         break;
-      Relation remainder(R, *c);
-      c.next();
+      Relation remainder = Relation::False(R);
       while (c.live()) {
         remainder = Union(remainder, Relation(R, *c));
         c.next();
@@ -107,8 +140,10 @@ CodeGen::CodeGen(const std::vector<Relation> &xforms, const std::vector<Relation
 
   // number of new statements after splitting
   num_stmt = new_IS.size();
+  if(!smtNonSplitLevels.empty())
+      smtNonSplitLevels.resize(num_stmt);
 
-  // assign a dummy value to loops created for the purpose of expanding to maximum dimension
+  // assign negative infinity to extra loops created for the purpose of expanding to maximum dimension
   for (int i = 0; i < num_stmt; i++) {
     if (xforms[remap_[i]].n_out() < num_level) {
       F_And *f_root = new_IS[i].and_with_and();
@@ -118,21 +153,26 @@ CodeGen::CodeGen(const std::vector<Relation> &xforms, const std::vector<Relation
         h.update_const(posInfinity);
       }
       new_IS[i].simplify();
-    }   
+    }
   }
 
   // calculate projected subspaces for each loop level once and save for CG tree manipulation later
   projected_IS_ = std::vector<std::vector<Relation> >(num_level);
-  for (int i = 0; i < num_level; i++)
+
+  for (int i = 0; i < num_level; i++){
     projected_IS_[i] = std::vector<Relation>(num_stmt);
+  }
   for (int i = 0; i < num_stmt; i++) {
     if (num_level > 0)
       projected_IS_[num_level-1][i] = new_IS[i];
     for (int j = num_level-1; j >= 1; j--) {
       projected_IS_[j-1][i] = Project(copy(projected_IS_[j][i]), j+1, Set_Var);
       projected_IS_[j-1][i].simplify(2, 4);
+      //projected_IS_[j-1][i] = checkAndRestoreIfProjectedByGlobal(projected_IS_[j][i], projected_IS_[j-1][i],
+      // 		  projected_IS_[j-1][i].set_var(j));
     }
   }
+  fprintf(stderr, "CodeGen::CodeGen() DONE\n"); 
 }
 
 
@@ -235,7 +275,22 @@ CG_result *CodeGen::buildAST(int level, const BoolSet<> &active, bool split_on_c
     }
     Relation hull = SimpleHull(Rs);
 
-    for (BoolSet<>::const_iterator i = active.begin(); i != active.end(); i++) {
+    //protonu-warn Chun about this change
+    //This does some fancy splitting of statements into loops with the
+    //fewest dimentions, but that's not necessarily what we want when
+    //code-gening for CUDA. smtNonSplitLevels keeps track per-statment of
+    //the levels that should not be split on.
+    bool checkForSplits = true;
+    for (auto i = active.begin(); i != active.end(); i++) {
+      if (*i < smtNonSplitLevels.size())
+        for (auto lev: smtNonSplitLevels[*i])
+          if (lev == (level - 2)) {
+            checkForSplits = false;
+            break;
+          }
+    }
+
+    for (auto i = active.begin(); i != active.end() && checkForSplits; i++) {
       Relation r = Gist(copy(Rs[*i]), copy(hull), 1);
       if (r.is_obvious_tautology())
         continue;
@@ -281,8 +336,8 @@ CG_result *CodeGen::buildAST(int level, const BoolSet<> &active, bool split_on_c
           }
 
         if (is_proper_split_cond && first_chunk.num_elem() != 0 && second_chunk.num_elem() != 0) {
-          CG_result *first_cg = buildAST(level, first_chunk, false, cond);
-          CG_result *second_cg = buildAST(level, second_chunk, false, Complement(cond));
+          CG_result *first_cg = buildAST(level, first_chunk, false, copy(cond));
+          CG_result *second_cg = buildAST(level, second_chunk, false, Complement(copy(cond)));
           if (first_cg == NULL)
             return second_cg;
           else if (second_cg == NULL)
@@ -306,6 +361,7 @@ CG_result *CodeGen::buildAST(int level, const BoolSet<> &active, bool split_on_c
 
 
 CG_result *CodeGen::buildAST(int effort) {
+  fprintf(stderr, "CodeGen::buildAST( effort %d )\n", effort); 
   if (remap_.size() == 0)
     return NULL;
 
@@ -313,13 +369,18 @@ CG_result *CodeGen::buildAST(int effort) {
   if (cgr == NULL)
     return NULL;
 
+
   // break down the complete iteration space condition to levels of bound/guard condtions
   cgr = cgr->recompute(cgr->active_, copy(known_), copy(known_));
+
+
+
   if (cgr == NULL)
     return NULL;
 
   // calculate each loop's nesting depth
   int depth = cgr->populateDepth();
+
 
   // redistribute guard condition locations by additional splittings
   std::pair<CG_result *, Relation> result = cgr->liftOverhead(min(effort,depth), false);
@@ -327,7 +388,10 @@ CG_result *CodeGen::buildAST(int effort) {
   // since guard conditions are postponed for non-loop levels, hoist them now.
   // this enables proper if-condition simplication when outputting actual code.
   result.first->hoistGuard();
-  
+
+
+
+
   return result.first;
 }
 

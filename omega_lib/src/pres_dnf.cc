@@ -18,6 +18,8 @@
 #include <omega/Relation.h>
 #include <omega/omega_i.h>
 
+//#include "../../../chill_io.hh"
+
 namespace omega {
 
 void DNF::remap() {
@@ -54,7 +56,7 @@ DNF* DNF_and_DNF(DNF* dnf1, DNF* dnf2) {
 /*
  * Remove redundant conjuncts from given DNF.
  * If (C1 => C2), remove C1.
- * C1 => C2 is TRUE: when problem where C1 is Black and C2 is Red
+ * C1 => C2 is TRUE: when problem where C1 is Black and C2 is Red 
  * Blk   Red       : has no red constraints.
  * It means that C1 is a subset of C2 and therefore C1 is redundant.
  *
@@ -107,7 +109,7 @@ void DNF::rm_redundant_conjs(int effort) {
             fprintf(DebugFile, "]@@@ not redundant due to leading zero info\n");
         }
         else {
-          Conjunct *cgist = merge_conjs(cdel, c, MERGE_GIST, 0);
+          Conjunct *cgist = merge_conjs(cdel, c, MERGE_GIST);
 
           if (!cgist->redSimplifyProblem(effort,0)) {
             if(pres_debug) {
@@ -171,7 +173,7 @@ void DNF::rm_redundant_inexact_conjs() {
     return;
 
   use_ugly_names++;
-  // skip_set_checks++;
+  // skip_set_checks++;  
 
   DNF_Iterator pdnext;
   DNF_Iterator pdel(this);
@@ -189,7 +191,7 @@ void DNF::rm_redundant_inexact_conjs() {
   use_ugly_names--;
   // skip_set_checks--;
 }
-
+  
 
 
 //
@@ -228,7 +230,7 @@ Conjunct *DNF::rm_first_conjunct() {
 
 //
 // Convert DNF to Formula and add it root.
-// Free this DNF.
+// Free this DNF. 
 //
 void DNF::DNF_to_formula(Formula* root) {
   Formula *new_or;
@@ -328,7 +330,7 @@ void DNF::clear() {
 DNF* DNF_and_conj(DNF* dnf, Conjunct* conj) {
   DNF* new_dnf = new DNF;
   for(DNF_Iterator p(dnf); p.live(); p.next()) {
-    Conjunct* new_conj = merge_conjs(p.curr(), conj, MERGE_REGULAR, 0);
+    Conjunct* new_conj = merge_conjs(p.curr(), conj, MERGE_REGULAR);
     new_dnf->add_conjunct(new_conj);
   }
   if(new_dnf->length() > 1) {
@@ -377,25 +379,25 @@ DNF* conj_and_not_dnf(Conjunct *positive_conjunct, DNF *neg_conjs, bool weak) {
         p.curr_set(NULL);
         continue;
       }
-      Conjunct *cgist = merge_conjs(positive_conjunct, neg_conj, MERGE_GIST, 0);
+      Conjunct *cgist = merge_conjs(positive_conjunct, neg_conj, MERGE_GIST);
       if(simplify_conj(cgist, false, true, EQ_RED) == false) {
         // C1 & ~FALSE = C1
         delete neg_conj;
         p.curr_set(NULL);
-      }
+      } 
       else {
         cgist->rm_color_constrs();
         if(cgist->is_true()) {
           // C1 & ~TRUE = FALSE
           delete cgist;
           goto ReturnDNF;
-        }
+        } 
         else {
           if(cgist->cost()==1) {        // single inequality
             DNF *neg_dnf = negate_conj(cgist);
             delete cgist;
             Conjunct *conj =
-              merge_conjs(positive_conjunct, neg_dnf->single_conjunct(), MERGE_REGULAR, 0);
+              merge_conjs(positive_conjunct, neg_dnf->single_conjunct(), MERGE_REGULAR);
             delete positive_conjunct;
             delete neg_dnf;
             positive_conjunct = conj;
@@ -406,7 +408,7 @@ DNF* conj_and_not_dnf(Conjunct *positive_conjunct, DNF *neg_conjs, bool weak) {
               goto ReturnDNF;
             }
             c0_updated = true;
-          }
+          } 
           else {
             delete neg_conj;
             p.curr_set(cgist);
@@ -460,7 +462,7 @@ DNF* conj_and_not_dnf(Conjunct *positive_conjunct, DNF *neg_conjs, bool weak) {
       positive_conjunct->make_inexact();
       ret_dnf->add_conjunct(positive_conjunct);
       positive_conjunct = NULL;
-      if(pres_debug)
+      if(pres_debug) 
         fprintf(DebugFile, "Ignoring negative clause that can't be negated and generating inexact upper bound\n");
     }
     else {
@@ -512,11 +514,11 @@ static void EqnnZero(eqn *e, int s) {
   e->essential = 0;
   e->varCount = 0;
   for (int i = 0; i <= s; i++)
-    e->coef[i] = 0;
+    e->coef[i] = 0;    
 }
 
 /*
- * Make a new black equation in a given problem
+ * Make a new black equation in a given problem 
  */
 static int NewEquation(Problem *p) {
   int e = p->newEQ();
@@ -525,7 +527,7 @@ static int NewEquation(Problem *p) {
 }
 
 /*
- * Make a new black inequality in a given problem
+ * Make a new black inequality in a given problem 
  */
 static int NewInequality(Problem *p) {
   int g = p->newGEQ();
@@ -681,7 +683,7 @@ DNF* negate_conj(Conjunct* conj) {
     {
       int e = NewEquation(tp);
       tp->EQs[e].coef[0] =  p->EQs[i].coef[0];
-      for(j=1; j<=p->nVars; j++)
+      for(j=1; j<=p->nVars; j++) 
         tp->EQs[e].coef[j] = p->EQs[i].coef[j];
     }
   }
@@ -707,7 +709,7 @@ DNF* negate_conj(Conjunct* conj) {
               assert(c_i > 0);
               new_conj->exact=true;
               int n_e = NewInequality(np);
-              // c_k E_i - 1 >= c_i c_k beta
+              // c_k E_i - 1 >= c_i c_k beta 
               int v;
               for(v=0; v<=p->nVars; v++) {
                 np->GEQs[n_e].coef[v] = - c_k * p->GEQs[i].coef[v];
@@ -717,7 +719,7 @@ DNF* negate_conj(Conjunct* conj) {
 
               n_e = NewInequality(np);
               // c_i c_k beta >= c_i E_k - c_i c_k + 1
-              // c_i c_k beta + c_i c_k -1 >= c_i E_k
+              // c_i c_k beta + c_i c_k -1 >= c_i E_k 
               for(v=0; v<=p->nVars; v++) {
                 np->GEQs[n_e].coef[v] = - c_i * p->GEQs[k].coef[v];
               }
@@ -801,7 +803,7 @@ DNF* F_And::DNFize() {
             positive_conjunct = conj;
           }
           else {
-            Conjunct *new_conj = merge_conjs(positive_conjunct, conj, MERGE_REGULAR, 0);
+            Conjunct *new_conj = merge_conjs(positive_conjunct, conj, MERGE_REGULAR);
             delete conj;
             delete positive_conjunct;
             positive_conjunct = new_conj;
@@ -859,9 +861,9 @@ DNF* F_And::DNFize() {
           new_dnf = DNF_and_DNF(new_dnf, pos_dnf);
           *pos_dnf_i = NULL;
         }
-      }
+      } 
       else {
-        if(positive_conjunct==NULL) {
+        if(positive_conjunct==NULL) {  
           static int OMEGA_WHINGE = -1;
           if (OMEGA_WHINGE < 0) {
             OMEGA_WHINGE = getenv("OMEGA_WHINGE") ? atoi(getenv("OMEGA_WHINGE")) : 0;
@@ -889,7 +891,7 @@ DNF* F_And::DNFize() {
           }
           positive_conjunct = new Conjunct(NULL, my_relation);
         }
-
+ 
         if(!neg_conjs->is_definitely_false()) {
           new_dnf->join_DNF(conj_and_not_dnf(positive_conjunct, neg_conjs));
           neg_conjs = NULL;
@@ -936,7 +938,7 @@ DNF* F_And::DNFize() {
 //
 
 DNF* F_Not::DNFize() {
-  Conjunct *positive_conjunct = new Conjunct(NULL, relation());
+  Conjunct *positive_conjunct = new Conjunct(NULL, relation());  
   DNF *neg_conjs = children().remove_front()->DNFize();
   delete this;
   DNF *new_dnf = conj_and_not_dnf(positive_conjunct, neg_conjs);
@@ -960,10 +962,10 @@ DNF* F_Or::DNFize() {
   while(!children().empty()) {
     DNF* c_dnf = children().remove_front()->DNFize();
     new_dnf->join_DNF(c_dnf);
-    empty_or=false;
+    empty_or=false; 
   }
 
-
+    
   delete this;
 
   if(pres_debug) {
@@ -1059,7 +1061,7 @@ int DNF::query_guaranteed_leading_0s(int what_to_return_for_empty_dnf) {
     if (first || tmp < result) result = tmp;
     first = false;
   }
-
+    
   return result;
 }
 
@@ -1129,7 +1131,7 @@ void Conjunct::count_leading_0s() {
       Variable_ID in = body->input_var(L), out = body->output_var(L);
       coef_t min, max;
       bool guaranteed;
-
+     
       query_difference(out, in, min, max, guaranteed);
       if (min < 0 || max > 0) {
         if (min > 0 || max < 0) { // we know guaranteed & possible
@@ -1149,9 +1151,9 @@ void Conjunct::count_leading_0s() {
         out = body->output_var(L);
       coef_t min, max;
       bool guaranteed;
-
+     
       query_difference(out, in, min, max, guaranteed);
-
+     
       if (min > 0 || max < 0) break;
     }
     possible_leading_0s = L-1;
@@ -1205,7 +1207,7 @@ void DNF::make_level_carried_to(int level) {
           (*conj)->query_difference(out, in, min, max, guaranteed);
           if (min > 0 || max < 0) guaranteed = true;
 //      fprintf(DebugFile,"Make level carried, %d <= diff%d <= %d (%d):\n",
-//    min,leading_eqs,max,guaranteed);
+//    min,leading_eqs,max,guaranteed); 
 //      use_ugly_names++;
 //      (*conj)->prefix_print(DebugFile);
 //       use_ugly_names--;
@@ -1238,13 +1240,13 @@ void DNF::make_level_carried_to(int level) {
               l.update_coef_during_simplify(out, -1);
               l.update_const_during_simplify(-1);
             }
-            lt->guaranteed_leading_0s
+            lt->guaranteed_leading_0s 
               = lt->possible_leading_0s = leading_eqs-1;
             lt->leading_dir = -1;
             if (is_guaranteed) {
               /*
                 fprintf(DebugFile,"Promising solutions to: %d <= diff%d <= %d (%d):\n",
-                min,leading_eqs,max,guaranteed);
+                min,leading_eqs,max,guaranteed); 
                 use_ugly_names++;
                 lt->prefix_print(DebugFile);
                 use_ugly_names--;
@@ -1277,7 +1279,7 @@ void DNF::make_level_carried_to(int level) {
             if (is_guaranteed) {
               /*
                 fprintf(DebugFile,"Promising solutions to: %d <= diff%d <= %d (%d):\n",
-                min,leading_eqs,max,guaranteed);
+                min,leading_eqs,max,guaranteed); 
                 use_ugly_names++;
                 gt->prefix_print(DebugFile);
                 use_ugly_names--;
@@ -1338,7 +1340,7 @@ void DNF::make_level_carried_to(int level) {
               f_out->remap = f_in;
               remapped = 1;
               is_guaranteed = false;
-            }
+            }     
           }
 
           if (remapped) {
@@ -1349,8 +1351,8 @@ void DNF::make_level_carried_to(int level) {
           }
         }
       }
-      if (is_guaranteed)
-        (*conj)->promise_that_ub_solutions_exist(tmp);
+      if (is_guaranteed) 
+        (*conj)->promise_that_ub_solutions_exist(tmp); 
       else if (0) {
         fprintf(DebugFile,"Can't guaranteed solutions to:\n");
         use_ugly_names++;
@@ -1387,13 +1389,13 @@ void DNF::remove_inexact_conj() {
         else
           conjList.del_after(c_prev);
         break;
-      }
+      }  
       else {
         first=false;
         c_prev=c;
       }
     }
-  }
+  } 
   while (found_inexact);
 }
 

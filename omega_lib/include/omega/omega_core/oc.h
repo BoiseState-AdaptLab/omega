@@ -9,13 +9,18 @@
 
 namespace omega {
 
-#define maxVars 256 /* original 56, increased by chun */
+// Manu:: commented the line below  -- fortran bug workaround
+//#define maxVars 256 /* original 56, increased by chun */
+#define maxVars 100
 
 extern int maxGEQs;
 extern int maxEQs;
 
-const int maxmaxGEQs = 2048; // original 512, increaded by chun
-const int maxmaxEQs = 512;   // original 256, increased by chun
+// Manu:: commented the lines below  -- fortran bug workaround
+//const int maxmaxGEQs = 2048; // original 512, increaded by chun
+//const int maxmaxEQs = 512;   // original 256, increased by chun
+const int maxmaxGEQs = 512;
+const int maxmaxEQs = 256;
 
 /* #if ! defined maxmaxGEQs */
 /* #define maxmaxGEQs 2048  /\* original 512, increaded by chun *\/ */
@@ -23,13 +28,6 @@ const int maxmaxEQs = 512;   // original 256, increased by chun
 /* #if ! defined maxmaxEQs */
 /* #define maxmaxEQs  512  /\* original 256, increased by chun *\/ */
 /* #endif */
-
-
-#if 0
-#if ! defined Already_Included_Portable
-typedef unsigned char bool;  /* what a gross thing to do */
-#endif
-#endif
 
 typedef int EqnKey;
 
@@ -61,8 +59,29 @@ extern FILE *outputFile; /* printProblem writes its output to this file */
 // #define eqnnzero(e,s) {int *p00,*r00; p00 = (int *)(e); r00 = &p00[headerWords+1+(s)]; while(p00 < r00) *p00++ = 0;}
 // #define eqnzero(e) eqnnzero(e,nVars)
 
-void eqnncpy(eqn *dest, eqn *src, int);
-void eqnnzero(eqn *e, int);
+//void eqnncpy(eqn *dest, eqn *src, int);
+//void eqnnzero(eqn *e, int);
+
+inline void eqnncpy(eqn *dest, eqn *src, int nVars) {
+  dest->key = src->key;
+  dest->touched = src->touched;
+  dest->color = src->color;
+  dest->essential = src->essential;
+  dest->varCount = src->varCount;
+  for (int i = 0; i <= nVars; i++)
+    dest->coef[i] = src->coef[i];
+}
+
+
+inline void eqnnzero(eqn *e, int nVars) {
+  e->key = 0;
+  e->touched = 0;
+  e->color = EQ_BLACK;
+  e->essential = 0;
+  e->varCount = 0;
+  for (int i = 0; i <= nVars; i++)
+    e->coef[i] = 0;
+}
 
 extern int mayBeRed;
 

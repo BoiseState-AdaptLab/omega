@@ -1,115 +1,33 @@
->>> # Example taken from http://www.cloog.org
->>> #
->>> 
->>> r0:={[i,j]:i>=1 && j<=7 && j>=i-1};
->>> r1:={[i,j]:2<=i<=6 && 0<=j<=4};
->>> 
->>> # CLooG optimized for size
->>> ##
->>> ## for (i=1;i<=8;i++) {
->>> ##    for (j=i-1;j<=7;j++) {
->>> ##      S0(i,j);
->>> ##    }
->>> ##    if ((i>=2)&&(i<=6)) {
->>> ##      for (j=0;j<=4;j++) {
->>> ##        S1(i,j);
->>> ##      }
->>> ##    }
->>> ##  }
->>> ##
->>> ## Since CLooG might not preserve the lexcicographical order other than
->>> ## the default code generation strategy (custom -f or -l values). Its
->>> ## generated code might not be correct should there exist reorder-preventing
->>> ## dependence among statements.
->>> ##
->>> 
->>> # no overhead removal, minimal code size
->>> codegen 0 r0,r1;
-for(t1 = 1; t1 <= 8; t1++) {
-  for(t2 = 0; t2 <= 7; t2++) {
-    if (t2 >= t1-1) {
-      s0(t1,t2);
-    }
-    if (t1 >= 2 && t1 <= 6 && t2 <= 4) {
-      s1(t1,t2);
-    }
+# Omega Calculator [v1.1, Nov 96]:
+# #
+# # Example of code generation from Omega Calculator documentation
+# #
+# 
+# T10:={[i] -> [0,i,0,0]};
+# 
+# T20:={[i,j] -> [1,j,0,i]};
+# 
+# T30:={[i] -> [1,i-1,1,0]};
+# 
+# 
+# Symbolic n;
+# 
+# IS10 := {[i]: 2 <= i <= n};
+# 
+# IS20 := {[i,j]: 2 <= i <= n && 1 <= j <= i-1};
+# 
+# IS30 := IS10;
+# 
+# 
+# codegen T10:IS10,T20:IS20,T30:IS30;
+for(t2 = 2; t2 <= n; t2++) {
+  s1(t2);
+}
+for(t2 = 1; t2 <= n-1; t2++) {
+  for(t4 = t2+1; t4 <= n; t4++) {
+    s2(t4,t2);
   }
+  s3(t2+1);
 }
 
->>> 
->>> # remove one-deep loop nest (innermost loop) overhead
->>> codegen 1 r0,r1;
-for(t1 = 1; t1 <= 8; t1++) {
-  if (t1 <= 6) {
-    for(t2 = 0; t2 <= t1-2; t2++) {
-      s1(t1,t2);
-    }
-    if (t1 <= 1) {
-      for(t2 = 0; t2 <= 7; t2++) {
-        s0(t1,t2);
-      }
-    }
-  }
-  if (t1 >= 2) {
-    for(t2 = t1-1; t2 <= 4; t2++) {
-      s0(t1,t2);
-      s1(t1,t2);
-    }
-    for(t2 = max(t1-1,5); t2 <= 7; t2++) {
-      s0(t1,t2);
-    }
-  }
-}
-
->>> 
->>> # CLooG optimized for control
->>> ##
->>> ## for (t2=0;t2<=7;t2++) {
->>> ##   S0(1,t2);
->>> ## }
->>> ## for (t1=2;t1<=6;t1++) {
->>> ##   for (t2=0;t2<=t1-2;t2++) {
->>> ##     S1(t1,t2);
->>> ##   }
->>> ##   for (t2=t1-1;t2<=4;t2++) {
->>> ##     S0(t1,t2);
->>> ##     S1(t1,t2);
->>> ##   }
->>> ##   for (t2=5;t2<=7;t2++) {
->>> ##     S0(t1,t2);
->>> ##   }
->>> ## }
->>> ## for (t1=7;t1<=8;t1++) {
->>> ##   for (t2=t1-1;t2<=7;t2++) {
->>> ##     S0(t1,t2);
->>> ##   }
->>> ## }
->>> ##
->>> ## This is CLooG's default code generation strategy. It guarantees
->>> ## the lexicographical order as shown in input iteration spaces.
->>> ##
->>> 
->>> # minimal control overhead, removing overhead from 2-deep loop nest
->>> codegen 2 r0,r1;
-for(t2 = 0; t2 <= 7; t2++) {
-  s0(1,t2);
-}
-for(t1 = 2; t1 <= 6; t1++) {
-  for(t2 = 0; t2 <= t1-2; t2++) {
-    s1(t1,t2);
-  }
-  for(t2 = t1-1; t2 <= 4; t2++) {
-    s0(t1,t2);
-    s1(t1,t2);
-  }
-  for(t2 = 5; t2 <= 7; t2++) {
-    s0(t1,t2);
-  }
-}
-for(t1 = 7; t1 <= 8; t1++) {
-  for(t2 = t1-1; t2 <= 7; t2++) {
-    s0(t1,t2);
-  }
-}
-
->>> 
+# 

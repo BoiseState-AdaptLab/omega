@@ -1,6 +1,8 @@
 #include <omega/omega_core/oc_i.h> 
 #include <basic/omega_error.h>
 
+//#include "../../../chill_io.hh"
+
 namespace omega {
 
 Problem::~Problem() {
@@ -25,10 +27,10 @@ void check_number_EQs(int n) {
                            "The maximum number of equality constraints in a conjunction is " + to_string(maxmaxEQs) + ".\n"
                            "This limit can be changed by redefining maxmaxEQs in oc.h and recompiling.\n\n");
 
-    // fprintf(stderr, "\nERROR:\n");
-    // fprintf(stderr, "An attempt was made to set the number of available equality constraints to %d.\n", n);
-    // fprintf(stderr, "The maximum number of equality constraints in a conjunction is %d.\n", maxmaxEQs);
-    // fprintf(stderr, "This limit can be changed by redefining maxmaxEQs in oc.h and recompiling.\n\n");
+    // debug_fprintf(stderr, "\nERROR:\n");
+    // debug_fprintf(stderr, "An attempt was made to set the number of available equality constraints to %d.\n", n);
+    // debug_fprintf(stderr, "The maximum number of equality constraints in a conjunction is %d.\n", maxmaxEQs);
+    // debug_fprintf(stderr, "This limit can be changed by redefining maxmaxEQs in oc.h and recompiling.\n\n");
     // exit(2);
   }
 }
@@ -49,10 +51,10 @@ void check_number_GEQs(int n) {
                            "The maximum number of inequality constraints in a conjunction is " + to_string(maxmaxGEQs) +".\n"
                            "This limit can be changed by redefining maxmaxGEQs in oc.h and recompiling.\n\n");
 
-    // fprintf(stderr, "\nERROR:\n");
-    // fprintf(stderr, "An attempt was made to set the number of available inequality constraints to %d.\n", n);
-    // fprintf(stderr, "The maximum number of inequality constraints in a conjunction is %d.\n", maxmaxGEQs);
-    // fprintf(stderr, "This limit can be changed by redefining maxmaxGEQs in oc.h and recompiling.\n\n");
+    // debug_fprintf(stderr, "\nERROR:\n");
+    // debug_fprintf(stderr, "An attempt was made to set the number of available inequality constraints to %d.\n", n);
+    // debug_fprintf(stderr, "The maximum number of inequality constraints in a conjunction is %d.\n", maxmaxGEQs);
+    // debug_fprintf(stderr, "This limit can be changed by redefining maxmaxGEQs in oc.h and recompiling.\n\n");
     // exit(2);
   }
 }

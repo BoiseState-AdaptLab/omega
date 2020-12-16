@@ -5,7 +5,7 @@ namespace omega {
 int     skip_finalization_check=0;
 // int     skip_set_checks=0;
 
-int   pres_debug=0;
+int   pres_debug=0	;
 FILE *DebugFile=stderr;  // This is the default; it's best to set it yourself.
 
 negation_control pres_legal_negations = any_negation;

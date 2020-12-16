@@ -10,6 +10,7 @@
 //        there exists z such that y <= z <= x &&
 //        ( z is divisible by 8 || z+5x is divisible by 12 ) }
 
+using namespace omega;
 int main() {
   Relation S(2);
   S.name_set_var(1, "x");
