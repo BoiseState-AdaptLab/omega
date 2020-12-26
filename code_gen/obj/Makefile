@@ -108,7 +108,11 @@ am__dirstamp = $(am__leading_dot)dirstamp
 am_libcodegen_a_OBJECTS = ../src/libcodegen_a-codegen.$(OBJEXT) \
 	../src/libcodegen_a-CG_stringBuilder.$(OBJEXT) \
 	../src/libcodegen_a-CG.$(OBJEXT) \
-	../src/libcodegen_a-CG_utils.$(OBJEXT)
+	../src/libcodegen_a-CG_utils.$(OBJEXT) \
+	$(parser_src)/libcodegen_a-AST.$(OBJEXT) \
+	$(parser_src)/libcodegen_a-myflex.$(OBJEXT) \
+	$(parser_src)/libcodegen_a-lex.yy.$(OBJEXT) \
+	$(parser_src)/libcodegen_a-parser.tab.$(OBJEXT)
 libcodegen_a_OBJECTS = $(am_libcodegen_a_OBJECTS)
 AM_V_P = $(am__v_P_$(V))
 am__v_P_ = $(am__v_P_$(AM_DEFAULT_VERBOSITY))
@@ -123,9 +127,8 @@ am__v_at_ = $(am__v_at_$(AM_DEFAULT_VERBOSITY))
 am__v_at_0 = @
 am__v_at_1 = 
 DEFAULT_INCLUDES = -I. -I$(top_builddir)/include
-depcomp = $(SHELL) $(top_srcdir)/depcomp
-am__depfiles_maybe = depfiles
-am__mv = mv -f
+depcomp =
+am__depfiles_maybe =
 AM_V_lt = $(am__v_lt_$(V))
 am__v_lt_ = $(am__v_lt_$(AM_DEFAULT_VERBOSITY))
 am__v_lt_0 = --silent
@@ -169,7 +172,7 @@ am__define_uniq_tagged_files = \
   done | $(am__uniquify_input)`
 ETAGS = etags
 CTAGS = ctags
-am__DIST_COMMON = $(srcdir)/Makefile.in $(top_srcdir)/depcomp
+am__DIST_COMMON = $(srcdir)/Makefile.in
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 ACLOCAL = ${SHELL} /home/tpopoola/research/omega/missing aclocal-1.15
 AMTAR = $${TAR-tar}
@@ -180,16 +183,13 @@ AUTOHEADER = ${SHELL} /home/tpopoola/research/omega/missing autoheader
 AUTOMAKE = ${SHELL} /home/tpopoola/research/omega/missing automake-1.15
 AWK = gawk
 CC = gcc
-CCDEPMODE = depmode=gcc3
 CCLD = $(CXX)
 CFLAGS = -g -O2
 CPPFLAGS = 
 CXX = g++
-CXXDEPMODE = depmode=gcc3
 CXXFLAGS = -g -O2
 CYGPATH_W = echo
 DEFS = -DHAVE_CONFIG_H
-DEPDIR = .deps
 ECHO_C = 
 ECHO_N = -n
 ECHO_T = 
@@ -231,9 +231,7 @@ abs_top_srcdir = /home/tpopoola/research/omega
 ac_ct_AR = ar
 ac_ct_CC = gcc
 ac_ct_CXX = 
-am__include = include
 am__leading_dot = .
-am__quote = 
 am__tar = $${TAR-tar} chof - "$$tardir"
 am__untar = $${TAR-tar} xf -
 bindir = ${exec_prefix}/bin
@@ -273,10 +271,14 @@ codegen_includes = -I$(srcdir)/../../.. -I$(srcdir)/../include \
 	-I$(srcdir)/../../../include/chill \
 	-I$(srcdir)/../../omega_lib/include \
 	-I$(srcdir)/../../basic/include
+parser_src = ../src/parser
 libcodegen_a_SOURCES = ../src/codegen.cc ../src/CG_stringBuilder.cc \
-	../src/CG.cc ../src/CG_utils.cc
+	../src/CG.cc ../src/CG_utils.cc $(parser_src)/AST.cc \
+	$(parser_src)/myflex.cc $(parser_src)/lex.yy.cc \
+	$(parser_src)/parser.tab.cc
 libcodegen_a_CXXFLAGS = -std=c++11
-libcodegen_a_CPPFLAGS = -DFRONTEND_ROSE $(codegen_includes)
+libcodegen_a_CPPFLAGS = $(codegen_includes)
+EXTRA_DIST = $(parser_src)/lex.yy.cc $(parser_src)/parser.tab.cc
 all: all-am
 
 .SUFFIXES:
@@ -290,9 +292,9 @@ $(srcdir)/Makefile.in:  $(srcdir)/Makefile.am  $(am__configure_deps)
 	      exit 1;; \
 	  esac; \
 	done; \
-	echo ' cd $(top_srcdir) && $(AUTOMAKE) --foreign code_gen/obj/Makefile'; \
+	echo ' cd $(top_srcdir) && $(AUTOMAKE) --foreign --ignore-deps code_gen/obj/Makefile'; \
 	$(am__cd) $(top_srcdir) && \
-	  $(AUTOMAKE) --foreign code_gen/obj/Makefile
+	  $(AUTOMAKE) --foreign --ignore-deps code_gen/obj/Makefile
 Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	@case '$?' in \
 	  *config.status*) \
@@ -316,17 +318,22 @@ clean-noinstLIBRARIES:
 ../src/$(am__dirstamp):
 	@$(MKDIR_P) ../src
 	@: > ../src/$(am__dirstamp)
-../src/$(DEPDIR)/$(am__dirstamp):
-	@$(MKDIR_P) ../src/$(DEPDIR)
-	@: > ../src/$(DEPDIR)/$(am__dirstamp)
-../src/libcodegen_a-codegen.$(OBJEXT): ../src/$(am__dirstamp) \
-	../src/$(DEPDIR)/$(am__dirstamp)
+../src/libcodegen_a-codegen.$(OBJEXT): ../src/$(am__dirstamp)
 ../src/libcodegen_a-CG_stringBuilder.$(OBJEXT):  \
-	../src/$(am__dirstamp) ../src/$(DEPDIR)/$(am__dirstamp)
-../src/libcodegen_a-CG.$(OBJEXT): ../src/$(am__dirstamp) \
-	../src/$(DEPDIR)/$(am__dirstamp)
-../src/libcodegen_a-CG_utils.$(OBJEXT): ../src/$(am__dirstamp) \
-	../src/$(DEPDIR)/$(am__dirstamp)
+	../src/$(am__dirstamp)
+../src/libcodegen_a-CG.$(OBJEXT): ../src/$(am__dirstamp)
+../src/libcodegen_a-CG_utils.$(OBJEXT): ../src/$(am__dirstamp)
+$(parser_src)/$(am__dirstamp):
+	@$(MKDIR_P) $(parser_src)
+	@: > $(parser_src)/$(am__dirstamp)
+$(parser_src)/libcodegen_a-AST.$(OBJEXT):  \
+	$(parser_src)/$(am__dirstamp)
+$(parser_src)/libcodegen_a-myflex.$(OBJEXT):  \
+	$(parser_src)/$(am__dirstamp)
+$(parser_src)/libcodegen_a-lex.yy.$(OBJEXT):  \
+	$(parser_src)/$(am__dirstamp)
+$(parser_src)/libcodegen_a-parser.tab.$(OBJEXT):  \
+	$(parser_src)/$(am__dirstamp)
 
 libcodegen.a: $(libcodegen_a_OBJECTS) $(libcodegen_a_DEPENDENCIES) $(EXTRA_libcodegen_a_DEPENDENCIES) 
 	$(AM_V_at)-rm -f libcodegen.a
@@ -335,87 +342,65 @@ libcodegen.a: $(libcodegen_a_OBJECTS) $(libcodegen_a_DEPENDENCIES) $(EXTRA_libco
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
+	-rm -f $(parser_src)/*.$(OBJEXT)
 	-rm -f ../src/*.$(OBJEXT)
 
 distclean-compile:
 	-rm -f *.tab.c
 
-include ../src/$(DEPDIR)/libcodegen_a-CG.Po
-include ../src/$(DEPDIR)/libcodegen_a-CG_stringBuilder.Po
-include ../src/$(DEPDIR)/libcodegen_a-CG_utils.Po
-include ../src/$(DEPDIR)/libcodegen_a-codegen.Po
-
 .cc.o:
-	$(AM_V_CXX)depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.o$$||'`;\
-	$(CXXCOMPILE) -MT $@ -MD -MP -MF $$depbase.Tpo -c -o $@ $< &&\
-	$(am__mv) $$depbase.Tpo $$depbase.Po
-#	$(AM_V_CXX)source='$<' object='$@' libtool=no \
-#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXXCOMPILE) -c -o $@ $<
+	$(AM_V_CXX)$(CXXCOMPILE) -c -o $@ $<
 
 .cc.obj:
-	$(AM_V_CXX)depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.obj$$||'`;\
-	$(CXXCOMPILE) -MT $@ -MD -MP -MF $$depbase.Tpo -c -o $@ `$(CYGPATH_W) '$<'` &&\
-	$(am__mv) $$depbase.Tpo $$depbase.Po
-#	$(AM_V_CXX)source='$<' object='$@' libtool=no \
-#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXXCOMPILE) -c -o $@ `$(CYGPATH_W) '$<'`
+	$(AM_V_CXX)$(CXXCOMPILE) -c -o $@ `$(CYGPATH_W) '$<'`
 
 ../src/libcodegen_a-codegen.o: ../src/codegen.cc
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcodegen_a_CPPFLAGS) $(CPPFLAGS) $(libcodegen_a_CXXFLAGS) $(CXXFLAGS) -MT ../src/libcodegen_a-codegen.o -MD -MP -MF ../src/$(DEPDIR)/libcodegen_a-codegen.Tpo -c -o ../src/libcodegen_a-codegen.o `test -f '../src/codegen.cc' || echo '$(srcdir)/'`../src/codegen.cc
-	$(AM_V_at)$(am__mv) ../src/$(DEPDIR)/libcodegen_a-codegen.Tpo ../src/$(DEPDIR)/libcodegen_a-codegen.Po
-#	$(AM_V_CXX)source='../src/codegen.cc' object='../src/libcodegen_a-codegen.o' libtool=no \
-#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcodegen_a_CPPFLAGS) $(CPPFLAGS) $(libcodegen_a_CXXFLAGS) $(CXXFLAGS) -c -o ../src/libcodegen_a-codegen.o `test -f '../src/codegen.cc' || echo '$(srcdir)/'`../src/codegen.cc
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcodegen_a_CPPFLAGS) $(CPPFLAGS) $(libcodegen_a_CXXFLAGS) $(CXXFLAGS) -c -o ../src/libcodegen_a-codegen.o `test -f '../src/codegen.cc' || echo '$(srcdir)/'`../src/codegen.cc
 
 ../src/libcodegen_a-codegen.obj: ../src/codegen.cc
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcodegen_a_CPPFLAGS) $(CPPFLAGS) $(libcodegen_a_CXXFLAGS) $(CXXFLAGS) -MT ../src/libcodegen_a-codegen.obj -MD -MP -MF ../src/$(DEPDIR)/libcodegen_a-codegen.Tpo -c -o ../src/libcodegen_a-codegen.obj `if test -f '../src/codegen.cc'; then $(CYGPATH_W) '../src/codegen.cc'; else $(CYGPATH_W) '$(srcdir)/../src/codegen.cc'; fi`
-	$(AM_V_at)$(am__mv) ../src/$(DEPDIR)/libcodegen_a-codegen.Tpo ../src/$(DEPDIR)/libcodegen_a-codegen.Po
-#	$(AM_V_CXX)source='../src/codegen.cc' object='../src/libcodegen_a-codegen.obj' libtool=no \
-#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcodegen_a_CPPFLAGS) $(CPPFLAGS) $(libcodegen_a_CXXFLAGS) $(CXXFLAGS) -c -o ../src/libcodegen_a-codegen.obj `if test -f '../src/codegen.cc'; then $(CYGPATH_W) '../src/codegen.cc'; else $(CYGPATH_W) '$(srcdir)/../src/codegen.cc'; fi`
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcodegen_a_CPPFLAGS) $(CPPFLAGS) $(libcodegen_a_CXXFLAGS) $(CXXFLAGS) -c -o ../src/libcodegen_a-codegen.obj `if test -f '../src/codegen.cc'; then $(CYGPATH_W) '../src/codegen.cc'; else $(CYGPATH_W) '$(srcdir)/../src/codegen.cc'; fi`
 
 ../src/libcodegen_a-CG_stringBuilder.o: ../src/CG_stringBuilder.cc
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcodegen_a_CPPFLAGS) $(CPPFLAGS) $(libcodegen_a_CXXFLAGS) $(CXXFLAGS) -MT ../src/libcodegen_a-CG_stringBuilder.o -MD -MP -MF ../src/$(DEPDIR)/libcodegen_a-CG_stringBuilder.Tpo -c -o ../src/libcodegen_a-CG_stringBuilder.o `test -f '../src/CG_stringBuilder.cc' || echo '$(srcdir)/'`../src/CG_stringBuilder.cc
-	$(AM_V_at)$(am__mv) ../src/$(DEPDIR)/libcodegen_a-CG_stringBuilder.Tpo ../src/$(DEPDIR)/libcodegen_a-CG_stringBuilder.Po
-#	$(AM_V_CXX)source='../src/CG_stringBuilder.cc' object='../src/libcodegen_a-CG_stringBuilder.o' libtool=no \
-#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcodegen_a_CPPFLAGS) $(CPPFLAGS) $(libcodegen_a_CXXFLAGS) $(CXXFLAGS) -c -o ../src/libcodegen_a-CG_stringBuilder.o `test -f '../src/CG_stringBuilder.cc' || echo '$(srcdir)/'`../src/CG_stringBuilder.cc
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcodegen_a_CPPFLAGS) $(CPPFLAGS) $(libcodegen_a_CXXFLAGS) $(CXXFLAGS) -c -o ../src/libcodegen_a-CG_stringBuilder.o `test -f '../src/CG_stringBuilder.cc' || echo '$(srcdir)/'`../src/CG_stringBuilder.cc
 
 ../src/libcodegen_a-CG_stringBuilder.obj: ../src/CG_stringBuilder.cc
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcodegen_a_CPPFLAGS) $(CPPFLAGS) $(libcodegen_a_CXXFLAGS) $(CXXFLAGS) -MT ../src/libcodegen_a-CG_stringBuilder.obj -MD -MP -MF ../src/$(DEPDIR)/libcodegen_a-CG_stringBuilder.Tpo -c -o ../src/libcodegen_a-CG_stringBuilder.obj `if test -f '../src/CG_stringBuilder.cc'; then $(CYGPATH_W) '../src/CG_stringBuilder.cc'; else $(CYGPATH_W) '$(srcdir)/../src/CG_stringBuilder.cc'; fi`
-	$(AM_V_at)$(am__mv) ../src/$(DEPDIR)/libcodegen_a-CG_stringBuilder.Tpo ../src/$(DEPDIR)/libcodegen_a-CG_stringBuilder.Po
-#	$(AM_V_CXX)source='../src/CG_stringBuilder.cc' object='../src/libcodegen_a-CG_stringBuilder.obj' libtool=no \
-#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcodegen_a_CPPFLAGS) $(CPPFLAGS) $(libcodegen_a_CXXFLAGS) $(CXXFLAGS) -c -o ../src/libcodegen_a-CG_stringBuilder.obj `if test -f '../src/CG_stringBuilder.cc'; then $(CYGPATH_W) '../src/CG_stringBuilder.cc'; else $(CYGPATH_W) '$(srcdir)/../src/CG_stringBuilder.cc'; fi`
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcodegen_a_CPPFLAGS) $(CPPFLAGS) $(libcodegen_a_CXXFLAGS) $(CXXFLAGS) -c -o ../src/libcodegen_a-CG_stringBuilder.obj `if test -f '../src/CG_stringBuilder.cc'; then $(CYGPATH_W) '../src/CG_stringBuilder.cc'; else $(CYGPATH_W) '$(srcdir)/../src/CG_stringBuilder.cc'; fi`
 
 ../src/libcodegen_a-CG.o: ../src/CG.cc
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcodegen_a_CPPFLAGS) $(CPPFLAGS) $(libcodegen_a_CXXFLAGS) $(CXXFLAGS) -MT ../src/libcodegen_a-CG.o -MD -MP -MF ../src/$(DEPDIR)/libcodegen_a-CG.Tpo -c -o ../src/libcodegen_a-CG.o `test -f '../src/CG.cc' || echo '$(srcdir)/'`../src/CG.cc
-	$(AM_V_at)$(am__mv) ../src/$(DEPDIR)/libcodegen_a-CG.Tpo ../src/$(DEPDIR)/libcodegen_a-CG.Po
-#	$(AM_V_CXX)source='../src/CG.cc' object='../src/libcodegen_a-CG.o' libtool=no \
-#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcodegen_a_CPPFLAGS) $(CPPFLAGS) $(libcodegen_a_CXXFLAGS) $(CXXFLAGS) -c -o ../src/libcodegen_a-CG.o `test -f '../src/CG.cc' || echo '$(srcdir)/'`../src/CG.cc
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcodegen_a_CPPFLAGS) $(CPPFLAGS) $(libcodegen_a_CXXFLAGS) $(CXXFLAGS) -c -o ../src/libcodegen_a-CG.o `test -f '../src/CG.cc' || echo '$(srcdir)/'`../src/CG.cc
 
 ../src/libcodegen_a-CG.obj: ../src/CG.cc
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcodegen_a_CPPFLAGS) $(CPPFLAGS) $(libcodegen_a_CXXFLAGS) $(CXXFLAGS) -MT ../src/libcodegen_a-CG.obj -MD -MP -MF ../src/$(DEPDIR)/libcodegen_a-CG.Tpo -c -o ../src/libcodegen_a-CG.obj `if test -f '../src/CG.cc'; then $(CYGPATH_W) '../src/CG.cc'; else $(CYGPATH_W) '$(srcdir)/../src/CG.cc'; fi`
-	$(AM_V_at)$(am__mv) ../src/$(DEPDIR)/libcodegen_a-CG.Tpo ../src/$(DEPDIR)/libcodegen_a-CG.Po
-#	$(AM_V_CXX)source='../src/CG.cc' object='../src/libcodegen_a-CG.obj' libtool=no \
-#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcodegen_a_CPPFLAGS) $(CPPFLAGS) $(libcodegen_a_CXXFLAGS) $(CXXFLAGS) -c -o ../src/libcodegen_a-CG.obj `if test -f '../src/CG.cc'; then $(CYGPATH_W) '../src/CG.cc'; else $(CYGPATH_W) '$(srcdir)/../src/CG.cc'; fi`
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcodegen_a_CPPFLAGS) $(CPPFLAGS) $(libcodegen_a_CXXFLAGS) $(CXXFLAGS) -c -o ../src/libcodegen_a-CG.obj `if test -f '../src/CG.cc'; then $(CYGPATH_W) '../src/CG.cc'; else $(CYGPATH_W) '$(srcdir)/../src/CG.cc'; fi`
 
 ../src/libcodegen_a-CG_utils.o: ../src/CG_utils.cc
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcodegen_a_CPPFLAGS) $(CPPFLAGS) $(libcodegen_a_CXXFLAGS) $(CXXFLAGS) -MT ../src/libcodegen_a-CG_utils.o -MD -MP -MF ../src/$(DEPDIR)/libcodegen_a-CG_utils.Tpo -c -o ../src/libcodegen_a-CG_utils.o `test -f '../src/CG_utils.cc' || echo '$(srcdir)/'`../src/CG_utils.cc
-	$(AM_V_at)$(am__mv) ../src/$(DEPDIR)/libcodegen_a-CG_utils.Tpo ../src/$(DEPDIR)/libcodegen_a-CG_utils.Po
-#	$(AM_V_CXX)source='../src/CG_utils.cc' object='../src/libcodegen_a-CG_utils.o' libtool=no \
-#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcodegen_a_CPPFLAGS) $(CPPFLAGS) $(libcodegen_a_CXXFLAGS) $(CXXFLAGS) -c -o ../src/libcodegen_a-CG_utils.o `test -f '../src/CG_utils.cc' || echo '$(srcdir)/'`../src/CG_utils.cc
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcodegen_a_CPPFLAGS) $(CPPFLAGS) $(libcodegen_a_CXXFLAGS) $(CXXFLAGS) -c -o ../src/libcodegen_a-CG_utils.o `test -f '../src/CG_utils.cc' || echo '$(srcdir)/'`../src/CG_utils.cc
 
 ../src/libcodegen_a-CG_utils.obj: ../src/CG_utils.cc
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcodegen_a_CPPFLAGS) $(CPPFLAGS) $(libcodegen_a_CXXFLAGS) $(CXXFLAGS) -MT ../src/libcodegen_a-CG_utils.obj -MD -MP -MF ../src/$(DEPDIR)/libcodegen_a-CG_utils.Tpo -c -o ../src/libcodegen_a-CG_utils.obj `if test -f '../src/CG_utils.cc'; then $(CYGPATH_W) '../src/CG_utils.cc'; else $(CYGPATH_W) '$(srcdir)/../src/CG_utils.cc'; fi`
-	$(AM_V_at)$(am__mv) ../src/$(DEPDIR)/libcodegen_a-CG_utils.Tpo ../src/$(DEPDIR)/libcodegen_a-CG_utils.Po
-#	$(AM_V_CXX)source='../src/CG_utils.cc' object='../src/libcodegen_a-CG_utils.obj' libtool=no \
-#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcodegen_a_CPPFLAGS) $(CPPFLAGS) $(libcodegen_a_CXXFLAGS) $(CXXFLAGS) -c -o ../src/libcodegen_a-CG_utils.obj `if test -f '../src/CG_utils.cc'; then $(CYGPATH_W) '../src/CG_utils.cc'; else $(CYGPATH_W) '$(srcdir)/../src/CG_utils.cc'; fi`
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcodegen_a_CPPFLAGS) $(CPPFLAGS) $(libcodegen_a_CXXFLAGS) $(CXXFLAGS) -c -o ../src/libcodegen_a-CG_utils.obj `if test -f '../src/CG_utils.cc'; then $(CYGPATH_W) '../src/CG_utils.cc'; else $(CYGPATH_W) '$(srcdir)/../src/CG_utils.cc'; fi`
+
+$(parser_src)/libcodegen_a-AST.o: $(parser_src)/AST.cc
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcodegen_a_CPPFLAGS) $(CPPFLAGS) $(libcodegen_a_CXXFLAGS) $(CXXFLAGS) -c -o $(parser_src)/libcodegen_a-AST.o `test -f '$(parser_src)/AST.cc' || echo '$(srcdir)/'`$(parser_src)/AST.cc
+
+$(parser_src)/libcodegen_a-AST.obj: $(parser_src)/AST.cc
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcodegen_a_CPPFLAGS) $(CPPFLAGS) $(libcodegen_a_CXXFLAGS) $(CXXFLAGS) -c -o $(parser_src)/libcodegen_a-AST.obj `if test -f '$(parser_src)/AST.cc'; then $(CYGPATH_W) '$(parser_src)/AST.cc'; else $(CYGPATH_W) '$(srcdir)/$(parser_src)/AST.cc'; fi`
+
+$(parser_src)/libcodegen_a-myflex.o: $(parser_src)/myflex.cc
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcodegen_a_CPPFLAGS) $(CPPFLAGS) $(libcodegen_a_CXXFLAGS) $(CXXFLAGS) -c -o $(parser_src)/libcodegen_a-myflex.o `test -f '$(parser_src)/myflex.cc' || echo '$(srcdir)/'`$(parser_src)/myflex.cc
+
+$(parser_src)/libcodegen_a-myflex.obj: $(parser_src)/myflex.cc
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcodegen_a_CPPFLAGS) $(CPPFLAGS) $(libcodegen_a_CXXFLAGS) $(CXXFLAGS) -c -o $(parser_src)/libcodegen_a-myflex.obj `if test -f '$(parser_src)/myflex.cc'; then $(CYGPATH_W) '$(parser_src)/myflex.cc'; else $(CYGPATH_W) '$(srcdir)/$(parser_src)/myflex.cc'; fi`
+
+$(parser_src)/libcodegen_a-lex.yy.o: $(parser_src)/lex.yy.cc
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcodegen_a_CPPFLAGS) $(CPPFLAGS) $(libcodegen_a_CXXFLAGS) $(CXXFLAGS) -c -o $(parser_src)/libcodegen_a-lex.yy.o `test -f '$(parser_src)/lex.yy.cc' || echo '$(srcdir)/'`$(parser_src)/lex.yy.cc
+
+$(parser_src)/libcodegen_a-lex.yy.obj: $(parser_src)/lex.yy.cc
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcodegen_a_CPPFLAGS) $(CPPFLAGS) $(libcodegen_a_CXXFLAGS) $(CXXFLAGS) -c -o $(parser_src)/libcodegen_a-lex.yy.obj `if test -f '$(parser_src)/lex.yy.cc'; then $(CYGPATH_W) '$(parser_src)/lex.yy.cc'; else $(CYGPATH_W) '$(srcdir)/$(parser_src)/lex.yy.cc'; fi`
+
+$(parser_src)/libcodegen_a-parser.tab.o: $(parser_src)/parser.tab.cc
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcodegen_a_CPPFLAGS) $(CPPFLAGS) $(libcodegen_a_CXXFLAGS) $(CXXFLAGS) -c -o $(parser_src)/libcodegen_a-parser.tab.o `test -f '$(parser_src)/parser.tab.cc' || echo '$(srcdir)/'`$(parser_src)/parser.tab.cc
+
+$(parser_src)/libcodegen_a-parser.tab.obj: $(parser_src)/parser.tab.cc
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcodegen_a_CPPFLAGS) $(CPPFLAGS) $(libcodegen_a_CXXFLAGS) $(CXXFLAGS) -c -o $(parser_src)/libcodegen_a-parser.tab.obj `if test -f '$(parser_src)/parser.tab.cc'; then $(CYGPATH_W) '$(parser_src)/parser.tab.cc'; else $(CYGPATH_W) '$(srcdir)/$(parser_src)/parser.tab.cc'; fi`
 
 ID: $(am__tagged_files)
 	$(am__define_uniq_tagged_files); mkid -fID $$unique
@@ -529,8 +514,8 @@ clean-generic:
 distclean-generic:
 	-test -z "$(CONFIG_CLEAN_FILES)" || rm -f $(CONFIG_CLEAN_FILES)
 	-test . = "$(srcdir)" || test -z "$(CONFIG_CLEAN_VPATH_FILES)" || rm -f $(CONFIG_CLEAN_VPATH_FILES)
-	-rm -f ../src/$(DEPDIR)/$(am__dirstamp)
 	-rm -f ../src/$(am__dirstamp)
+	-test -z "$(parser_src)/$(am__dirstamp)" || rm -f $(parser_src)/$(am__dirstamp)
 
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
@@ -540,7 +525,6 @@ clean: clean-am
 clean-am: clean-generic clean-noinstLIBRARIES mostlyclean-am
 
 distclean: distclean-am
-	-rm -rf ../src/$(DEPDIR)
 	-rm -f Makefile
 distclean-am: clean-am distclean-compile distclean-generic \
 	distclean-tags
@@ -586,7 +570,6 @@ install-ps-am:
 installcheck-am:
 
 maintainer-clean: maintainer-clean-am
-	-rm -rf ../src/$(DEPDIR)
 	-rm -f Makefile
 maintainer-clean-am: distclean-am maintainer-clean-generic
 
@@ -621,6 +604,10 @@ uninstall-am:
 
 .PRECIOUS: Makefile
 
+$(parser_src)/lex.yy.cc: $(parser_src)/parser.tab.cc $(parser_src)/parser.ll
+	flex++ -o $(parser_src)/lex.yy.cc $(parser_src)/parser.ll
+$(parser_src)/parser.tab.cc: $(parser_src)/parser.yy
+	bison -t -d -o $(parser_src)/parser.tab.cc $(parser_src)/parser.yy
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

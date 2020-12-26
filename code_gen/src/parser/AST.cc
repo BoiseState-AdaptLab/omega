@@ -11,7 +11,7 @@
  History:
 *****************************************************************************/
 
-#include <omega_calc/AST.h>
+#include <parser/AST.h>
 #include <string.h>
 
 using namespace omega;

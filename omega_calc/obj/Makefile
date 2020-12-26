@@ -99,8 +99,7 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 PROGRAMS = $(noinst_PROGRAMS)
 am__dirstamp = $(am__leading_dot)dirstamp
-am_oc_OBJECTS = ../src/oc-AST.$(OBJEXT) ../src/oc-myflex.$(OBJEXT) \
-	oc-lex.yy.$(OBJEXT) oc-parser.tab.$(OBJEXT)
+am_oc_OBJECTS = ../src/oc-calc.$(OBJEXT)
 oc_OBJECTS = $(am_oc_OBJECTS)
 am__DEPENDENCIES_1 =
 oc_DEPENDENCIES = $(am__DEPENDENCIES_1)
@@ -119,9 +118,8 @@ am__v_at_ = $(am__v_at_$(AM_DEFAULT_VERBOSITY))
 am__v_at_0 = @
 am__v_at_1 = 
 DEFAULT_INCLUDES = -I. -I$(top_builddir)/include
-depcomp = $(SHELL) $(top_srcdir)/depcomp
-am__depfiles_maybe = depfiles
-am__mv = mv -f
+depcomp =
+am__depfiles_maybe =
 AM_V_lt = $(am__v_lt_$(V))
 am__v_lt_ = $(am__v_lt_$(AM_DEFAULT_VERBOSITY))
 am__v_lt_0 = --silent
@@ -165,7 +163,7 @@ am__define_uniq_tagged_files = \
   done | $(am__uniquify_input)`
 ETAGS = etags
 CTAGS = ctags
-am__DIST_COMMON = $(srcdir)/Makefile.in $(top_srcdir)/depcomp
+am__DIST_COMMON = $(srcdir)/Makefile.in
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 ACLOCAL = ${SHELL} /home/tpopoola/research/omega/missing aclocal-1.15
 AMTAR = $${TAR-tar}
@@ -176,16 +174,13 @@ AUTOHEADER = ${SHELL} /home/tpopoola/research/omega/missing autoheader
 AUTOMAKE = ${SHELL} /home/tpopoola/research/omega/missing automake-1.15
 AWK = gawk
 CC = gcc
-CCDEPMODE = depmode=gcc3
 CCLD = $(CXX)
 CFLAGS = -g -O2
 CPPFLAGS = 
 CXX = g++
-CXXDEPMODE = depmode=gcc3
 CXXFLAGS = -g -O2
 CYGPATH_W = echo
 DEFS = -DHAVE_CONFIG_H
-DEPDIR = .deps
 ECHO_C = 
 ECHO_N = -n
 ECHO_T = 
@@ -227,9 +222,7 @@ abs_top_srcdir = /home/tpopoola/research/omega
 ac_ct_AR = ar
 ac_ct_CC = gcc
 ac_ct_CXX = 
-am__include = include
 am__leading_dot = .
-am__quote = 
 am__tar = $${TAR-tar} chof - "$$tardir"
 am__untar = $${TAR-tar} xf -
 bindir = ${exec_prefix}/bin
@@ -266,9 +259,8 @@ top_builddir = ../..
 top_srcdir = ../..
 OC_SRCDIR = $(srcdir)/../src
 build_date = "\"`date +%m/%d/%Y`\""
-BUILT_SOURCES = lex.yy.cc parser.tab.cc
 AM_YFLAGS = -d -t
-EXTRA_DIST = lex.yy.cc parser.tab.cc
+EXTRA_DIST = 
 calc_includes = -I$(OC_SRCDIR) -I$(srcdir)/../include \
 	-I$(srcdir)/../../omega_lib/include \
 	-I$(srcdir)/../../code_gen/include \
@@ -276,16 +268,15 @@ calc_includes = -I$(OC_SRCDIR) -I$(srcdir)/../include \
 
 #calc_libs =../../omega_lib/obj/libomega.a
 #calc_libs+=../../code_gen/obj/libcodegen.a
-calc_libs = -lomega -lcodegen
-calc_lib_paths = -L../../omega_lib/obj -L../../code_gen/obj \
-	-L$(ROSEHOME)/lib -L$(BOOSTHOME)/lib
-oc_SOURCES = ../src/AST.cc ../src/myflex.cc lex.yy.cc parser.tab.cc
+calc_libs = -lcodegen -lomega
+calc_lib_paths = -L../../omega_lib/obj -L../../code_gen/obj
+#calc_lib_paths+=-L$(ROSEHOME)/lib -L$(BOOSTHOME)/lib
+oc_SOURCES = ../src/calc.cc
 oc_LDADD = $(calc_libs)
 oc_LDFLAGS = $(calc_lib_paths)
 oc_CPPFLAGS = $(calc_includes) -DBUILD_CODEGEN -DOMEGA_BUILD_DATE=$(build_date) -DOC_BUILD_DATE=$(build_date)
 oc_CXXFLAGS = -std=c++11
-all: $(BUILT_SOURCES)
-	$(MAKE) $(AM_MAKEFLAGS) all-am
+all: all-am
 
 .SUFFIXES:
 .SUFFIXES: .cc .o .obj
@@ -298,9 +289,9 @@ $(srcdir)/Makefile.in:  $(srcdir)/Makefile.am  $(am__configure_deps)
 	      exit 1;; \
 	  esac; \
 	done; \
-	echo ' cd $(top_srcdir) && $(AUTOMAKE) --foreign omega_calc/obj/Makefile'; \
+	echo ' cd $(top_srcdir) && $(AUTOMAKE) --foreign --ignore-deps omega_calc/obj/Makefile'; \
 	$(am__cd) $(top_srcdir) && \
-	  $(AUTOMAKE) --foreign omega_calc/obj/Makefile
+	  $(AUTOMAKE) --foreign --ignore-deps omega_calc/obj/Makefile
 Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	@case '$?' in \
 	  *config.status*) \
@@ -324,13 +315,7 @@ clean-noinstPROGRAMS:
 ../src/$(am__dirstamp):
 	@$(MKDIR_P) ../src
 	@: > ../src/$(am__dirstamp)
-../src/$(DEPDIR)/$(am__dirstamp):
-	@$(MKDIR_P) ../src/$(DEPDIR)
-	@: > ../src/$(DEPDIR)/$(am__dirstamp)
-../src/oc-AST.$(OBJEXT): ../src/$(am__dirstamp) \
-	../src/$(DEPDIR)/$(am__dirstamp)
-../src/oc-myflex.$(OBJEXT): ../src/$(am__dirstamp) \
-	../src/$(DEPDIR)/$(am__dirstamp)
+../src/oc-calc.$(OBJEXT): ../src/$(am__dirstamp)
 
 oc$(EXEEXT): $(oc_OBJECTS) $(oc_DEPENDENCIES) $(EXTRA_oc_DEPENDENCIES) 
 	@rm -f oc$(EXEEXT)
@@ -343,82 +328,17 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-include ../src/$(DEPDIR)/oc-AST.Po
-include ../src/$(DEPDIR)/oc-myflex.Po
-include ./$(DEPDIR)/oc-lex.yy.Po
-include ./$(DEPDIR)/oc-parser.tab.Po
-
 .cc.o:
-	$(AM_V_CXX)depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.o$$||'`;\
-	$(CXXCOMPILE) -MT $@ -MD -MP -MF $$depbase.Tpo -c -o $@ $< &&\
-	$(am__mv) $$depbase.Tpo $$depbase.Po
-#	$(AM_V_CXX)source='$<' object='$@' libtool=no \
-#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXXCOMPILE) -c -o $@ $<
+	$(AM_V_CXX)$(CXXCOMPILE) -c -o $@ $<
 
 .cc.obj:
-	$(AM_V_CXX)depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.obj$$||'`;\
-	$(CXXCOMPILE) -MT $@ -MD -MP -MF $$depbase.Tpo -c -o $@ `$(CYGPATH_W) '$<'` &&\
-	$(am__mv) $$depbase.Tpo $$depbase.Po
-#	$(AM_V_CXX)source='$<' object='$@' libtool=no \
-#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXXCOMPILE) -c -o $@ `$(CYGPATH_W) '$<'`
+	$(AM_V_CXX)$(CXXCOMPILE) -c -o $@ `$(CYGPATH_W) '$<'`
 
-../src/oc-AST.o: ../src/AST.cc
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(oc_CPPFLAGS) $(CPPFLAGS) $(oc_CXXFLAGS) $(CXXFLAGS) -MT ../src/oc-AST.o -MD -MP -MF ../src/$(DEPDIR)/oc-AST.Tpo -c -o ../src/oc-AST.o `test -f '../src/AST.cc' || echo '$(srcdir)/'`../src/AST.cc
-	$(AM_V_at)$(am__mv) ../src/$(DEPDIR)/oc-AST.Tpo ../src/$(DEPDIR)/oc-AST.Po
-#	$(AM_V_CXX)source='../src/AST.cc' object='../src/oc-AST.o' libtool=no \
-#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(oc_CPPFLAGS) $(CPPFLAGS) $(oc_CXXFLAGS) $(CXXFLAGS) -c -o ../src/oc-AST.o `test -f '../src/AST.cc' || echo '$(srcdir)/'`../src/AST.cc
+../src/oc-calc.o: ../src/calc.cc
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(oc_CPPFLAGS) $(CPPFLAGS) $(oc_CXXFLAGS) $(CXXFLAGS) -c -o ../src/oc-calc.o `test -f '../src/calc.cc' || echo '$(srcdir)/'`../src/calc.cc
 
-../src/oc-AST.obj: ../src/AST.cc
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(oc_CPPFLAGS) $(CPPFLAGS) $(oc_CXXFLAGS) $(CXXFLAGS) -MT ../src/oc-AST.obj -MD -MP -MF ../src/$(DEPDIR)/oc-AST.Tpo -c -o ../src/oc-AST.obj `if test -f '../src/AST.cc'; then $(CYGPATH_W) '../src/AST.cc'; else $(CYGPATH_W) '$(srcdir)/../src/AST.cc'; fi`
-	$(AM_V_at)$(am__mv) ../src/$(DEPDIR)/oc-AST.Tpo ../src/$(DEPDIR)/oc-AST.Po
-#	$(AM_V_CXX)source='../src/AST.cc' object='../src/oc-AST.obj' libtool=no \
-#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(oc_CPPFLAGS) $(CPPFLAGS) $(oc_CXXFLAGS) $(CXXFLAGS) -c -o ../src/oc-AST.obj `if test -f '../src/AST.cc'; then $(CYGPATH_W) '../src/AST.cc'; else $(CYGPATH_W) '$(srcdir)/../src/AST.cc'; fi`
-
-../src/oc-myflex.o: ../src/myflex.cc
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(oc_CPPFLAGS) $(CPPFLAGS) $(oc_CXXFLAGS) $(CXXFLAGS) -MT ../src/oc-myflex.o -MD -MP -MF ../src/$(DEPDIR)/oc-myflex.Tpo -c -o ../src/oc-myflex.o `test -f '../src/myflex.cc' || echo '$(srcdir)/'`../src/myflex.cc
-	$(AM_V_at)$(am__mv) ../src/$(DEPDIR)/oc-myflex.Tpo ../src/$(DEPDIR)/oc-myflex.Po
-#	$(AM_V_CXX)source='../src/myflex.cc' object='../src/oc-myflex.o' libtool=no \
-#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(oc_CPPFLAGS) $(CPPFLAGS) $(oc_CXXFLAGS) $(CXXFLAGS) -c -o ../src/oc-myflex.o `test -f '../src/myflex.cc' || echo '$(srcdir)/'`../src/myflex.cc
-
-../src/oc-myflex.obj: ../src/myflex.cc
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(oc_CPPFLAGS) $(CPPFLAGS) $(oc_CXXFLAGS) $(CXXFLAGS) -MT ../src/oc-myflex.obj -MD -MP -MF ../src/$(DEPDIR)/oc-myflex.Tpo -c -o ../src/oc-myflex.obj `if test -f '../src/myflex.cc'; then $(CYGPATH_W) '../src/myflex.cc'; else $(CYGPATH_W) '$(srcdir)/../src/myflex.cc'; fi`
-	$(AM_V_at)$(am__mv) ../src/$(DEPDIR)/oc-myflex.Tpo ../src/$(DEPDIR)/oc-myflex.Po
-#	$(AM_V_CXX)source='../src/myflex.cc' object='../src/oc-myflex.obj' libtool=no \
-#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(oc_CPPFLAGS) $(CPPFLAGS) $(oc_CXXFLAGS) $(CXXFLAGS) -c -o ../src/oc-myflex.obj `if test -f '../src/myflex.cc'; then $(CYGPATH_W) '../src/myflex.cc'; else $(CYGPATH_W) '$(srcdir)/../src/myflex.cc'; fi`
-
-oc-lex.yy.o: lex.yy.cc
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(oc_CPPFLAGS) $(CPPFLAGS) $(oc_CXXFLAGS) $(CXXFLAGS) -MT oc-lex.yy.o -MD -MP -MF $(DEPDIR)/oc-lex.yy.Tpo -c -o oc-lex.yy.o `test -f 'lex.yy.cc' || echo '$(srcdir)/'`lex.yy.cc
-	$(AM_V_at)$(am__mv) $(DEPDIR)/oc-lex.yy.Tpo $(DEPDIR)/oc-lex.yy.Po
-#	$(AM_V_CXX)source='lex.yy.cc' object='oc-lex.yy.o' libtool=no \
-#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(oc_CPPFLAGS) $(CPPFLAGS) $(oc_CXXFLAGS) $(CXXFLAGS) -c -o oc-lex.yy.o `test -f 'lex.yy.cc' || echo '$(srcdir)/'`lex.yy.cc
-
-oc-lex.yy.obj: lex.yy.cc
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(oc_CPPFLAGS) $(CPPFLAGS) $(oc_CXXFLAGS) $(CXXFLAGS) -MT oc-lex.yy.obj -MD -MP -MF $(DEPDIR)/oc-lex.yy.Tpo -c -o oc-lex.yy.obj `if test -f 'lex.yy.cc'; then $(CYGPATH_W) 'lex.yy.cc'; else $(CYGPATH_W) '$(srcdir)/lex.yy.cc'; fi`
-	$(AM_V_at)$(am__mv) $(DEPDIR)/oc-lex.yy.Tpo $(DEPDIR)/oc-lex.yy.Po
-#	$(AM_V_CXX)source='lex.yy.cc' object='oc-lex.yy.obj' libtool=no \
-#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(oc_CPPFLAGS) $(CPPFLAGS) $(oc_CXXFLAGS) $(CXXFLAGS) -c -o oc-lex.yy.obj `if test -f 'lex.yy.cc'; then $(CYGPATH_W) 'lex.yy.cc'; else $(CYGPATH_W) '$(srcdir)/lex.yy.cc'; fi`
-
-oc-parser.tab.o: parser.tab.cc
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(oc_CPPFLAGS) $(CPPFLAGS) $(oc_CXXFLAGS) $(CXXFLAGS) -MT oc-parser.tab.o -MD -MP -MF $(DEPDIR)/oc-parser.tab.Tpo -c -o oc-parser.tab.o `test -f 'parser.tab.cc' || echo '$(srcdir)/'`parser.tab.cc
-	$(AM_V_at)$(am__mv) $(DEPDIR)/oc-parser.tab.Tpo $(DEPDIR)/oc-parser.tab.Po
-#	$(AM_V_CXX)source='parser.tab.cc' object='oc-parser.tab.o' libtool=no \
-#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(oc_CPPFLAGS) $(CPPFLAGS) $(oc_CXXFLAGS) $(CXXFLAGS) -c -o oc-parser.tab.o `test -f 'parser.tab.cc' || echo '$(srcdir)/'`parser.tab.cc
-
-oc-parser.tab.obj: parser.tab.cc
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(oc_CPPFLAGS) $(CPPFLAGS) $(oc_CXXFLAGS) $(CXXFLAGS) -MT oc-parser.tab.obj -MD -MP -MF $(DEPDIR)/oc-parser.tab.Tpo -c -o oc-parser.tab.obj `if test -f 'parser.tab.cc'; then $(CYGPATH_W) 'parser.tab.cc'; else $(CYGPATH_W) '$(srcdir)/parser.tab.cc'; fi`
-	$(AM_V_at)$(am__mv) $(DEPDIR)/oc-parser.tab.Tpo $(DEPDIR)/oc-parser.tab.Po
-#	$(AM_V_CXX)source='parser.tab.cc' object='oc-parser.tab.obj' libtool=no \
-#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(oc_CPPFLAGS) $(CPPFLAGS) $(oc_CXXFLAGS) $(CXXFLAGS) -c -o oc-parser.tab.obj `if test -f 'parser.tab.cc'; then $(CYGPATH_W) 'parser.tab.cc'; else $(CYGPATH_W) '$(srcdir)/parser.tab.cc'; fi`
+../src/oc-calc.obj: ../src/calc.cc
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(oc_CPPFLAGS) $(CPPFLAGS) $(oc_CXXFLAGS) $(CXXFLAGS) -c -o ../src/oc-calc.obj `if test -f '../src/calc.cc'; then $(CYGPATH_W) '../src/calc.cc'; else $(CYGPATH_W) '$(srcdir)/../src/calc.cc'; fi`
 
 ID: $(am__tagged_files)
 	$(am__define_uniq_tagged_files); mkid -fID $$unique
@@ -503,12 +423,10 @@ distdir: $(DISTFILES)
 	  fi; \
 	done
 check-am: all-am
-check: $(BUILT_SOURCES)
-	$(MAKE) $(AM_MAKEFLAGS) check-am
+check: check-am
 all-am: Makefile $(PROGRAMS)
 installdirs:
-install: $(BUILT_SOURCES)
-	$(MAKE) $(AM_MAKEFLAGS) install-am
+install: install-am
 install-exec: install-exec-am
 install-data: install-data-am
 uninstall: uninstall-am
@@ -534,19 +452,16 @@ clean-generic:
 distclean-generic:
 	-test -z "$(CONFIG_CLEAN_FILES)" || rm -f $(CONFIG_CLEAN_FILES)
 	-test . = "$(srcdir)" || test -z "$(CONFIG_CLEAN_VPATH_FILES)" || rm -f $(CONFIG_CLEAN_VPATH_FILES)
-	-rm -f ../src/$(DEPDIR)/$(am__dirstamp)
 	-rm -f ../src/$(am__dirstamp)
 
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
 	@echo "it deletes files that may require special tools to rebuild."
-	-test -z "$(BUILT_SOURCES)" || rm -f $(BUILT_SOURCES)
 clean: clean-am
 
 clean-am: clean-generic clean-noinstPROGRAMS mostlyclean-am
 
 distclean: distclean-am
-	-rm -rf ../src/$(DEPDIR) ./$(DEPDIR)
 	-rm -f Makefile
 distclean-am: clean-am distclean-compile distclean-generic \
 	distclean-tags
@@ -592,7 +507,6 @@ install-ps-am:
 installcheck-am:
 
 maintainer-clean: maintainer-clean-am
-	-rm -rf ../src/$(DEPDIR) ./$(DEPDIR)
 	-rm -f Makefile
 maintainer-clean-am: distclean-am maintainer-clean-generic
 
@@ -610,7 +524,7 @@ ps-am:
 
 uninstall-am:
 
-.MAKE: all check install install-am install-strip
+.MAKE: install-am install-strip
 
 .PHONY: CTAGS GTAGS TAGS all all-am check check-am clean clean-generic \
 	clean-noinstPROGRAMS cscopelist-am ctags ctags-am distclean \
@@ -627,10 +541,9 @@ uninstall-am:
 
 .PRECIOUS: Makefile
 
-lex.yy.cc: parser.tab.cc $(OC_SRCDIR)/parser.ll
-	flex++ -o lex.yy.cc $(OC_SRCDIR)/parser.ll
-parser.tab.cc: $(OC_SRCDIR)/parser.yy
-	bison -t -d -o parser.tab.cc $(OC_SRCDIR)/parser.yy
+
+#../src/calc.o: ../src/calc.cc
+#        $(CC) $(CFLAGS) -DOMEGA_BUILD_DATE="\"$(OMEGA_BUILD_DATE)\"" $(INCL_PATH) -c $<
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

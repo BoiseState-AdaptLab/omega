@@ -70,32 +70,30 @@ PATH: /home/tpopoola/llvm/llvm_build/bin
 ## Core tests. ##
 ## ----------- ##
 
-configure:1940: checking for a BSD-compatible install
-configure:2008: result: /usr/bin/install -c
-configure:2019: checking whether build environment is sane
-configure:2074: result: yes
-configure:2225: checking for a thread-safe mkdir -p
-configure:2264: result: /usr/bin/mkdir -p
-configure:2271: checking for gawk
-configure:2287: found /usr/bin/gawk
-configure:2298: result: gawk
-configure:2309: checking whether make sets $(MAKE)
-configure:2331: result: yes
-configure:2360: checking whether make supports nested variables
-configure:2377: result: yes
-configure:2523: checking for style of include used by make
-configure:2551: result: GNU
-configure:2622: checking for gcc
-configure:2649: result: gcc
-configure:2878: checking for C compiler version
-configure:2887: gcc --version >&5
+configure:1922: checking for a BSD-compatible install
+configure:1990: result: /usr/bin/install -c
+configure:2001: checking whether build environment is sane
+configure:2056: result: yes
+configure:2207: checking for a thread-safe mkdir -p
+configure:2246: result: /usr/bin/mkdir -p
+configure:2253: checking for gawk
+configure:2269: found /usr/bin/gawk
+configure:2280: result: gawk
+configure:2291: checking whether make sets $(MAKE)
+configure:2313: result: yes
+configure:2342: checking whether make supports nested variables
+configure:2359: result: yes
+configure:2541: checking for gcc
+configure:2568: result: gcc
+configure:2797: checking for C compiler version
+configure:2806: gcc --version >&5
 gcc (GCC) 7.2.0
 Copyright (C) 2017 Free Software Foundation, Inc.
 This is free software; see the source for copying conditions.  There is NO
 warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
-configure:2898: $? = 0
-configure:2887: gcc -v >&5
+configure:2817: $? = 0
+configure:2806: gcc -v >&5
 Using built-in specs.
 COLLECT_GCC=gcc
 COLLECT_LTO_WRAPPER=/cm/local/apps/gcc/7.2.0/libexec/gcc/x86_64-pc-linux-gnu/7.2.0/lto-wrapper
@@ -103,83 +101,81 @@ Target: x86_64-pc-linux-gnu
 Configured with: ../gcc-7.2.0/configure --prefix=/cm/local/apps/gcc/7.2.0 --enable-languages=c,c++,fortran --with-gmp-include=/root/rpmbuild/BUILD/gcc-7.2.0-obj/../gcc-7.2.0/our-gmp --with-gmp-lib=/root/rpmbuild/BUILD/gcc-7.2.0-obj/../gcc-7.2.0/our-gmp/.libs --with-mpc-include=/root/rpmbuild/BUILD/gcc-7.2.0-obj/../gcc-7.2.0/our-mpc/src --with-mpc-lib=/root/rpmbuild/BUILD/gcc-7.2.0-obj/../gcc-7.2.0/our-mpc/src/.libs --with-mpfr-include=/root/rpmbuild/BUILD/gcc-7.2.0-obj/../gcc-7.2.0/our-mpfr/src --with-mpfr-lib=/root/rpmbuild/BUILD/gcc-7.2.0-obj/../gcc-7.2.0/our-mpfr/src/.libs
 Thread model: posix
 gcc version 7.2.0 (GCC) 
-configure:2898: $? = 0
-configure:2887: gcc -V >&5
+configure:2817: $? = 0
+configure:2806: gcc -V >&5
 gcc: error: unrecognized command line option '-V'
 gcc: fatal error: no input files
 compilation terminated.
-configure:2898: $? = 1
-configure:2887: gcc -qversion >&5
+configure:2817: $? = 1
+configure:2806: gcc -qversion >&5
 gcc: error: unrecognized command line option '-qversion'; did you mean '--version'?
 gcc: fatal error: no input files
 compilation terminated.
-configure:2898: $? = 1
-configure:2918: checking whether the C compiler works
-configure:2940: gcc    conftest.c  >&5
-configure:2944: $? = 0
-configure:2992: result: yes
-configure:2995: checking for C compiler default output file name
-configure:2997: result: a.out
-configure:3003: checking for suffix of executables
-configure:3010: gcc -o conftest    conftest.c  >&5
-configure:3014: $? = 0
-configure:3036: result: 
-configure:3058: checking whether we are cross compiling
-configure:3066: gcc -o conftest    conftest.c  >&5
-configure:3070: $? = 0
-configure:3077: ./conftest
-configure:3081: $? = 0
-configure:3096: result: no
-configure:3101: checking for suffix of object files
-configure:3123: gcc -c   conftest.c >&5
-configure:3127: $? = 0
-configure:3148: result: o
-configure:3152: checking whether we are using the GNU C compiler
-configure:3171: gcc -c   conftest.c >&5
-configure:3171: $? = 0
-configure:3180: result: yes
-configure:3189: checking whether gcc accepts -g
-configure:3209: gcc -c -g  conftest.c >&5
-configure:3209: $? = 0
-configure:3250: result: yes
-configure:3267: checking for gcc option to accept ISO C89
-configure:3330: gcc  -c -g -O2  conftest.c >&5
-configure:3330: $? = 0
-configure:3343: result: none needed
-configure:3368: checking whether gcc understands -c and -o together
-configure:3390: gcc -c conftest.c -o conftest2.o
-configure:3393: $? = 0
-configure:3390: gcc -c conftest.c -o conftest2.o
-configure:3393: $? = 0
-configure:3405: result: yes
-configure:3424: checking dependency style of gcc
-configure:3535: result: gcc3
-configure:3600: checking for ar
-configure:3616: found /usr/bin/ar
-configure:3627: result: ar
-configure:3653: checking the archiver (ar) interface
-configure:3669: gcc -c -g -O2  conftest.c >&5
-configure:3669: $? = 0
-configure:3671: ar cru libconftest.a conftest.o >&5
-configure:3674: $? = 0
-configure:3702: result: ar
-configure:3726: checking for flex
-configure:3742: found /usr/bin/flex
-configure:3753: result: flex
-configure:3791: flex conftest.l
-configure:3795: $? = 0
-configure:3797: checking lex output file root
-configure:3811: result: lex.yy
-configure:3816: checking lex library
-configure:3830: gcc -o conftest -g -O2   conftest.c   >&5
-/tmp/cc09Hags.o: In function `input':
+configure:2817: $? = 1
+configure:2837: checking whether the C compiler works
+configure:2859: gcc    conftest.c  >&5
+configure:2863: $? = 0
+configure:2911: result: yes
+configure:2914: checking for C compiler default output file name
+configure:2916: result: a.out
+configure:2922: checking for suffix of executables
+configure:2929: gcc -o conftest    conftest.c  >&5
+configure:2933: $? = 0
+configure:2955: result: 
+configure:2977: checking whether we are cross compiling
+configure:2985: gcc -o conftest    conftest.c  >&5
+configure:2989: $? = 0
+configure:2996: ./conftest
+configure:3000: $? = 0
+configure:3015: result: no
+configure:3020: checking for suffix of object files
+configure:3042: gcc -c   conftest.c >&5
+configure:3046: $? = 0
+configure:3067: result: o
+configure:3071: checking whether we are using the GNU C compiler
+configure:3090: gcc -c   conftest.c >&5
+configure:3090: $? = 0
+configure:3099: result: yes
+configure:3108: checking whether gcc accepts -g
+configure:3128: gcc -c -g  conftest.c >&5
+configure:3128: $? = 0
+configure:3169: result: yes
+configure:3186: checking for gcc option to accept ISO C89
+configure:3249: gcc  -c -g -O2  conftest.c >&5
+configure:3249: $? = 0
+configure:3262: result: none needed
+configure:3287: checking whether gcc understands -c and -o together
+configure:3309: gcc -c conftest.c -o conftest2.o
+configure:3312: $? = 0
+configure:3309: gcc -c conftest.c -o conftest2.o
+configure:3312: $? = 0
+configure:3324: result: yes
+configure:3391: checking for ar
+configure:3407: found /usr/bin/ar
+configure:3418: result: ar
+configure:3444: checking the archiver (ar) interface
+configure:3460: gcc -c -g -O2  conftest.c >&5
+configure:3460: $? = 0
+configure:3462: ar cru libconftest.a conftest.o >&5
+configure:3465: $? = 0
+configure:3493: result: ar
+configure:3517: checking for flex
+configure:3533: found /usr/bin/flex
+configure:3544: result: flex
+configure:3582: flex conftest.l
+configure:3586: $? = 0
+configure:3588: checking lex output file root
+configure:3602: result: lex.yy
+configure:3607: checking lex library
+configure:3621: gcc -o conftest -g -O2   conftest.c   >&5
+/tmp/ccZU6yiG.o: In function `input':
 /home/tpopoola/research/omega/lex.yy.c:1170: undefined reference to `yywrap'
-/tmp/cc09Hags.o: In function `yylex':
+/tmp/ccZU6yiG.o: In function `yylex':
 /home/tpopoola/research/omega/lex.yy.c:869: undefined reference to `yywrap'
-/tmp/cc09Hags.o: In function `main':
+/tmp/ccZU6yiG.o: In function `main':
 /home/tpopoola/research/omega/conftest.l:18: undefined reference to `yywrap'
 collect2: error: ld returned 1 exit status
-configure:3830: $? = 1
+configure:3621: $? = 1
 configure: failed program was:
 | /* confdefs.h */
 | #define PACKAGE_NAME "omega"
@@ -1961,10 +1957,10 @@ configure: failed program was:
 | {
 |   return ! yylex () + ! yywrap ();
 | }
-configure:3830: gcc -o conftest -g -O2   conftest.c -lfl  >&5
+configure:3621: gcc -o conftest -g -O2   conftest.c -lfl  >&5
 /usr/bin/ld: cannot find -lfl
 collect2: error: ld returned 1 exit status
-configure:3830: $? = 1
+configure:3621: $? = 1
 configure: failed program was:
 | /* confdefs.h */
 | #define PACKAGE_NAME "omega"
@@ -3746,10 +3742,10 @@ configure: failed program was:
 | {
 |   return ! yylex () + ! yywrap ();
 | }
-configure:3830: gcc -o conftest -g -O2   conftest.c -ll  >&5
+configure:3621: gcc -o conftest -g -O2   conftest.c -ll  >&5
 /usr/bin/ld: cannot find -ll
 collect2: error: ld returned 1 exit status
-configure:3830: $? = 1
+configure:3621: $? = 1
 configure: failed program was:
 | /* confdefs.h */
 | #define PACKAGE_NAME "omega"
@@ -5531,17 +5527,17 @@ configure: failed program was:
 | {
 |   return ! yylex () + ! yywrap ();
 | }
-configure:3840: result: none needed
-configure:3846: checking whether yytext is a pointer
-configure:3863: gcc -o conftest -g -O2   conftest.c   >&5
-/tmp/ccEI4dxi.o: In function `input':
+configure:3631: result: none needed
+configure:3637: checking whether yytext is a pointer
+configure:3654: gcc -o conftest -g -O2   conftest.c   >&5
+/tmp/ccnbmfbx.o: In function `input':
 /home/tpopoola/research/omega/lex.yy.c:1170: undefined reference to `yywrap'
-/tmp/ccEI4dxi.o: In function `yylex':
+/tmp/ccnbmfbx.o: In function `yylex':
 /home/tpopoola/research/omega/lex.yy.c:869: undefined reference to `yywrap'
-/tmp/ccEI4dxi.o: In function `main':
+/tmp/ccnbmfbx.o: In function `main':
 /home/tpopoola/research/omega/conftest.l:18: undefined reference to `yywrap'
 collect2: error: ld returned 1 exit status
-configure:3863: $? = 1
+configure:3654: $? = 1
 configure: failed program was:
 | /* confdefs.h */
 | #define PACKAGE_NAME "omega"
@@ -7325,18 +7321,18 @@ configure: failed program was:
 | {
 |   return ! yylex () + ! yywrap ();
 | }
-configure:3871: result: no
-configure:3932: checking for gcc
-configure:3959: result: gcc
-configure:4188: checking for C compiler version
-configure:4197: gcc --version >&5
+configure:3662: result: no
+configure:3723: checking for gcc
+configure:3750: result: gcc
+configure:3979: checking for C compiler version
+configure:3988: gcc --version >&5
 gcc (GCC) 7.2.0
 Copyright (C) 2017 Free Software Foundation, Inc.
 This is free software; see the source for copying conditions.  There is NO
 warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
-configure:4208: $? = 0
-configure:4197: gcc -v >&5
+configure:3999: $? = 0
+configure:3988: gcc -v >&5
 Using built-in specs.
 COLLECT_GCC=gcc
 COLLECT_LTO_WRAPPER=/cm/local/apps/gcc/7.2.0/libexec/gcc/x86_64-pc-linux-gnu/7.2.0/lto-wrapper
@@ -7344,36 +7340,34 @@ Target: x86_64-pc-linux-gnu
 Configured with: ../gcc-7.2.0/configure --prefix=/cm/local/apps/gcc/7.2.0 --enable-languages=c,c++,fortran --with-gmp-include=/root/rpmbuild/BUILD/gcc-7.2.0-obj/../gcc-7.2.0/our-gmp --with-gmp-lib=/root/rpmbuild/BUILD/gcc-7.2.0-obj/../gcc-7.2.0/our-gmp/.libs --with-mpc-include=/root/rpmbuild/BUILD/gcc-7.2.0-obj/../gcc-7.2.0/our-mpc/src --with-mpc-lib=/root/rpmbuild/BUILD/gcc-7.2.0-obj/../gcc-7.2.0/our-mpc/src/.libs --with-mpfr-include=/root/rpmbuild/BUILD/gcc-7.2.0-obj/../gcc-7.2.0/our-mpfr/src --with-mpfr-lib=/root/rpmbuild/BUILD/gcc-7.2.0-obj/../gcc-7.2.0/our-mpfr/src/.libs
 Thread model: posix
 gcc version 7.2.0 (GCC) 
-configure:4208: $? = 0
-configure:4197: gcc -V >&5
+configure:3999: $? = 0
+configure:3988: gcc -V >&5
 gcc: error: unrecognized command line option '-V'
 gcc: fatal error: no input files
 compilation terminated.
-configure:4208: $? = 1
-configure:4197: gcc -qversion >&5
+configure:3999: $? = 1
+configure:3988: gcc -qversion >&5
 gcc: error: unrecognized command line option '-qversion'; did you mean '--version'?
 gcc: fatal error: no input files
 compilation terminated.
-configure:4208: $? = 1
-configure:4212: checking whether we are using the GNU C compiler
-configure:4240: result: yes
-configure:4249: checking whether gcc accepts -g
-configure:4310: result: yes
-configure:4327: checking for gcc option to accept ISO C89
-configure:4403: result: none needed
-configure:4428: checking whether gcc understands -c and -o together
-configure:4465: result: yes
-configure:4484: checking dependency style of gcc
-configure:4595: result: gcc3
-configure:4722: checking for C++ compiler version
-configure:4731: g++ --version >&5
+configure:3999: $? = 1
+configure:4003: checking whether we are using the GNU C compiler
+configure:4031: result: yes
+configure:4040: checking whether gcc accepts -g
+configure:4101: result: yes
+configure:4118: checking for gcc option to accept ISO C89
+configure:4194: result: none needed
+configure:4219: checking whether gcc understands -c and -o together
+configure:4256: result: yes
+configure:4385: checking for C++ compiler version
+configure:4394: g++ --version >&5
 g++ (GCC) 7.2.0
 Copyright (C) 2017 Free Software Foundation, Inc.
 This is free software; see the source for copying conditions.  There is NO
 warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
-configure:4742: $? = 0
-configure:4731: g++ -v >&5
+configure:4405: $? = 0
+configure:4394: g++ -v >&5
 Using built-in specs.
 COLLECT_GCC=g++
 COLLECT_LTO_WRAPPER=/cm/local/apps/gcc/7.2.0/libexec/gcc/x86_64-pc-linux-gnu/7.2.0/lto-wrapper
@@ -7381,36 +7375,34 @@ Target: x86_64-pc-linux-gnu
 Configured with: ../gcc-7.2.0/configure --prefix=/cm/local/apps/gcc/7.2.0 --enable-languages=c,c++,fortran --with-gmp-include=/root/rpmbuild/BUILD/gcc-7.2.0-obj/../gcc-7.2.0/our-gmp --with-gmp-lib=/root/rpmbuild/BUILD/gcc-7.2.0-obj/../gcc-7.2.0/our-gmp/.libs --with-mpc-include=/root/rpmbuild/BUILD/gcc-7.2.0-obj/../gcc-7.2.0/our-mpc/src --with-mpc-lib=/root/rpmbuild/BUILD/gcc-7.2.0-obj/../gcc-7.2.0/our-mpc/src/.libs --with-mpfr-include=/root/rpmbuild/BUILD/gcc-7.2.0-obj/../gcc-7.2.0/our-mpfr/src --with-mpfr-lib=/root/rpmbuild/BUILD/gcc-7.2.0-obj/../gcc-7.2.0/our-mpfr/src/.libs
 Thread model: posix
 gcc version 7.2.0 (GCC) 
-configure:4742: $? = 0
-configure:4731: g++ -V >&5
+configure:4405: $? = 0
+configure:4394: g++ -V >&5
 g++: error: unrecognized command line option '-V'
 g++: fatal error: no input files
 compilation terminated.
-configure:4742: $? = 1
-configure:4731: g++ -qversion >&5
+configure:4405: $? = 1
+configure:4394: g++ -qversion >&5
 g++: error: unrecognized command line option '-qversion'; did you mean '--version'?
 g++: fatal error: no input files
 compilation terminated.
-configure:4742: $? = 1
-configure:4746: checking whether we are using the GNU C++ compiler
-configure:4765: g++ -c   conftest.cpp >&5
-configure:4765: $? = 0
-configure:4774: result: yes
-configure:4783: checking whether g++ accepts -g
-configure:4803: g++ -c -g  conftest.cpp >&5
-configure:4803: $? = 0
-configure:4844: result: yes
-configure:4869: checking dependency style of g++
-configure:4980: result: gcc3
-configure:5038: checking for ranlib
-configure:5054: found /usr/bin/ranlib
-configure:5065: result: ranlib
-configure:5091: checking for bison
-configure:5107: found /usr/bin/bison
-configure:5118: result: bison -y
-configure:5245: checking that generated files are newer than configure
-configure:5251: result: done
-configure:5282: creating ./config.status
+configure:4405: $? = 1
+configure:4409: checking whether we are using the GNU C++ compiler
+configure:4428: g++ -c   conftest.cpp >&5
+configure:4428: $? = 0
+configure:4437: result: yes
+configure:4446: checking whether g++ accepts -g
+configure:4466: g++ -c -g  conftest.cpp >&5
+configure:4466: $? = 0
+configure:4507: result: yes
+configure:4573: checking for ranlib
+configure:4589: found /usr/bin/ranlib
+configure:4600: result: ranlib
+configure:4626: checking for bison
+configure:4642: found /usr/bin/bison
+configure:4653: result: bison -y
+configure:4780: checking that generated files are newer than configure
+configure:4786: result: done
+configure:4801: creating ./config.status
 
 ## ---------------------- ##
 ## Running config.status. ##
@@ -7427,11 +7419,11 @@ generated by GNU Autoconf 2.69.  Invocation command line was
 
 on r2
 
-config.status:857: creating omega_lib/obj/Makefile
-config.status:857: creating omega_calc/obj/Makefile
-config.status:857: creating code_gen/obj/Makefile
-config.status:857: creating include/config.h
-config.status:1086: executing depfiles commands
+config.status:833: creating omega_lib/obj/Makefile
+config.status:833: creating omega_calc/obj/Makefile
+config.status:833: creating code_gen/obj/Makefile
+config.status:833: creating include/config.h
+config.status:1014: include/config.h is unchanged
 
 ## ---------------- ##
 ## Cache variables. ##
@@ -7481,8 +7473,6 @@ ac_cv_prog_cxx_g=yes
 ac_cv_prog_lex_root=lex.yy
 ac_cv_prog_lex_yytext_pointer=no
 ac_cv_prog_make_make_set=yes
-am_cv_CC_dependencies_compiler_type=gcc3
-am_cv_CXX_dependencies_compiler_type=gcc3
 am_cv_ar_interface=ar
 am_cv_make_support_nested_variables=yes
 am_cv_prog_cc_c_o=yes
@@ -7492,9 +7482,6 @@ am_cv_prog_cc_c_o=yes
 ## ----------------- ##
 
 ACLOCAL='${SHELL} /home/tpopoola/research/omega/missing aclocal-1.15'
-AMDEPBACKSLASH='\'
-AMDEP_FALSE='#'
-AMDEP_TRUE=''
 AMTAR='$${TAR-tar}'
 AM_BACKSLASH='\'
 AM_DEFAULT_V='$(AM_DEFAULT_VERBOSITY)'
@@ -7506,16 +7493,13 @@ AUTOHEADER='${SHELL} /home/tpopoola/research/omega/missing autoheader'
 AUTOMAKE='${SHELL} /home/tpopoola/research/omega/missing automake-1.15'
 AWK='gawk'
 CC='gcc'
-CCDEPMODE='depmode=gcc3'
 CCLD='$(CXX)'
 CFLAGS='-g -O2'
 CPPFLAGS=''
 CXX='g++'
-CXXDEPMODE='depmode=gcc3'
 CXXFLAGS='-g -O2'
 CYGPATH_W='echo'
 DEFS='-DHAVE_CONFIG_H'
-DEPDIR='.deps'
 ECHO_C=''
 ECHO_N='-n'
 ECHO_T=''
@@ -7554,15 +7538,8 @@ ac_ct_CC='gcc'
 ac_ct_CXX=''
 am__EXEEXT_FALSE=''
 am__EXEEXT_TRUE='#'
-am__fastdepCC_FALSE='#'
-am__fastdepCC_TRUE=''
-am__fastdepCXX_FALSE='#'
-am__fastdepCXX_TRUE=''
-am__include='include'
 am__isrc=''
 am__leading_dot='.'
-am__nodep='_no'
-am__quote=''
 am__tar='$${TAR-tar} chof - "$$tardir"'
 am__untar='$${TAR-tar} xf -'
 bindir='${exec_prefix}/bin'
@@ -7609,3 +7586,71 @@ target_alias=''
 #define OMEGA_VERSION "0.1.0"
 
 configure: exit 0
+
+## ---------------------- ##
+## Running config.status. ##
+## ---------------------- ##
+
+This file was extended by omega config.status 0.1.0, which was
+generated by GNU Autoconf 2.69.  Invocation command line was
+
+  CONFIG_FILES    = 
+  CONFIG_HEADERS  = 
+  CONFIG_LINKS    = 
+  CONFIG_COMMANDS = 
+  $ ./config.status omega_calc/obj/Makefile
+
+on r2
+
+config.status:833: creating omega_calc/obj/Makefile
+
+## ---------------------- ##
+## Running config.status. ##
+## ---------------------- ##
+
+This file was extended by omega config.status 0.1.0, which was
+generated by GNU Autoconf 2.69.  Invocation command line was
+
+  CONFIG_FILES    = 
+  CONFIG_HEADERS  = 
+  CONFIG_LINKS    = 
+  CONFIG_COMMANDS = 
+  $ ./config.status omega_calc/obj/Makefile
+
+on r2
+
+config.status:833: creating omega_calc/obj/Makefile
+
+## ---------------------- ##
+## Running config.status. ##
+## ---------------------- ##
+
+This file was extended by omega config.status 0.1.0, which was
+generated by GNU Autoconf 2.69.  Invocation command line was
+
+  CONFIG_FILES    = 
+  CONFIG_HEADERS  = 
+  CONFIG_LINKS    = 
+  CONFIG_COMMANDS = 
+  $ ./config.status omega_calc/obj/Makefile
+
+on r2
+
+config.status:833: creating omega_calc/obj/Makefile
+
+## ---------------------- ##
+## Running config.status. ##
+## ---------------------- ##
+
+This file was extended by omega config.status 0.1.0, which was
+generated by GNU Autoconf 2.69.  Invocation command line was
+
+  CONFIG_FILES    = 
+  CONFIG_HEADERS  = 
+  CONFIG_LINKS    = 
+  CONFIG_COMMANDS = 
+  $ ./config.status omega_calc/obj/Makefile
+
+on r2
+
+config.status:833: creating omega_calc/obj/Makefile

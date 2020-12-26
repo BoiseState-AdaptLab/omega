@@ -11,12 +11,19 @@
  History:
    02/04/11 work with flex c++ mode, Chun Chen
 *****************************************************************************/
-
+%define api.prefix {omega}
 %{
+// Quick fix to prevent issues with 
+// prefix renaming #includes such as
+// changing yylex to omegalex in myflex.h.
+#ifdef yylex
+#undef yylex
+#endif
+
 //#define YYDEBUG 1
 #include <basic/Dynamic_Array.h>
 #include <basic/Iterator.h>
-#include <omega_calc/AST.h>
+#include <parser/AST.h>
 #include <omega/hull.h>
 #include <omega/closure.h>
 #include <omega/reach.h>
@@ -24,7 +31,7 @@
 #include <iostream>
 #include <fstream>
 #include "parser.tab.hh"
-#include <omega_calc/myflex.h>
+#include <parser/myflex.h>
 //#include <stdio.h>
 
 #if defined __USE_POSIX
@@ -73,27 +80,31 @@ int clock_diff( void ) {
 
 extern myFlexLexer mylexer;
 #define yylex mylexer.yylex
-
+#define yyerror omegaerror
+namespace omega{ namespace parser {
+    Relation * relation_result = NULL;
+    bool need_coef;
+    std::map<std::string, Relation *> relationMap;
+    Relation * ParseRelation(std::string relationString);
+  } 
+}
   
 
 
-int omega_calc_debug = 0;
+int parser_debug = 0;
 
 extern bool is_interactive;
 extern const char *PROMPT_STRING;
 bool simplify = true;
 using namespace omega;
-
+using namespace omega::parser;
 extern std::string err_msg;
-
-bool need_coef;
 
 namespace {
   int redundant_conj_level = 2;  // default maximum 2
   int redundant_constr_level = 4;  // default maximum 4
 }
 
-std::map<std::string, Relation *> relationMap;
 int argCount = 0;
 int tuplePos = 0;
 Argument_Tuple currentTuple = Input_Tuple;
@@ -1839,72 +1850,18 @@ void yyerror(const std::string &s) {
   err_msg = ss.str();
 }
 
-
-int main(int argc, char **argv) {
-  if (argc > 2){
-    fprintf(stderr, "Usage: %s [script_file]\n", argv[0]);
-    exit(1);
-  }
-
-  if (argc == 2) {
-    std::ifstream *ifs = new std::ifstream;
-    ifs->open(argv[1], std::ifstream::in);
-    if (!ifs->is_open()) {
-        fprintf(stderr, "can't open input file %s\n", argv[1]);
-        exit(1);
-    }
-    yy_buffer_state *bs = mylexer.yy_create_buffer(ifs, 8092);
-    mylexer.yypush_buffer_state(bs);
-  }
-
-  //yydebug = 1;
-  is_interactive = false;
-  if (argc == 1) {
-#if defined __USE_POSIX  
-    if (isatty((int)fileno(stdin)))
-      is_interactive = true;
-#elif defined  __WIN32
-    if (_isatty(_fileno(stdin)))
-      is_interactive = true;
-#endif
-  }
-
-  if (is_interactive) {
-#ifdef BUILD_CODEGEN
-    std::cout << "Omega+ and CodeGen+ ";
-#else
-    std::cout << "Omega+ ";
-#endif
-    std::cout << "v2.2.3 (built on " OC_BUILD_DATE ")" << std::endl;
-    std::cout << "Copyright (C) 1994-2000 the Omega Project Team" << std::endl;
-    std::cout << "Copyright (C) 2005-2011 Chun Chen" << std::endl;
-    std::cout << "Copyright (C) 2011-2012 University of Utah" << std::endl;
-    std::cout << PROMPT_STRING << ' ';
-    std::cout.flush();
-  }
-
-  need_coef = false;  
-  current_Declaration_Site = globalDecls = new Global_Declaration_Site();
-
-  if (yyparse() != 0) {
-    if (!is_interactive)
-      std::cout << "syntax error at the end of the file, missing ';'" << std::endl;
-    else
-      std::cout << std::endl;
-    delete relationDecl;
-    relationDecl = NULL;
-  }
-  else {
-    if (is_interactive)
-      std::cout << std::endl;
-  }
-
-  for (std::map<std::string, Relation *>::iterator i = relationMap.begin(); i != relationMap.end(); i++)
-    delete (*i).second;
-  delete globalDecls;  
-  
-  return 0;
+Relation * ParseRelation(std::string relationString){
+  std::istringstream iss(relationString);
+  yy_buffer_state *bs = 
+	mylexer.yy_create_buffer(&iss, 8092);
+  mylexer.yypush_buffer_state(bs);
+  relation_result = NULL;
+  yyparse();
+  if(relation_result==NULL)
+    return NULL;
+  return relation_result; 
 }
+
 
 Relation LexForward(int n) {
   Relation r(n,n);

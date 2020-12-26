@@ -11,7 +11,6 @@
  History:
    02/04/11 migrate to flex c++ mode, Chun Chen
 *****************************************************************************/
-
 %{
 #include <stdio.h>
 #include <string.h>
@@ -19,20 +18,24 @@
 #include <sstream>
 #include <iostream>
 #include <fstream>
-#include <omega_calc/AST.h>
+#include <parser/AST.h>
 #include <basic/Dynamic_Array.h>
 #include "parser.tab.hh"
-#include <omega_calc/myflex.h>
+#include <parser/myflex.h>
 
 myFlexLexer mylexer;
 bool is_interactive;
 const char *PROMPT_STRING = ">>>";
-
+#define yylval omegalval
 #define BUFFER scanBuf += yytext
 std::string scanBuf;
 std::string err_msg;
-  
-extern bool need_coef;
+namespace omega { namespace parser { 
+  extern bool need_coef;
+ }
+}
+
+using namespace omega::parser;
 
 void yyerror(const std::string &s);
 void flushScanBuffer();
@@ -42,7 +45,6 @@ void flushScanBuffer();
 %s LATEX INCLUDE COMMENT
 %option yylineno
 %option noyywrap
-
 %% 
 
 "<<"                  { BUFFER; BEGIN(INCLUDE); }
