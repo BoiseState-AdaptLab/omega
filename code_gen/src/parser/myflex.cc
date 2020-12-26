@@ -10,7 +10,7 @@
    02/06/11 created by Chun Chen
 *****************************************************************************/
 
-#include <omega_calc/myflex.h>
+#include <parser/myflex.h>
 #include <basic/util.h>
 #include <string.h>
 #include <stdlib.h>
