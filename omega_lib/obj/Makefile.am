@@ -1,4 +1,5 @@
 noinst_LIBRARIES   = libomega.a
+lib_LIBRARIES = $(noinst_LIBRARIES)
 
 basic_src   =../../basic/src/ConstString.cc
 basic_src  +=../../basic/src/Link.cc
@@ -42,6 +43,34 @@ rel_src  +=../src/RelVar.cc
 fancy_src   =../src/closure.cc
 fancy_src  +=../src/reach.cc
 
+
+# Installation specifications.
+nobase_include_HEADERS = ../include/omega/Relations.h   \
+			 ../include/omega/pres_subs.h   \
+			../include/omega/pres_conj.h   \
+			../include/omega/pres_dnf.h   \
+			../include/omega/Rel_map.h   \
+			../include/omega/pres_form.h   \
+			../include/omega/evac.h   \
+			../include/omega/pres_logic.h   \
+			../include/omega/pres_gen.h   \
+			../include/omega/pres_quant.h   \
+			../include/omega/pres_decl.h   \
+			../include/omega/pres_cnstr.h   \
+			../include/omega/omega_core/debugging.h   \
+			../include/omega/omega_core/oc.h   \
+			../include/omega/omega_core/oc_i.h   \
+			../include/omega/Relation.h   \
+			../include/omega/pres_var.h   \
+			../include/omega/reach.h   \
+			../include/omega/RelBody.h   \
+			../include/omega/pres_tree.h   \
+			../include/omega/farkas.h   \
+			../include/omega/hull.h   \
+			../include/omega/closure.h   \
+			../include/omega/pres_cmpr.h   \
+			../include/omega/omega_i.h   \
+			../include/omega.h
 
 libomega_a_SOURCES  =$(basic_src) $(oc_src) $(pres_src) $(rel_src) $(fancy_src)
 libomega_a_CPPFLAGS =-I$(srcdir)/../include -I$(srcdir)/../../basic/include

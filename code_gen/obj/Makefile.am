@@ -1,11 +1,28 @@
-
+instdir = $(PREFIX)
 noinst_LIBRARIES =libcodegen.a
+lib_LIBRARIES = $(noinst_LIBRARIES)
 
 codegen_includes =-I$(srcdir)/../../..
 codegen_includes+=-I$(srcdir)/../include
 codegen_includes+=-I$(srcdir)/../../../include/chill
 codegen_includes+=-I$(srcdir)/../../omega_lib/include
 codegen_includes+=-I$(srcdir)/../../basic/include
+
+#Installation instructions
+nobase_include_HEADERS = $(srcdir)/../include/codegen.h \
+			 $(srcdir)/../include/code_gen/CG.h \
+	  		 $(srcdir)/../include/code_gen/CG_outputBuilder.h\
+		       	 $(srcdir)/../include/code_gen/CG_outputRepr.h    \
+			 $(srcdir)/../include/code_gen/CG_stringBuilder.h  \
+			 $(srcdir)/../include/code_gen/CG_stringRepr.h     \
+			 $(srcdir)/../include/code_gen/CG_utils.h          \
+			 $(srcdir)/../include/code_gen/codegen_error.h    \
+			 $(srcdir)/../include/code_gen/code_gen.h         \
+			 $(srcdir)/../include/code_gen/output_repr.h      \
+			 $(srcdir)/../include/code_gen/parser/AST.h \
+			 $(srcdir)/../include/code_gen/parser/myflex.h  \
+			 $(srcdir)/../include/code_gen/parser/parser.h 
+
 
 parser_src = ../src/parser
 

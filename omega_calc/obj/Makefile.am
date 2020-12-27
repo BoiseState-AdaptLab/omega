@@ -1,4 +1,5 @@
 noinst_PROGRAMS=oc
+bin_PROGRAMS = $(noinst_PROGRAMS)
 
 OC_SRCDIR=$(srcdir)/../src
 

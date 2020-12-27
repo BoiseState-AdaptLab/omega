@@ -19,7 +19,8 @@ AC_CONFIG_HEADERS([include/config.h])
 AC_CONFIG_FILES([
     omega_lib/obj/Makefile
     omega_calc/obj/Makefile
-    code_gen/obj/Makefile])
+    code_gen/obj/Makefile
+    basic/obj/Makefile])
 
 AC_OUTPUT
     

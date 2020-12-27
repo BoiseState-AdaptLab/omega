@@ -18,10 +18,10 @@
 #include <sstream>
 #include <iostream>
 #include <fstream>
-#include <parser/AST.h>
+#include <code_gen/parser/AST.h>
 #include <basic/Dynamic_Array.h>
 #include "parser.tab.hh"
-#include <parser/myflex.h>
+#include <code_gen/parser/myflex.h>
 
 myFlexLexer mylexer;
 bool is_interactive;

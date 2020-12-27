@@ -23,7 +23,7 @@
 //#define YYDEBUG 1
 #include <basic/Dynamic_Array.h>
 #include <basic/Iterator.h>
-#include <parser/AST.h>
+#include <code_gen/parser/AST.h>
 #include <omega/hull.h>
 #include <omega/closure.h>
 #include <omega/reach.h>
@@ -31,7 +31,8 @@
 #include <iostream>
 #include <fstream>
 #include "parser.tab.hh"
-#include <parser/myflex.h>
+#include <code_gen/parser/myflex.h>
+#include <code_gen/parser/parser.h>
 //#include <stdio.h>
 
 #if defined __USE_POSIX
@@ -85,7 +86,6 @@ namespace omega{ namespace parser {
     Relation * relation_result = NULL;
     bool need_coef;
     std::map<std::string, Relation *> relationMap;
-    Relation * ParseRelation(std::string relationString);
   } 
 }
   

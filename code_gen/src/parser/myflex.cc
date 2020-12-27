@@ -10,7 +10,7 @@
    02/06/11 created by Chun Chen
 *****************************************************************************/
 
-#include <parser/myflex.h>
+#include <code_gen/parser/myflex.h>
 #include <basic/util.h>
 #include <string.h>
 #include <stdlib.h>

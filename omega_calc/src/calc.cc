@@ -1,13 +1,13 @@
 #include <basic/Dynamic_Array.h>
 #include <basic/Iterator.h>
-#include <parser/AST.h>
+#include <code_gen/parser/AST.h>
 #include <omega/hull.h>
 #include <omega/closure.h>
 #include <omega/reach.h>
 #include <string>
 #include <iostream>
 #include <fstream>
-#include <parser/myflex.h>
+#include <code_gen/parser/myflex.h>
 //#include <stdio.h>
 
 #if defined __USE_POSIX
