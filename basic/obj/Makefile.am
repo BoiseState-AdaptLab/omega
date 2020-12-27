@@ -15,4 +15,11 @@ nobase_include_HEADERS = ../include/basic/Link.h   \
 			 ../include/basic/util.h   \
 			 ../include/basic/Section.h   \
 			 ../include/basic/Dynamic_Array.h   \
-			 ../include/basic/List.h   
+			 ../include/basic/List.h \
+		         ../include/basic/Dynamic_Array.c   \
+		         ../include/basic/Section.c   \
+			 ../include/basic/boolset-test.cc   \
+			 ../include/basic/List.c   \
+			 ../include/basic/SimpleList.c   \
+			 ../include/basic/Tuple.c   
+

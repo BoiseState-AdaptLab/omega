@@ -7,7 +7,7 @@ install:
 	cd code_gen/obj; make install
 	cd omega_calc/obj; make install
 	cd basic/obj; make install
-
+.PHONY: install
 clean:
 	cd omega_lib/obj; $(MAKE) clean
 	cd code_gen/obj; $(MAKE) clean
