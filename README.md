@@ -12,6 +12,9 @@ This project is originally authored by Chun Chen and contains references to the 
 Contributors to this repository: Tobi , Anna, Cathie
 
 
+### Requirements
+
+Bison version 3.7.+
 
 
 ## Omega+ and Codegen+ 2.2
