@@ -1850,7 +1850,7 @@ void yyerror(const std::string &s) {
   err_msg = ss.str();
 }
 
-Relation * ParseRelation(std::string relationString){
+Relation * omega::parser::ParseRelation(std::string relationString){
   std::istringstream iss(relationString);
   yy_buffer_state *bs = 
 	mylexer.yy_create_buffer(&iss, 8092);
