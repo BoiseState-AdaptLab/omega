@@ -6,7 +6,7 @@ nobase_include_HEADERS = ../include/basic/Link.h   \
 			 ../include/basic/Tuple.h   \
 			 ../include/basic/ConstString.h   \
 			 ../include/basic/omega_error.h   \
-			 ../include/basic/BoolSet.h   \
+			 ../include/basic/BoolSet2.h   \
 			 ../include/basic/boolset.h   \
 			 ../include/basic/Bag.h   \
 			 ../include/basic/Map.h   \
