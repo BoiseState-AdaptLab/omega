@@ -15,6 +15,15 @@ Contributors to this repository: Tobi , Anna, Cathie
 ### Requirements
 
 Bison version 3.7.+
+Automake 1.3.+
+
+### Build Instructions
+
+```ssh
+autoreconf -i
+./configure
+make
+```
 
 
 ## Omega+ and Codegen+ 2.2
