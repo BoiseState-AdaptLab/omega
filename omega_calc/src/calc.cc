@@ -15,6 +15,8 @@
 #include <unistd.h>
 #elif defined  __WIN32
 #include <io.h>
+#elif defined __APPLE__
+#include <unistd.h> 
 #endif
 
 
@@ -82,6 +84,9 @@ int main(int argc, char **argv) {
       is_interactive = true;
 #elif defined  __WIN32
     if (_isatty(_fileno(stdin)))
+      is_interactive = true;
+#elif defined __APPLE__
+    if (isatty((int)fileno(stdin)))
       is_interactive = true;
 #endif
   }
