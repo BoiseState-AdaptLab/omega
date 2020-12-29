@@ -1853,6 +1853,7 @@ void yyerror(const std::string &s) {
 
 Relation * omega::parser::ParseRelation(std::string relationString){
   std::istringstream iss(relationString);
+  is_interactive = false;
   yy_buffer_state *bs = 
 	mylexer.yy_create_buffer(&iss, 8092);
   mylexer.yypush_buffer_state(bs);
