@@ -62,7 +62,7 @@ extern "C" int getrusage (int, struct rusage*);
 
 struct rusage start_time;
 bool anyTimingDone = false;
-
+extern bool disable_prints;
 void start_clock( void ) {
   getrusage(RUSAGE_SELF, &start_time);
 }
@@ -254,7 +254,8 @@ inputItem : ';' /*empty*/
             $1->simplify(redundant_conj_level, redundant_constr_level);
             else
             $1->simplify();
-            $1->print_with_subs(stdout); 
+            if(!disable_prints)
+              $1->print_with_subs(stdout); 
             delete $1;
           }
           | TIME relation ';' {
@@ -572,7 +573,7 @@ relPairList : relPairList ',' relation ':' relation {
 relation : OPEN_BRACE {need_coef = true; relationDecl = new Declaration_Site();}
            builtRelation CLOSE_BRACE {
            need_coef = false;
-           relation_result = $3; 
+           relation_result = new Relation(copy(*$3)); 
            $$ = $3; 
            current_Declaration_Site = globalDecls;
            delete relationDecl;
@@ -1853,15 +1854,18 @@ void yyerror(const std::string &s) {
 
 Relation * omega::parser::ParseRelation(std::string relationString){
   std::istringstream iss(relationString);
-  is_interactive = false;
+  disable_prints =true;
   yy_buffer_state *bs = 
 	mylexer.yy_create_buffer(&iss, 8092);
   mylexer.yypush_buffer_state(bs);
   relation_result = NULL;
   current_Declaration_Site = globalDecls = new Global_Declaration_Site();
   yyparse();
+  disable_prints =false;
+  
   if(relation_result==NULL)
     return NULL;
+  
   return relation_result; 
 }
 

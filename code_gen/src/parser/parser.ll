@@ -27,6 +27,8 @@ myFlexLexer mylexer;
 bool is_interactive;
 const char *PROMPT_STRING = ">>>";
 
+bool disable_prints ;
+
 #define yylval    omegalval
 #define yyalloc   omegaalloc
 #define yyrealloc omegarealloc
@@ -342,7 +344,7 @@ void flushScanBuffer();
 %%
 
 void flushScanBuffer() {
-  if (scanBuf.size() == 0)
+  if (scanBuf.size() == 0 || disable_prints)
     return;
   if (!is_interactive) {
     size_t prev_pos = 0;
