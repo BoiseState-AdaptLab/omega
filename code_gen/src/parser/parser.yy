@@ -572,6 +572,7 @@ relPairList : relPairList ',' relation ':' relation {
 relation : OPEN_BRACE {need_coef = true; relationDecl = new Declaration_Site();}
            builtRelation CLOSE_BRACE {
            need_coef = false;
+           relation_result = $3; 
            $$ = $3; 
            current_Declaration_Site = globalDecls;
            delete relationDecl;
@@ -1856,6 +1857,7 @@ Relation * omega::parser::ParseRelation(std::string relationString){
 	mylexer.yy_create_buffer(&iss, 8092);
   mylexer.yypush_buffer_state(bs);
   relation_result = NULL;
+  current_Declaration_Site = globalDecls = new Global_Declaration_Site();
   yyparse();
   if(relation_result==NULL)
     return NULL;

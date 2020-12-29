@@ -34,7 +34,7 @@ libcodegen_a_SOURCES   += $(parser_src)/AST.cc $(parser_src)/myflex.cc\
 			  $(parser_src)/lex.yy.cc $(parser_src)/parser.tab.cc
 
 libcodegen_a_CXXFLAGS   =-std=c++11
-libcodegen_a_CPPFLAGS   =$(codegen_includes)
+libcodegen_a_CPPFLAGS   =$(codegen_includes) -DBUILD_CODEGEN
 
 EXTRA_DIST=$(parser_src)/lex.yy.cc
 $(parser_src)/lex.yy.cc: $(parser_src)/parser.tab.cc $(parser_src)/parser.ll

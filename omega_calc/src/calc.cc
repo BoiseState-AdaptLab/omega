@@ -8,6 +8,7 @@
 #include <iostream>
 #include <fstream>
 #include <code_gen/parser/myflex.h>
+#include <code_gen/parser/parser.h>
 //#include <stdio.h>
 
 #if defined __USE_POSIX
@@ -40,7 +41,6 @@ extern "C" int getrusage (int, struct rusage*);
 #endif
 
 extern myFlexLexer mylexer;
-#define yylex mylexer.omegalex
 
 namespace omega{ namespace parser {
     extern bool need_coef ;
@@ -74,7 +74,6 @@ int main(int argc, char **argv) {
     yy_buffer_state *bs = mylexer.yy_create_buffer(ifs, 8092);
     mylexer.yypush_buffer_state(bs);
   }
-
   //yydebug = 1;
   is_interactive = false;
   if (argc == 1) {

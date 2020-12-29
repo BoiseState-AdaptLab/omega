@@ -26,7 +26,14 @@
 myFlexLexer mylexer;
 bool is_interactive;
 const char *PROMPT_STRING = ">>>";
-#define yylval omegalval
+
+#define yylval    omegalval
+#define yyalloc   omegaalloc
+#define yyrealloc omegarealloc
+#define yyerror   omegaerror
+#define yyfree    omegafree
+
+
 #define BUFFER scanBuf += yytext
 std::string scanBuf;
 std::string err_msg;
@@ -45,6 +52,7 @@ void flushScanBuffer();
 %s LATEX INCLUDE COMMENT
 %option yylineno
 %option noyywrap
+%option prefix="omega"
 %% 
 
 "<<"                  { BUFFER; BEGIN(INCLUDE); }

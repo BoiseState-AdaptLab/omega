@@ -1,6 +1,7 @@
 #ifndef _MYFLEX_H
 #define _MYFLEX_H
-
+#undef yyFlexLexer
+#define yyFlexLexer omegaFlexLexer
 #ifndef yyFlexLexerOnce
 #include <FlexLexer.h>
 #endif
@@ -11,7 +12,7 @@
 // Forward declare omegaFlexLexer as function
 // definitions would be available during linking.
 
-class myFlexLexer: public yyFlexLexer {
+class myFlexLexer: public omegaFlexLexer {
 protected:
   std::string cur_line;
   int cur_pos;
