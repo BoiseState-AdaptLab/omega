@@ -20,6 +20,7 @@
 #include <typeinfo>
 #include <omega.h>
 #include <basic/util.h>
+#include <basic/debug.h>
 #include <math.h>
 #include <vector>
 #include <algorithm>
@@ -45,7 +46,7 @@ std::vector< std::pair<int, std::string> > syncs;
 
 CodeGen::CodeGen(const std::vector<Relation> &xforms, const std::vector<Relation> &IS, const Relation &known, std::vector< std::vector<int> > smtNonSplitLevels_ , std::vector< std::vector<std::string> > loopIdxNames_,  std::vector< std::pair<int, std::string> > syncs_) {
 
-  fprintf(stderr, "CodeGen::CodeGen() sanity checking\n");
+  debug_fprintf(stderr, "CodeGen::CodeGen() sanity checking\n");
   // check for sanity of parameters
   int num_stmt = IS.size();
   if (xforms.size() != num_stmt)
@@ -62,7 +63,7 @@ CodeGen::CodeGen(const std::vector<Relation> &xforms, const std::vector<Relation
   if (known_.number_of_conjuncts() > 1)
     throw std::invalid_argument("only one conjunct allowed in known condition");
 
-  fprintf(stderr, "num_stmt %d  %d xforms\n", num_stmt, xforms.size()); 
+  debug_fprintf(stderr, "num_stmt %d  %d xforms\n", num_stmt, xforms.size()); 
   xforms_ = xforms;
   for (int i = 0; i < num_stmt; i++) {
     xforms_[i].simplify();
@@ -79,11 +80,11 @@ CodeGen::CodeGen(const std::vector<Relation> &xforms, const std::vector<Relation
   loopIdxNames = loopIdxNames_;
 
   //debug_begin
-    //fprintf(stderr, "codegen.cc loopIdxNames.size() %lu\n", loopIdxNames.size());
+    //debug_fprintf(stderr, "codegen.cc loopIdxNames.size() %lu\n", loopIdxNames.size());
     //for (int i=0; i<loopIdxNames.size(); i++) {
-      //fprintf(stderr, "\n");
+      //debug_fprintf(stderr, "\n");
       //for (int j=0; j<loopIdxNames[i].size(); j++)
-        //fprintf(stderr, "i %d   j %d %s\n", i, j,loopIdxNames[i][j].c_str() );
+        //debug_fprintf(stderr, "i %d   j %d %s\n", i, j,loopIdxNames[i][j].c_str() );
     //}
   //debug_end
 
@@ -172,7 +173,7 @@ CodeGen::CodeGen(const std::vector<Relation> &xforms, const std::vector<Relation
       // 		  projected_IS_[j-1][i].set_var(j));
     }
   }
-  fprintf(stderr, "CodeGen::CodeGen() DONE\n"); 
+  debug_fprintf(stderr, "CodeGen::CodeGen() DONE\n"); 
 }
 
 
@@ -361,7 +362,7 @@ CG_result *CodeGen::buildAST(int level, const BoolSet<> &active, bool split_on_c
 
 
 CG_result *CodeGen::buildAST(int effort) {
-  fprintf(stderr, "CodeGen::buildAST( effort %d )\n", effort); 
+  debug_fprintf(stderr, "CodeGen::buildAST( effort %d )\n", effort); 
   if (remap_.size() == 0)
     return NULL;
 

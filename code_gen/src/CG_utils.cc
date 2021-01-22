@@ -20,6 +20,7 @@
 #include <code_gen/CG.h>
 #include <code_gen/CG_utils.h>
 #include <code_gen/codegen_error.h>
+#include <basic/debug.h>
 #include <math.h>
 #include <stack>
 
@@ -164,7 +165,7 @@ namespace omega {
                               Variable_ID v, 
                               const std::vector<std::pair<CG_outputRepr *, int> > &assigned_on_the_fly, 
                               const std::map<std::string, std::vector<CG_outputRepr *> > &unin) {
-    fprintf(stderr, "output_ident( %s )\n", v->name().c_str()); 
+    debug_fprintf(stderr, "output_ident( %s )\n", v->name().c_str()); 
     
     const_cast<Relation &>(R).setup_names(); // hack
     
@@ -332,7 +333,7 @@ namespace omega {
                                                    const std::map<std::string, std::vector<CG_outputRepr *> > &unin) {
     std::vector<CG_outputRepr *> subs;
     
-    fprintf(stderr, "CG_utils.cc  output_substitutions()\n"); 
+    debug_fprintf(stderr, "CG_utils.cc  output_substitutions()\n"); 
     
     for (int i = 1; i <= R.n_out(); i++) {
       Relation mapping(R.n_out(), 1);
@@ -515,7 +516,7 @@ namespace omega {
       }
     }
     
-    fprintf(stderr, "CG_utils.cc  output_substitutions()          DONE\n\n"); 
+    debug_fprintf(stderr, "CG_utils.cc  output_substitutions()          DONE\n\n"); 
     return subs;
   }
   
@@ -740,7 +741,7 @@ namespace omega {
                               const Relation &R, 
                               const std::vector<std::pair<CG_outputRepr *, int> > &assigned_on_the_fly,
                               const std::map<std::string, std::vector<CG_outputRepr *> > &unin) {
-    fprintf(stderr, "output_guard()\n");
+    debug_fprintf(stderr, "output_guard()\n");
     assert(R.n_out()==0);
     
     CG_outputRepr *result = NULL;
@@ -749,7 +750,7 @@ namespace omega {
     // e.g. 4i=5*j
     for (EQ_Iterator e = c->EQs(); e; e++)
       if (!(*e).has_wildcards()) {
-        //fprintf(stderr, "EQ\n"); 
+        //debug_fprintf(stderr, "EQ\n"); 
         CG_outputRepr *lhs = NULL;
         CG_outputRepr *rhs = NULL;
         for (Constr_Vars_Iter cvi(*e); cvi; cvi++) {
@@ -790,7 +791,7 @@ namespace omega {
     // e.g. i>5j
     for (GEQ_Iterator e = c->GEQs(); e; e++)
       if (!(*e).has_wildcards()) {
-        //fprintf(stderr, "GEQ\n"); 
+        //debug_fprintf(stderr, "GEQ\n"); 
         CG_outputRepr *lhs = NULL;
         CG_outputRepr *rhs = NULL;
         for (Constr_Vars_Iter cvi(*e); cvi; cvi++) {
@@ -829,14 +830,14 @@ namespace omega {
             rhs = ocg->CreateInt(0);
           term = ocg->CreateGE(lhs, rhs);
         }
-        //fprintf(stderr, "result =  ocg->CreateAnd(result, term);\n"); 
+        //debug_fprintf(stderr, "result =  ocg->CreateAnd(result, term);\n"); 
         result = ocg->CreateAnd(result, term);
       }
     
     // e.g. 4i=5j+4alpha
     for (EQ_Iterator e = c->EQs(); e; e++)
       if ((*e).has_wildcards()) {
-        //fprintf(stderr, "EQ ??\n"); 
+        //debug_fprintf(stderr, "EQ ??\n"); 
         Variable_ID wc;
         int num_wildcard = 0;
         int num_positive = 0;
@@ -924,7 +925,7 @@ namespace omega {
     // e.g. 4alpha<=i<=5alpha
     for (GEQ_Iterator e = c->GEQs(); e; e++)
       if ((*e).has_wildcards()) {
-        //fprintf(stderr, "GEQ ??\n"); 
+        //debug_fprintf(stderr, "GEQ ??\n"); 
         Variable_ID wc;
         int num_wildcard = 0;
         for (Constr_Vars_Iter cvi(*e, true); cvi; cvi++)
@@ -1039,7 +1040,7 @@ namespace omega {
         }
       }
     
-    //fprintf(stderr, "output_guard returning at bottom 0x%x\n", result); 
+    //debug_fprintf(stderr, "output_guard returning at bottom 0x%x\n", result); 
     return result;
   }
   
@@ -1051,7 +1052,7 @@ namespace omega {
                                         const std::vector<std::pair<CG_outputRepr *, int> > &assigned_on_the_fly, 
                                         const std::map<std::string, std::vector<CG_outputRepr *> > &unin,
                                         std::set<Variable_ID> excluded_floor_vars) {
-    fprintf(stderr, "output_inequality_repr()  v %s\n", v->name().c_str()); 
+    debug_fprintf(stderr, "output_inequality_repr()  v %s\n", v->name().c_str()); 
 
     const_cast<Relation &>(R).setup_names(); // hack
     
@@ -1174,7 +1175,7 @@ namespace omega {
                                          const std::vector<std::pair<CG_outputRepr *, int> > &assigned_on_the_fly,
                                          const std::map<std::string, std::vector<CG_outputRepr *> > &unin) {
 
-    fprintf(stderr, "output_lower_bound_repr()\n"); 
+    debug_fprintf(stderr, "output_lower_bound_repr()\n"); 
     assert(inequality.get_coef(v) > 0);
     CG_outputRepr* zero_;
     if (wc == NULL 
@@ -1238,8 +1239,8 @@ namespace omega {
       }
     }  
     coef_t c = stride_eq.get_const();
-    fprintf(stderr, "stride eq const %lld\n", c);
-    fprintf(stderr, "sign %d\n", sign ); 
+    debug_fprintf(stderr, "stride eq const %lld\n", c);
+    debug_fprintf(stderr, "sign %d\n", sign ); 
     if (c > 0) {
       if (sign < 0)
         strideBoundRepr = ocg->CreatePlus(strideBoundRepr, ocg->CreateInt(c));
@@ -1255,11 +1256,11 @@ namespace omega {
     
     CG_outputRepr *repr = output_inequality_repr(ocg, inequality, v, R, 
                                                  assigned_on_the_fly, unin);
-    //fprintf(stderr, "inequality repr %p\n", repr); 
+    //debug_fprintf(stderr, "inequality repr %p\n", repr); 
     CG_outputRepr *repr2 = ocg->CreateCopy(repr);
     
-    fprintf(stderr, "stride_eq.get_coef(wc) %lld\n", stride_eq.get_coef(wc));
-    fprintf(stderr, "repr + mod( strideBoundRepr - repr, %lld )\n", stride_eq.get_coef(wc));
+    debug_fprintf(stderr, "stride_eq.get_coef(wc) %lld\n", stride_eq.get_coef(wc));
+    debug_fprintf(stderr, "repr + mod( strideBoundRepr - repr, %lld )\n", stride_eq.get_coef(wc));
 
     repr = ocg->CreatePlus(repr2, 
                            ocg->CreateIntegerMod(ocg->CreateMinus(strideBoundRepr, repr), 
@@ -1276,9 +1277,9 @@ namespace omega {
                              const std::vector<std::pair<CG_outputRepr *, int> > &assigned_on_the_fly,
                              const std::map<std::string, std::vector<CG_outputRepr *> > &unin) {
     
-    fprintf(stderr, "CG_utils.cc output_loop()\n"); 
+    debug_fprintf(stderr, "CG_utils.cc output_loop()\n"); 
     std::pair<EQ_Handle, Variable_ID> result = find_simplest_stride(R, const_cast<Relation &>(R).set_var(level));
-    fprintf(stderr, "found stride\n"); 
+    debug_fprintf(stderr, "found stride\n"); 
     coef_t s = 1, c = 0;
     if (result.second != NULL) {
       assert(abs(result.first.get_coef(const_cast<Relation &>(R).set_var(level))) == 1);
@@ -1357,7 +1358,7 @@ namespace omega {
     
     CG_outputRepr *lbRepr = NULL;
     if (lbList.size() > 1) {
-      fprintf(stderr, "CG_utils.cc output_loop() createInvoke( max )\n"); 
+      debug_fprintf(stderr, "CG_utils.cc output_loop() createInvoke( max )\n"); 
       lbRepr = ocg->CreateInvoke("max", lbList);
     }
     else { // (lbList.size() == 1)
@@ -1366,7 +1367,7 @@ namespace omega {
 
     CG_outputRepr *ubRepr = NULL;
     if (ubList.size() > 1) {
-      fprintf(stderr, "CG_utils.cc output_loop() createInvoke( min )\n"); 
+      debug_fprintf(stderr, "CG_utils.cc output_loop() createInvoke( min )\n"); 
       ubRepr = ocg->CreateInvoke("min", ubList);
     }
     else { // (ubList.size() == 1)
@@ -1489,7 +1490,7 @@ namespace omega {
 // is a single conjunct.
 //
   Relation pick_one_guard(const Relation &R, int level) {
-    //fprintf(stderr, "pick_one_guard()\n"); 
+    //debug_fprintf(stderr, "pick_one_guard()\n"); 
     assert(R.n_out()==0);
     
     Relation r = Relation::True(R.n_set());
