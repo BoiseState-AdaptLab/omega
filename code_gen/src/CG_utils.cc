@@ -520,7 +520,12 @@ namespace omega {
     return subs;
   }
   
-  
+/* 
+ * TODO: Tobi Popoola; took out this function because it wasn't 
+ * detecting when there is an actual assignment to a level tuple 
+ * variable. This function is replaced by an older version of 
+ * omega. In the future this commented out code should be taken out
+ * after appropriate considerations. 
   std::pair<EQ_Handle, int> find_simplest_assignment(const Relation &R,
                                                      Variable_ID v, 
                                                      const std::vector<std::pair<CG_outputRepr *, int> > &assigned_on_the_fly,
@@ -595,7 +600,7 @@ namespace omega {
     return std::make_pair(eq, min_cost);
 
   }
-  
+ */ 
   
 //
 // find floor definition for variable v, e.g. m-c <= 4v <= m, (c is
@@ -665,7 +670,100 @@ namespace omega {
     
     return std::make_pair(false, GEQ_Handle());
   }
-  
+
+// Function extracted from previous version of CG/Omega
+// TODO: Tobi Popoola, port necessary information from
+// original function's code before direct replacement.
+// Check comments above to locate the function.
+std::pair<EQ_Handle, int> find_simplest_assignment(const Relation &R, Variable_ID v,
+	       	const std::vector<std::pair<CG_outputRepr *, int> > &assigned_on_the_fly,
+		bool* found_inspector_global) {
+  Conjunct *c = const_cast<Relation &>(R).single_conjunct();
+
+  int min_cost = INT_MAX;
+  EQ_Handle eq;
+  for (EQ_Iterator e(c->EQs()); e; e++)
+    if (!(*e).has_wildcards() && (*e).get_coef(v) != 0) {
+      int cost = 0;
+
+      if (abs((*e).get_coef(v)) != 1)
+        cost += 4;  // divide cost
+
+      int num_var = 0;
+      for (Constr_Vars_Iter cvi(*e); cvi; cvi++)
+        if (cvi.curr_var() != v) {
+          num_var++;
+          if (abs(cvi.curr_coef()) != 1)
+            cost += 2;  // multiply cost
+          if (cvi.curr_var()->kind() == Global_Var && cvi.curr_var()->get_global_var()->arity() > 0)
+            cost += 10;  // function cost
+          else if (cvi.curr_var()->kind() == Input_Var &&
+                   assigned_on_the_fly.size() >= cvi.curr_var()->get_position() &&
+                   assigned_on_the_fly[cvi.curr_var()->get_position()-1].first != NULL)
+            cost += assigned_on_the_fly[cvi.curr_var()->get_position()-1].second;  // substitution cost on record
+        }
+      if ((*e).get_const() != 0)
+        num_var++;
+      if (num_var > 1)
+        cost += num_var - 1; // addition cost
+
+      if (cost < min_cost) {
+        min_cost = cost;
+        eq = *e;
+      }
+    }
+    
+  if (min_cost < INT_MAX)
+    return std::make_pair(eq, min_cost);
+
+  for (EQ_Iterator e(c->EQs()); e; e++)
+    if ((*e).has_wildcards() && (*e).get_coef(v) != 0) {
+      bool is_assignment = true;
+      for (Constr_Vars_Iter cvi(*e, true); cvi; cvi++) {
+        std::pair<bool, GEQ_Handle> result = find_floor_definition(R, v);
+        if (!result.first) {
+          is_assignment = false;
+          break;
+        }
+      }
+      if (!is_assignment)
+        continue;
+
+      int cost = 0;
+      
+      if (abs((*e).get_coef(v)) != 1)
+        cost += 4;  // divide cost
+
+      int num_var = 0;
+      for (Constr_Vars_Iter cvi(*e); cvi; cvi++)
+        if (cvi.curr_var() != v) {
+          num_var++;
+          if (abs(cvi.curr_coef()) != 1)
+            cost += 2;  // multiply cost
+          if (cvi.curr_var()->kind() == Wildcard_Var)
+            cost += 10; // floor operation cost
+          else if (cvi.curr_var()->kind() == Global_Var && cvi.curr_var()->get_global_var()->arity() > 0)
+            cost += 20;  // function cost
+          else if (cvi.curr_var()->kind() == Input_Var &&
+                   assigned_on_the_fly.size() >= cvi.curr_var()->get_position() &&
+                   assigned_on_the_fly[cvi.curr_var()->get_position()-1].first != NULL)
+            cost += assigned_on_the_fly[cvi.curr_var()->get_position()-1].second;  // substitution cost on record
+        }
+      if ((*e).get_const() != 0)
+        num_var++;
+      if (num_var > 1)
+        cost += num_var - 1; // addition cost
+
+      if (cost < min_cost) {
+        min_cost = cost;
+        eq = *e;
+      }
+    }
+
+  return std::make_pair(eq, min_cost);
+}
+
+
 //
 // find the stride involving the specified variable, the stride
 // equality can have other wildcards as long as they are defined as

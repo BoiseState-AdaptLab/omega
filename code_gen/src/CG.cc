@@ -1383,7 +1383,13 @@ namespace omega {
       hull = Project(hull, hull.set_var(level_));
       hull.simplify(2, 4);
       guard_ = Gist(hull, Intersection(copy(bounds_), copy(known_)), 1);
-
+      
+      // TODO: Tobi Popoola: Add an extra information to either remove 
+      // check for bounds UF present in loop guard. Or check for 
+      // direct assignment.
+      //
+      // Known: constraints forced by the code enclosing this loop. 
+      // restrict is the restricted iteration space for this loop.
       for (Variable_ID_Iterator v(*guard_.global_decls()); v; v++) {
         auto var = (*v)->get_global_var();
         if (var->arity() >= level_)
