@@ -20,6 +20,8 @@
 #include <basic/Map.h>
 #include <basic/util.h>
 #include <basic/omega_error.h>
+#include <basic/debug.h>
+
 #include <math.h>
 #include <vector>
 

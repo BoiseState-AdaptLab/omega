@@ -21,5 +21,6 @@ nobase_include_HEADERS = ../include/basic/Link.h   \
 			 ../include/basic/boolset-test.cc   \
 			 ../include/basic/List.c   \
 			 ../include/basic/SimpleList.c   \
+			 ../include/basic/debug.h   \
 			 ../include/basic/Tuple.c   
 
