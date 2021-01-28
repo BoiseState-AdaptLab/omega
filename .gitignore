@@ -31,7 +31,6 @@ autom4te.cache
 /stamp-h1
 
 # https://www.gnu.org/software/libtool/
-
 /ltmain.sh
 
 # http://www.gnu.org/software/texinfo
@@ -50,4 +49,7 @@ m4/lt~obsolete.m4
 # (meta build system like autotools,
 # can automatically generate from config.status script
 # (which is called by configure script))
-Makefile
+omega_calc/obj/Makefile
+codegen/obj/Makefile
+basic/obj/Makefile
+omega_lib/obj/Makefile
