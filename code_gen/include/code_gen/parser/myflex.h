@@ -9,8 +9,7 @@
 #include <string>
 #include <vector>
 
-// Forward declare omegaFlexLexer as function
-// definitions would be available during linking.
+
 
 class myFlexLexer: public omegaFlexLexer {
 protected:

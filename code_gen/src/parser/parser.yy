@@ -35,7 +35,7 @@
 #include <code_gen/parser/parser.h>
 //#include <stdio.h>
 
-#if defined __USE_POSIX
+#if defined __USE_POSIX || defined __APPLE__
 #include <unistd.h>
 #elif defined  __WIN32
 #include <io.h>

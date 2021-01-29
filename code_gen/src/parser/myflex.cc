@@ -15,7 +15,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-#if defined __USE_POSIX
+#if defined __USE_POSIX || defined __APPLE__
 #include <unistd.h>
 #include <termios.h>
 #include <sys/ioctl.h>
@@ -63,8 +63,8 @@ myFlexLexer::myFlexLexer(std::istream *arg_yyin, std::ostream *arg_yyout):
   first_history_pos = 0;
   last_history_pos = -1;
 
-  if (strcmp(getenv("TERM"), "xterm") == 0 ||
-      strcmp(getenv("TERM"), "xterm-color") == 0) {
+  if (getenv("XTERM") && (strcmp(getenv("TERM"), "xterm") == 0 ||
+      strcmp(getenv("TERM"), "xterm-color") == 0)) {
     key_seqs[MY_KEY_EOF] = "\x04";
     key_seqs[MY_KEY_LEFT] = "\x1B\x5B\x44";
     key_seqs[MY_KEY_RIGHT] = "\x1B\x5B\x43";
@@ -78,8 +78,8 @@ myFlexLexer::myFlexLexer(std::istream *arg_yyin, std::ostream *arg_yyout):
     key_seqs[MY_KEY_NUMPAD_HOME] = "\x1B\x5B\x31\x7E";
     key_seqs[MY_KEY_NUMPAD_END] = "\x1B\x5B\x34\x7E";
   }
-  else if (strcmp(getenv("TERM"), "linux") == 0 ||
-           strcmp(getenv("TERM"), "cygwin") == 0) {
+  else if (getenv("XTERM") && (strcmp(getenv("TERM"), "linux") == 0 ||
+           strcmp(getenv("TERM"), "cygwin") == 0)) {
     key_seqs[MY_KEY_EOF] = "\x04";
     key_seqs[MY_KEY_LEFT] = "\x1B\x5B\x44";
     key_seqs[MY_KEY_RIGHT] = "\x1B\x5B\x43";
@@ -102,7 +102,7 @@ int myFlexLexer::LexerInput(char *buf, int max_size) {
   if (!is_interactive)
     return yyFlexLexer::LexerInput(buf, max_size);
 
-#if defined __USE_POSIX
+#if defined __USE_POSIX || defined __APPLE__
   winsize wsz;
   ioctl(0, TIOCGWINSZ, &wsz);
   int num_cols = wsz.ws_col;
