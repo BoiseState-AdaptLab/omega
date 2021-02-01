@@ -5,7 +5,7 @@
 
 
 #ifndef DEBUG_PRINTF
-#define DEBUG_PRINTF 1
+#define DEBUG_PRINTF 0
 #endif
 
 #define debug_fprintf(f, ...)               do { if(DEBUG_PRINTF) { fprintf(f, __VA_ARGS__); } } while(false)
