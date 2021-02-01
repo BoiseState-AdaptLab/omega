@@ -1,20 +1,15 @@
-
-/*****************************************************************************
-
+/******************************************************************************
  Copyright (C) 1994-2000 the Omega Project Team
  Copyright (C) 2005-2011 Chun Chen
  All Rights Reserved.
-
  Purpose:
  CG node classes, used to build AST tree from polyhedra scanning.
-
  Notes:
  Parameter "restriction" is always tighter than "known" since CG_split
  node does not correspond to any code for enforcement. This property is
  destroyed after hoistGuard since "restriction" is not used anymore.
  CG node's children are guaranteed not to be NULL, either NULL child is
  removed from the children or the parent node itself becomes NULL.
-
  History:
  04/20/96 printRepr added by D people. Lei Zhou
  10/24/06 hoistGuard added by chun
@@ -546,11 +541,11 @@ namespace {
 }
 
 namespace omega {
-  
+
   extern std::vector<std::vector<int> > smtNonSplitLevels;
   extern std::vector<std::vector<std::string> > loopIdxNames; //per stmt
   extern std::vector<std::pair<int, std::string> > syncs;
-  
+
   extern int checkLoopLevel;
   extern int stmtForLoopCheck;
   extern int upperBoundForLevel;
@@ -561,7 +556,7 @@ namespace omega {
   //-----------------------------------------------------------------------------
   // Class: CG_result
   //-----------------------------------------------------------------------------
-  
+
   CG_outputRepr *CG_result::printRepr(CG_outputBuilder *ocg,
                                       const std::vector<CG_outputRepr *> &stmts,
                                       std::vector<std::map<std::string, std::vector<CG_outputRepr *> > > uninterpreted_symbols, 
@@ -569,11 +564,11 @@ namespace omega {
     debug_fprintf(stderr, "\nCG_result::printRepr(ocg, stmts) \n"); 
     //Anand: making a tweak to allocate twice the original number of dynamically allocated variables
     //for use with Uninterpreted function symbols
-    
+
     //Anand: adding support for Replacing substituted variables within
     //Uninterpreted function symbols or global variables with arity > 0 here
     //--begin
-    
+
     // check for an error that happened once
     int num_unin = uninterpreted_symbols.size();
     int num_active =  active_.size();
@@ -587,21 +582,21 @@ namespace omega {
 #define DYINGHERE 
 #ifdef DYINGHERE
     int num_levels = num_level();
-    
+
     for (int s = 0; s < active_.size(); s++) {
       debug_fprintf(stderr, "\ns %d\n", s); 
       std::vector<std::string> loop_vars;
       if (active_.get(s)) {
-        
+
         Relation mapping = Inverse(
           copy((codegen_->xforms_[codegen_->remap_[s]])));
-        
+
         mapping.simplify();
         mapping.setup_names();
-        
+
         for (int i = 1; i <= mapping.n_out(); i++)
           loop_vars.push_back(mapping.output_var(i)->name());
-        
+
         std::vector<CG_outputRepr *> subs_;
         for (int i = 1; i <= mapping.n_out(); i++) {
           Relation mapping1(mapping.n_out(), 1);
@@ -611,19 +606,19 @@ namespace omega {
           h.update_coef(mapping1.input_var(i), -1);
           Relation r = Composition(mapping1, copy(mapping));
           r.simplify();
-          
+
           //Relation r = copy(mapping);
-          
+
           Variable_ID v = r.output_var(1);
           loop_vars.push_back(mapping.output_var(i)->name());
-          
+
           std::pair<EQ_Handle, int> result = find_simplest_assignment(r,
                                                   v, aotf);
-          
+
           std::string hand = result.first.print_to_string();
           //debug_debug_fprintf(stderr, "result: %s, %d\n", hand.c_str(), result.second); 
           if (result.second < INT_MAX) {
-            
+
             CG_outputRepr *subs = output_substitution_repr(ocg,
                                                            result.first, 
                                                            v, 
@@ -631,14 +626,14 @@ namespace omega {
                                                            r, 
                                                            aotf,
                                                            uninterpreted_symbols[s]);
-            
+
             subs_.push_back(subs->clone());
-            
+
             aotf[num_levels + i - 1] = std::make_pair(subs, 999);
-            
+
           } else {
             CG_outputRepr* repr = NULL;
-            
+
             aotf[num_levels + i - 1] = std::make_pair(repr, 999);
           }
         }
@@ -648,38 +643,38 @@ namespace omega {
                it != uninterpreted_symbols[s].end(); it++) {
             std::vector<CG_outputRepr *> reprs_ = it->second;
             std::vector<CG_outputRepr *> reprs_2;
-            
+
             for (int k = 0; k < reprs_.size(); k++) {
               std::vector<CG_outputRepr *> subs2;
               for (int l = 0; l < subs_.size(); l++) {
-                
+
                 subs2.push_back(subs_[l]->clone());
               }
               CG_outputRepr * temp =
                 ocg->CreateSubstitutedStmt(0, reprs_[k]->clone(),
                                            loop_vars, subs2, false);
-              
+
               if (temp != NULL)
                 reprs_2.push_back(temp);
               //    reprs_2.push_back(subs_[k]->clone());
-              
+
             }
             if(reprs_2.size() > 0)
               it->second = reprs_2;
           }
-        
+
         //break;
       }
     }
-    
+
 //--end
-    
+
 #endif
 
     debug_fprintf(stderr, "\n\n\n\nprintRepr recursing ??? return printRepr( ... )\n"); 
     return printRepr(1, ocg, stmts, aotf, uninterpreted_symbols, printString);
   }
-  
+
 
 
   std::string CG_result::printString(
@@ -702,7 +697,7 @@ namespace omega {
 
     for (int i = 0; i < stmts.size(); i++)
       delete stmts[i];
-    
+
     if (repr != NULL) {
       std::string s = repr->GetString();
       //debug_debug_fprintf(stderr, "\nCG.cc L197 repr->GetString() = '%s'\n\n\n", s.c_str()); 
@@ -711,15 +706,15 @@ namespace omega {
     } else
       return std::string();
   }
-  
+
   int CG_result::num_level() const {
     return codegen_->num_level();
   }
-  
+
   //-----------------------------------------------------------------------------
   // Class: CG_split
   //-----------------------------------------------------------------------------
-  
+
   CG_result *CG_split::recompute(const BoolSet<> &parent_active,
                                  const Relation &known, const Relation &restriction) {
     active_ &= parent_active;
@@ -727,13 +722,13 @@ namespace omega {
       delete this;
       return NULL;
     }
-    
-    
+
+
     int i = 0;
     while (i < restrictions_.size()) {
       Relation new_restriction = Intersection(copy(restrictions_[i]),
                                               copy(restriction));
-      
+
       new_restriction.simplify(2, 4);
       //new_restriction.simplify();
       clauses_[i] = clauses_[i]->recompute(active_, copy(known),
@@ -744,22 +739,22 @@ namespace omega {
       } else
         i++;
     }
-    
-    
+
+
     if (restrictions_.size() == 0) {
       delete this;
       return NULL;
     } else
       return this;
   }
-  
+
   int CG_split::populateDepth() {
     int max_depth = 0;
     for (auto &clause: clauses_)
       max_depth = std::max(clause->populateDepth(), max_depth);
     return max_depth;
   }
-  
+
   std::pair<CG_result *, Relation> CG_split::liftOverhead(int depth,
                                                           bool propagate_up) {
     for (int i = 0; i < clauses_.size();) {
@@ -773,9 +768,9 @@ namespace omega {
           return std::make_pair(this, result.second);
         i++;
       }
-      
+
     }
-    
+
     if (clauses_.size() == 0) {
       delete this;
       return std::make_pair(static_cast<CG_result *>(NULL),
@@ -783,20 +778,20 @@ namespace omega {
     } else
       return std::make_pair(this, Relation::True(num_level()));
   }
-  
+
   Relation CG_split::hoistGuard() {
     std::vector<Relation> guards;
     for (int i = 0; i < clauses_.size(); i++)
       guards.push_back(clauses_[i]->hoistGuard());
-    
+
     return SimpleHull(guards, true, true);
   }
-  
+
   void CG_split::removeGuard(const Relation &guard) {
     for (int i = 0; i < clauses_.size(); i++)
       clauses_[i]->removeGuard(guard);
   }
-  
+
   std::vector<CG_result *> CG_split::findNextLevel() const {
     std::vector<CG_result *> result;
     for (int i = 0; i < clauses_.size(); i++) {
@@ -807,10 +802,10 @@ namespace omega {
       } else
         result.push_back(clauses_[i]);
     }
-    
+
     return result;
   }
-  
+
 
 
 
@@ -820,7 +815,7 @@ namespace omega {
                                      const std::vector<std::pair<CG_outputRepr *, int> > &assigned_on_the_fly,
                                      std::vector<std::map<std::string, std::vector<CG_outputRepr *> > > unin, 
                                      bool printString) const {
-    
+
     debug_fprintf(stderr, "CG_split::printRepr()\n"); 
     int numfly =  assigned_on_the_fly.size();
     //debug_debug_fprintf(stderr, "assigned on the fly  %d\n", numfly );
@@ -832,10 +827,10 @@ namespace omega {
     //  int val = p.second;
     //  debug_debug_fprintf(stderr, "0x%x   %d\n", tr, val);
     //} 
-    
+
     CG_outputRepr *stmtList = NULL;
     std::vector<CG_result *> next_level = findNextLevel();
-    
+
     std::vector<CG_loop *> cur_loops;
     for (int i = 0; i < next_level.size(); i++) {
       CG_loop *lp = dynamic_cast<CG_loop *>(next_level[i]);
@@ -866,7 +861,7 @@ namespace omega {
         cur_loops.clear();
       }
     }
-    
+
     stmtList = ocg->StmtListAppend(stmtList,
                                    loop_print_repr(active_,
                                                    cur_loops, 
@@ -883,7 +878,7 @@ namespace omega {
                                                    unin));
     return stmtList;
   }
-  
+
   CG_result *CG_split::clone() const {
     //debug_debug_fprintf(stderr, "CG_split::clone()\n"); 
     std::vector<CG_result *> clauses(clauses_.size());
@@ -891,7 +886,7 @@ namespace omega {
       clauses[i] = clauses_[i]->clone();
     return new CG_split(codegen_, active_, restrictions_, clauses);
   }
-  
+
   void CG_split::dump(int indent) const {
     std::string prefix;
     for (int i = 0; i < indent; i++)
@@ -902,9 +897,9 @@ namespace omega {
       const_cast<CG_split *>(this)->restrictions_[i].print();
       clauses_[i]->dump(indent + 1);
     }
-    
+
   }
-  
+
   void CG_split::addPragma(int stmt, int loop_level, std::string name) {
     if(active_.get(stmt)) {
       for(auto cl: clauses_) {
@@ -930,18 +925,18 @@ namespace omega {
   //-----------------------------------------------------------------------------
   // Class: CG_loop
   //-----------------------------------------------------------------------------
-  
+
   CG_result *CG_loop::recompute(const BoolSet<> &parent_active,
                                 const Relation &known, const Relation &restriction) {
     known_ = copy(known);
     restriction_ = copy(restriction);
     active_ &= parent_active;
-    
+
     std::vector<Relation> Rs;
     for (BoolSet<>::iterator i = active_.begin(); i != active_.end(); i++) {
       Relation r = Intersection(copy(restriction),
                                 copy(codegen_->projected_IS_[level_ - 1][*i]));
-      
+
       //r.simplify(2, 4);
       r.simplify();
       if (!r.is_upper_bound_satisfiable()) {
@@ -950,12 +945,12 @@ namespace omega {
       }
       Rs.push_back(copy(r));
     }
-    
+
     if (active_.empty()) {
       delete this;
       return NULL;
     }
-    
+
     Relation truehull = SimpleHull(Rs, true, true);
 
     Relation hull = copy(truehull);
@@ -968,7 +963,7 @@ namespace omega {
     //Anand:Variables for inspector constraint check
     bool has_insp = false;
     bool found_insp = false;
-    
+
     //Global_Var_ID global_insp;
     //Argument_Tuple arg;
     // check if actual loop is needed
@@ -976,7 +971,7 @@ namespace omega {
                                                                 hull.set_var(level_));
     if (result.second < INT_MAX) {
       needLoop_ = false;
-      
+
       bounds_ = Relation(hull.n_set());
       F_Exists *f_exists = bounds_.add_and()->add_exists();
       F_And *f_root = f_exists->add_and();
@@ -1016,15 +1011,15 @@ namespace omega {
     else {
       debug_fprintf(stderr, "loop iterates more than once, extract bounds now\n"); 
       needLoop_ = true;
-      
+
       bounds_ = Relation(hull.n_set());
       F_Exists *f_exists = bounds_.add_and()->add_exists();
       F_And *f_root = f_exists->add_and();
       std::map<Variable_ID, Variable_ID> exists_mapping;
-      
+
       Relation b = Gist(copy(hull), copy(known), 1);
       bool has_unresolved_bound = false;
-      
+
       std::set<Variable_ID> excluded_floor_vars;
       excluded_floor_vars.insert(b.set_var(level_));
       for (GEQ_Iterator e(b.single_conjunct()->GEQs()); e; e++)
@@ -1038,15 +1033,15 @@ namespace omega {
               has_unresolved_bound = true;
               //break;
             }
-            
+
             if (!is_bound) {
               break;
             }
           }
-          
+
           if (!is_bound)
             continue;
-          
+
           GEQ_Handle h = f_root->add_GEQ();
           for (Constr_Vars_Iter cvi(*e); cvi; cvi++) {
             Variable_ID v = cvi.curr_var();
@@ -1077,7 +1072,7 @@ namespace omega {
           }
           h.update_const((*e).get_const());
         }
-      
+
       if (has_unresolved_bound) {
         b = Approximate(b);
         b.simplify(2, 4);
@@ -1103,7 +1098,7 @@ namespace omega {
         if (has_lb && has_ub)
           break;
       }
-      
+
       if (!has_lb) {
         for (int i = 0; i < Rs.size(); i++) {
           Relation r = Approximate(copy(Rs[i]));
@@ -1207,7 +1202,7 @@ namespace omega {
             }
         }
       }
-      
+
       if (!has_lb && !has_ub)
         throw codegen_error(
                             "can't find any bound at loop level " + to_string(level_));
@@ -1228,7 +1223,7 @@ namespace omega {
       Relation cur_known = Intersection(copy(bounds_), copy(known_));
       cur_known.simplify();
       hull = Gist(hull, copy(cur_known), 1);
-      
+
       std::pair<EQ_Handle, Variable_ID> result = find_simplest_stride(hull,
                                                                       hull.set_var(level_));
       if (result.second != NULL)
@@ -1277,7 +1272,7 @@ namespace omega {
                   abs(
                       result.first.get_coef(
                                             hull.set_var(level_))));
-          
+
           Relation r1(hull.n_inp());
           F_Exists *f_exists = r1.add_and()->add_exists();
           F_And *f_root = f_exists->add_and();
@@ -1316,7 +1311,7 @@ namespace omega {
           }
           h.update_const(result.first.get_const());
           r1.simplify();
-          
+
           bool guess_success = false;
           for (GEQ_Iterator e(bounds_.single_conjunct()->GEQs()); e; e++)
             if ((*e).get_coef(bounds_.set_var(level_)) == 1) {
@@ -1356,7 +1351,7 @@ namespace omega {
               }
               h.update_const((*e).get_const());
               r2.simplify();
-              
+
               if (Gist(copy(r1),
                        Intersection(copy(cur_known), copy(r2)), 1).is_obvious_tautology()
                   && Gist(copy(r2),
@@ -1368,7 +1363,7 @@ namespace omega {
                 break;
               }
             }
-          
+
           // this is really a stride with non-unit coefficient for this loop variable
           if (!guess_success) {
             // TODO: for stride ax = b mod n it might be beneficial to
@@ -1377,13 +1372,13 @@ namespace omega {
             //       and stride would be n/gcd(|a|,n), thus this stride
             //       can be put into bounds_ too.
           }
-          
+
         }
-      
+
       hull = Project(hull, hull.set_var(level_));
       hull.simplify(2, 4);
       guard_ = Gist(hull, Intersection(copy(bounds_), copy(known_)), 1);
-      
+
       // TODO: Tobi Popoola: Add an extra information to either remove 
       // check for bounds UF present in loop guard. Or check for 
       // direct assignment.
@@ -1403,7 +1398,7 @@ namespace omega {
       guard_ = Relation::True(num_level());
     guard_.copy_names(bounds_);
     guard_.setup_names();
-    
+
     //guard_.simplify();  
     // recursively down the AST
     Relation new_known = Intersection(copy(known),
@@ -1421,7 +1416,7 @@ namespace omega {
     } else
       return this;
   }
-  
+
   int CG_loop::populateDepth() {
     int depth = body_->populateDepth();
     if (needLoop_)
@@ -1430,7 +1425,7 @@ namespace omega {
       depth_ = depth;
     return depth_;
   }
-  
+
   std::pair<CG_result *, Relation> CG_loop::liftOverhead(int depth,
                                                          bool propagate_up) {
     if (depth_ > depth) {
@@ -1445,7 +1440,7 @@ namespace omega {
         if (!r.is_obvious_tautology())
           return std::make_pair(this, r);
       }
-      
+
       std::pair<CG_result *, Relation> result;
       if (propagate_up || needLoop_)
         result = body_->liftOverhead(depth, true);
@@ -1550,7 +1545,7 @@ namespace omega {
         }
       }
 
-      
+
       // check if this is the top loop level for splitting for this overhead
       if (!propagate_up || (has_wildcard && max_level == level_ - 1)
           || (!has_wildcard && max_level == level_)) {
@@ -1585,18 +1580,18 @@ namespace omega {
         return std::make_pair(this, result.second);
     }
   }
-  
-  
-  
+
+
+
   Relation CG_loop::hoistGuard() {
-    
+
     Relation r = body_->hoistGuard();
 
     // TODO: should bookkeep catched contraints in loop output as enforced and check if anything missing
     // if (!Gist(copy(b), copy(enforced)).is_obvious_tautology()) {
     //   debug_debug_fprintf(stderr, "need to generate extra guard inside the loop\n");
     // }
-    
+
     if (!needLoop_)
       r = Intersection(r, copy(bounds_));
     r = Project(r, r.set_var(level_));
@@ -1610,40 +1605,40 @@ namespace omega {
 
     Relation eliminate_existentials_r;
     Relation eliminate_existentials_known;
-    
+
     eliminate_existentials_r = copy(r);
     if (!r.is_obvious_tautology()) {
       eliminate_existentials_r = Approximate(copy(r));
       eliminate_existentials_r.simplify(2,4);
       eliminate_existentials_known = Approximate(copy(known_));
       eliminate_existentials_known.simplify(2,4);
-      
+
       eliminate_existentials_r = Gist(eliminate_existentials_r, 
                                       eliminate_existentials_known, 1);
     }
-    
-    
+
+
     if (!eliminate_existentials_r.is_obvious_tautology()) {
       // if (!r.is_obvious_tautology()) {
       body_->removeGuard(r);
       guard_ = Intersection(guard_, copy(r));
       guard_.simplify();
     }
-    
+
     return guard_;
   }
-  
+
 
 
   void CG_loop::removeGuard(const Relation &guard) {
     known_ = Intersection(known_, copy(guard));
     known_.simplify();
-    
+
     guard_ = Gist(guard_, copy(known_), 1);
     guard_.copy_names(known_);
     guard_.setup_names();
   }
-  
+
 
 
 
@@ -1652,7 +1647,7 @@ namespace omega {
                                     const std::vector<CG_outputRepr *> &stmts,
                                     const std::vector<std::pair<CG_outputRepr *, int> > &assigned_on_the_fly,
                                     std::vector<std::map<std::string, std::vector<CG_outputRepr *> > > unin, bool printString) const {
-    
+
     debug_fprintf(stderr, "CG_loop::printRepr() w assigned_on_the_fly gonna call printRepr with more arguments\n"); 
     //int numfly =  assigned_on_the_fly.size();
     //debug_debug_fprintf(stderr, "assigned on the fly  %d\n", numfly );
@@ -1664,22 +1659,22 @@ namespace omega {
     //  int val = p.second;
     //  //debug_debug_fprintf(stderr, "0x%x   %d\n", tr, val);
     //} 
-    
+
     return printRepr(true, indent, ocg, stmts, assigned_on_the_fly, unin, printString);
   }
 
 
 
 
-  
+
   CG_outputRepr *CG_loop::printRepr(bool do_print_guard, 
                                     int indent,
                                     CG_outputBuilder *ocg, const std::vector<CG_outputRepr *> &stmts,
                                     const std::vector<std::pair<CG_outputRepr *, int> > &assigned_on_the_fly,
                                     std::vector<std::map<std::string, std::vector<CG_outputRepr *> > > unin, bool printString) const {
     debug_fprintf(stderr, "\n*** CG.cc  CG_loop printrepr with more arguments\n"); 
-    
-    
+
+
     // debugging output 
     int numfly =  assigned_on_the_fly.size();
     debug_fprintf(stderr, "assigned on the fly  %d\n", numfly ); // Anand makes twice as many
@@ -1691,7 +1686,7 @@ namespace omega {
       int val = p.second;
       //debug_debug_fprintf(stderr, "0x%x   %d\n", tr, val);
     }
-    
+
     //Anand: adding support for Replacing substituted variables within
     //Uninterpreted function symbols or global variables with arity > 0 here
     //--begin
@@ -1700,15 +1695,15 @@ namespace omega {
     for (int s = 0; s < active_.size(); s++)
       if (active_.get(s))
         stmt_num = s;
-    
+
     assert(stmt_num != -1);
-    
+
     CG_outputRepr *guardRepr;
     if (do_print_guard)
       guardRepr = output_guard(ocg, guard_,  aotf, unin[stmt_num]);
     else
       guardRepr = NULL;
-    
+
     debug_fprintf(stderr, "after guard assigned on the fly  %d\n", numfly );
     for (int i=0; i<numfly; i++) { 
       //debug_debug_fprintf(stderr, "i %d\n", i); 
@@ -1721,12 +1716,12 @@ namespace omega {
     debug_fprintf(stderr, "done flying\n"); 
 
     Relation cur_known = Intersection(copy(known_), copy(guard_));
-    
+
     cur_known.simplify();
     debug_fprintf(stderr, "checking needloop\n"); 
     if (needLoop_) {
       debug_fprintf(stderr, "needLoop_\n"); 
-      
+
       if (checkLoopLevel)
         if (level_ == checkLoopLevel)
           if (active_.get(stmtForLoopCheck))
@@ -1735,9 +1730,9 @@ namespace omega {
       debug_fprintf(stderr, "ctrlRepr = output_loop()\n"); 
       CG_outputRepr *ctrlRepr = output_loop(ocg, bounds_, level_, cur_known,
                                             aotf, unin[stmt_num]);
-      
+
       fillInBounds = false;
-      
+
       debug_fprintf(stderr, "in needLoop_ bodyrepr = \n"); 
       int ind = (guardRepr == NULL) ? indent + 1 : indent + 2;
       CG_outputRepr *bodyRepr = body_->printRepr(ind,
@@ -1747,16 +1742,16 @@ namespace omega {
                                                  unin, 
                                                  printString);
       CG_outputRepr * loopRepr;
-      
+
       if (guardRepr == NULL)
         loopRepr = ocg->CreateLoop(indent, ctrlRepr, bodyRepr);
       else
         loopRepr = ocg->CreateLoop(indent + 1, ctrlRepr, bodyRepr);
-      
+
       if(attachPragma_) {
         loopRepr = ocg->CreatePragmaAttribute(loopRepr, level_ / 2, pragmaName_);
       }
-      
+
       if (!smtNonSplitLevels.empty()) {
         debug_fprintf(stderr, "!smtNonSplitLevels.empty()\n"); 
         bool blockLoop = false;
@@ -1771,7 +1766,7 @@ namespace omega {
             //the block or thread loops to be reduced in CUDA-CHiLL. Here we
             //place some comments to help with final code generation.
             //int idx = smtNonSplitLevels[s].index(level_);
-            
+
             if (s < smtNonSplitLevels.size()) {
               if (smtNonSplitLevels[s].size() > 0)
                 if (smtNonSplitLevels[s][0] == level_) {
@@ -1819,7 +1814,7 @@ namespace omega {
                 sync = true;
                 //printf("FOUND SYNC\n");
               }
-              
+
             }
           }
         }
@@ -1849,11 +1844,11 @@ namespace omega {
           } else {
             sprintf(buf, "~cuda~ %s", loop.c_str());
           }
-          
-          
+
+
           loopRepr = ocg->CreateAttribute(loopRepr, buf);
         }
-        
+
       }
       if (guardRepr == NULL)
         return loopRepr;
@@ -1862,16 +1857,16 @@ namespace omega {
     } 
     else {
       debug_fprintf(stderr, "NOT needloop_\n");
-      
+
       std::pair<CG_outputRepr *, std::pair<CG_outputRepr *, int> > result =
         output_assignment(ocg, bounds_, level_, cur_known, aotf, unin[stmt_num]);
-      
+
       //debug_debug_fprintf(stderr, "RESULT  0x%x  0x%x  %d\n", result.first, result.second.first, result.second.second ); 
-      
-      
+
+
       guardRepr = ocg->CreateAnd(guardRepr, result.first);
       //debug_debug_fprintf(stderr, "RESULT  0x%x  0x%x  %d\n", result.first, result.second.first, result.second.second ); 
-      
+
       //debug_debug_fprintf(stderr, "after guardRepr assigned on the fly  %d\n", numfly );
       for (int i=0; i<numfly; i++) { 
         //debug_debug_fprintf(stderr, "i %d\n", i); 
@@ -1881,20 +1876,20 @@ namespace omega {
         int val = p.second;
         //debug_debug_fprintf(stderr, "0x%x   %d\n", tr, val);
       } 
-      
-      
+
+
       if (result.second.second < CodeGen::var_substitution_threshold) {
         //debug_debug_fprintf(stderr, "var_substitution_threshold  %d < %d    level_ = %d\n", result.second.second, CodeGen::var_substitution_threshold, level_); 
         std::vector<std::pair<CG_outputRepr *, int> > aotf =
           assigned_on_the_fly;
         aotf[level_ - 1] = result.second;
         //debug_debug_fprintf(stderr, "RESULT  0x%x  second 0x%x  %d\n", result.first, result.second.first, result.second.second ); 
-        
+
         if(!printString) {
           for (std::map<std::string, std::vector<CG_outputRepr *> >::iterator i =
                  unin[stmt_num].begin(); i != unin[stmt_num].end(); i++) {
-            
-            
+
+
             std::vector<CG_outputRepr *> to_push;
             for (int j = 0; j < i->second.size(); j++) {
               std::string index =
@@ -1910,7 +1905,7 @@ namespace omega {
             i->second = to_push;
           } // for 
         } // if 
-        
+
         //debug_debug_fprintf(stderr, "aotf !!\n"); 
         for (int i=0; i<numfly; i++) { 
           //debug_debug_fprintf(stderr, "i %d\n", i); 
@@ -1919,7 +1914,7 @@ namespace omega {
           if (p.first != NULL) { tr = p.first->clone();  }
           int val = p.second;
         }
-        
+
         //debug_debug_fprintf(stderr, "\nbodyRepr =\n"); 
         //body_->dump(); // this dies 
         int ind =  (guardRepr == NULL) ? indent : indent + 1; 
@@ -1959,7 +1954,7 @@ namespace omega {
     //debug_debug_fprintf(stderr, "CG_loop::clone()\n"); 
     return new CG_loop(codegen_, active_, level_, body_->clone());
   }
-  
+
   void CG_loop::dump(int indent) const {
     std::string prefix;
     for (int i = 0; i < indent; i++)
@@ -1976,7 +1971,7 @@ namespace omega {
     const_cast<CG_loop *>(this)->guard_.print();
     body_->dump(indent + 1);
   }
-  
+
   void CG_loop::addPragma(int stmt, int loop_level, std::string name) {
     if(active_.get(stmt)) {
       if(level_/2 == loop_level && needLoop_) {
@@ -2039,12 +2034,12 @@ namespace omega {
   //-----------------------------------------------------------------------------
   // Class: CG_leaf
   //-----------------------------------------------------------------------------
-  
+
   CG_result* CG_leaf::recompute(const BoolSet<> &parent_active,
                                 const Relation &known, const Relation &restriction) {
     active_ &= parent_active;
     known_ = copy(known);
-    
+
     guards_.clear();
     for (auto i = active_.begin(); i != active_.end(); i++) {
       Relation r = Intersection(
@@ -2070,21 +2065,21 @@ namespace omega {
     } else
       return this;
   }
-  
+
   std::pair<CG_result *, Relation> CG_leaf::liftOverhead(int depth, bool) {
     if (depth == 0)
       return std::make_pair(this, Relation::True(num_level()));
-    
+
     for (std::map<int, Relation>::iterator i = guards_.begin();
          i != guards_.end(); i++) {
       Relation r = pick_one_guard(i->second);
       if (!r.is_obvious_tautology())
         return std::make_pair(this, r);
     }
-    
+
     return std::make_pair(this, Relation::True(num_level()));
   }
-  
+
   Relation CG_leaf::hoistGuard() {
     std::vector<Relation> guards;
     for (auto i = active_.begin(); i != active_.end(); i++) {
@@ -2098,14 +2093,14 @@ namespace omega {
         guards.push_back(j->second);
       }
     }
-    
+
     return SimpleHull(guards, true, true);
   }
-  
+
   void CG_leaf::removeGuard(const Relation &guard) {
     known_ = Intersection(known_, copy(guard));
     known_.simplify();
-    
+
     auto i = guards_.begin();
     while (i != guards_.end()) {
       i->second = Gist(i->second, copy(known_), 1);
@@ -2115,7 +2110,7 @@ namespace omega {
         ++i;
     }
   }
-  
+
   CG_outputRepr *CG_leaf::printRepr(int indent, CG_outputBuilder *ocg,
                                     const std::vector<CG_outputRepr *> &stmts,
                                     const std::vector<std::pair<CG_outputRepr *, int> > &assigned_on_the_fly,
@@ -2126,13 +2121,13 @@ namespace omega {
                            codegen_->remap_, codegen_->xforms_, stmts, 
                            assigned_on_the_fly, unin);
   }
-  
+
   CG_result *CG_leaf::clone() const {
     return new CG_leaf(codegen_, active_);
   }
-  
+
   void CG_leaf::dump(int indent) const {
-    
+
     std::string prefix;
     for (int i = 0; i < indent; i++)
       prefix += "  ";
@@ -2146,7 +2141,7 @@ namespace omega {
       const_cast<Relation &>(i->second).print();
     }
   }
-  
+
   void CG_leaf::addPragma(int stmt, int loop_level, std::string name) {
       // do nothing
   }
