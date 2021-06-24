@@ -348,6 +348,14 @@ Global_Declaration_Site::~Global_Declaration_Site() {
 }
 
 Variable_Ref * Global_Declaration_Site::extend(char *s) {
+
+  for (std::set<Variable_Ref *>::iterator i = declarations.begin();
+                                      i != declarations.end(); i++){
+    // look for variable *s
+    if(!strcmp(s,(*i)->stripped_name)){
+       return *i;
+    }
+  }
   Variable_Ref *r  = new Variable_Ref(s);
   r->g = new Free_Var_Decl(r->stripped_name);
   declarations.insert(r);
