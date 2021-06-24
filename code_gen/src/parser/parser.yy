@@ -1859,7 +1859,11 @@ Relation * omega::parser::ParseRelation(std::string relationString){
 	mylexer.yy_create_buffer(&iss, 8092);
   mylexer.yypush_buffer_state(bs);
   relation_result = NULL;
-  current_Declaration_Site = globalDecls = new Global_Declaration_Site();
+  if(globalDecls == NULL){
+    current_Declaration_Site = globalDecls = new Global_Declaration_Site();
+  }else{
+    current_Declaration_Site = globalDecls;
+  }
   yyparse();
   disable_prints =false;
   
