@@ -8,6 +8,9 @@ AM_INIT_AUTOMAKE([-Wall -Werror no-dependencies foreign subdir-objects])
 AC_SUBST([CCLD],["$""(CXX)"])
 AC_DEFINE([OMEGA_VERSION],["0.1.0"],[Omega version])
 
+: ${CFLAGS="-O0"}
+: ${CXXFLAGS="-O0"}
+
 AM_PROG_AR
 AM_PROG_LEX
 AC_PROG_CC
