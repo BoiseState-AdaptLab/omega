@@ -3,7 +3,6 @@
 
 #include <omega.h>
 #include <string>
-using namespace omega;
 namespace omega {
 namespace parser {
    /**
