@@ -1299,6 +1299,8 @@ relation : OPEN_BRACE {need_coef = true; relationDecl = new Declaration_Site();}
            $$ = new Relation();
            try {
              *$$ = Union(*$1,*$3);
+             if(relation_result!=NULL) { delete relation_result;}
+                 relation_result = new Relation(copy(*$$)); 
            }
            catch (const std::exception &e) {
              delete $$;
